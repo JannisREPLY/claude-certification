@@ -3,6 +3,7 @@ import { DAILY_GOAL, dayKey, levelFor, currentStreak } from '../lib/game.js'
 import { isDue } from '../lib/srs.js'
 import { WEAK_DOMAIN } from '../lib/readiness.js'
 import ReadinessBar from './ReadinessBar.jsx'
+import SyncCard from './SyncCard.jsx'
 
 export default function Dashboard({ cert, r, go }) {
   const { progress, replace, toast } = useProgress()
@@ -93,6 +94,8 @@ export default function Dashboard({ cert, r, go }) {
           </div>
         </section>
       )}
+
+      <SyncCard />
 
       <section className="card span2 data">
         <h3>Your data</h3>
