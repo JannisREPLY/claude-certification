@@ -25,7 +25,7 @@ AWS state lives in memory: after a restart of the stack, restart the lab.
 
 `.github/workflows/app-pages.yml` deploys a static build without labs (`VITE_NO_LABS=true npm run build`) to GitHub Pages on every push to `main` that touches `app/`. Open it on the phone and use "Add to Home Screen" to run it as an app.
 
-Sync: with the repo variables `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` set, the dashboard shows a Sync card (email + password). Progress is stored per user and certification in `cert_progress` (`supabase/migrations/`). The newest progress wins as a whole; it is pulled on sign-in and when the app comes back to the foreground, and pushed 1 s after each change. Without these variables (e.g. the Docker build) progress stays local; move it with Export/Import.
+Sync: `.env` points at the Supabase project; the dashboard shows a Sync card (Google sign-in). Progress is stored per certification in `cert_progress` (`supabase/migrations/`), which only the owner account can read or write. The newest progress wins as a whole; it is pulled on sign-in and when the app comes back to the foreground, and pushed 1 s after each change. The first device that signs in with progress becomes the source. Without `.env` progress stays local; move it with Export/Import.
 
 Progress is stored in the browser's localStorage per certification; use **Export/Import** on the dashboard to back it up. The browser keeps progress per host and port, so `localhost:8080` and `localhost:5173` have separate progress.
 

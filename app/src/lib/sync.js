@@ -1,7 +1,6 @@
-const stamp = (p) => p?.updatedAt || 0
+const stamp = (p) => p?.updatedAt || (p?.xp > 0 ? 1 : 0)
 
 export function resolve(local, remote) {
-  if (!remote) return { use: 'local', push: true }
   if (stamp(remote) > stamp(local)) return { use: 'remote', push: false }
   return { use: 'local', push: stamp(local) > stamp(remote) }
 }

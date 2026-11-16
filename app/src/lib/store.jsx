@@ -50,7 +50,13 @@ export function ProgressProvider({ cert, children }) {
           setProgress(ref.current)
           localStorage.setItem(key(cert.id), JSON.stringify(ref.current))
         }
-        if (r.push) await push(supabase, cert.id, ref.current)
+        if (r.push) {
+          if (!ref.current.updatedAt) {
+            ref.current = { ...ref.current, updatedAt: Date.now() }
+            localStorage.setItem(key(cert.id), JSON.stringify(ref.current))
+          }
+          await push(supabase, cert.id, ref.current)
+        }
         setSyncError(null)
       } catch (e) {
         setSyncError(e.message)

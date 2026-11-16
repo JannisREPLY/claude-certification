@@ -106,8 +106,6 @@ button { font: inherit; color: inherit; }
 .exam-chip.fail { border-color: var(--bad); }
 .exam-chip small { color: var(--muted); }
 .data label.btn { cursor: pointer; }
-.sync-form { display: flex; flex-wrap: wrap; gap: 8px; }
-.sync-form input { flex: 1 1 200px; background: var(--panel2); color: var(--text); border: 1px solid #ffffff14; border-radius: 10px; padding: 10px 12px; font: inherit; }
 
 .lessons { display: flex; flex-direction: column; gap: 16px; }
 .lesson-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); gap: 8px; }
