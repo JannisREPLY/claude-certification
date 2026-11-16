@@ -1,0 +1,14 @@
+{
+  "id": "remote-state",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Remote state and sharing data",
+  "objectives": ["3b", "3d"],
+  "domain": "d3",
+  "minutes": 40,
+  "intro": "Two configurations live in `/home/coder/lab`: `network/` (applied, local state) and `app/` (empty). The S3 bucket `tfstate-lab` and the DynamoDB table `tf-locks` (partition key `LockID`) already exist. Open a terminal via **☰ → Terminal → New Terminal**.",
+  "tasks": [
+    { "id": "t1", "text": "Move the state of `network/` to the S3 bucket `tfstate-lab` under the key `network/terraform.tfstate`, with state locking in `tf-locks` and encryption enabled. Nothing may be recreated, and the local state must no longer be used." },
+    { "id": "t2", "text": "Give `app/` the same backend with the key `app/terraform.tfstate`. Read the VPC ID from the network state with `terraform_remote_state` and create `aws_security_group.app` named `app-<current workspace>` in that VPC. Apply in the `default` workspace." },
+    { "id": "t3", "text": "Create the workspace `staging` for `app/` and apply there as well, so `app-staging` exists next to `app-default`." }
+  ]
+}

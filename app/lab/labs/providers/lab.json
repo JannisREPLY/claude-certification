@@ -1,0 +1,15 @@
+{
+  "id": "providers",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Configure, upgrade and troubleshoot providers",
+  "objectives": ["3a", "5b", "5d"],
+  "domain": "d5",
+  "minutes": 40,
+  "intro": "`/home/coder/lab` was applied last week. Since then a colleague changed the `logs` module, and now `terraform init` fails. **No existing resource may be recreated in this lab.** Open a terminal via **☰ → Terminal → New Terminal**.",
+  "tasks": [
+    { "id": "t1", "text": "Find out why `terraform init` fails and fix it in the `logs` module. Don't change the root module's AWS version constraint." },
+    { "id": "t2", "text": "Add a second AWS provider configuration with the alias `west` for `us-west-2`. Create `aws_vpc.dr` (`10.20.0.0/16`, tag `Name = dr`) in that region." },
+    { "id": "t3", "text": "Upgrade the `random` provider to the newest `3.6.x` release: allow `3.6.x` in the constraint and update the dependency lock file." },
+    { "id": "t4", "text": "Every VPC in both regions must carry the tag `ManagedBy = terraform` without repeating it on each resource. Finish with `terraform plan` reporting no changes." }
+  ]
+}

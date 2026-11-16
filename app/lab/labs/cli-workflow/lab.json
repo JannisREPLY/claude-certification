@@ -1,0 +1,17 @@
+{
+  "id": "cli-workflow",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Plan, apply and destroy with CLI options",
+  "objectives": ["1a", "1b", "1c", "1d"],
+  "domain": "d1",
+  "minutes": 30,
+  "intro": "A small network is deployed from `/home/coder/lab` with the default variable values (`environment = \"dev\"`). The configuration is initialized and applied. Open a terminal via **☰ → Terminal → New Terminal**.",
+  "tasks": [
+    { "id": "t1", "text": "Save a plan for production to the file `tfplan` in the lab folder. It must use the values from `prod.tfvars`." },
+    { "id": "t2", "text": "Apply exactly the saved plan `tfplan`, so the VPC and subnet carry `Environment = prod`." },
+    { "id": "t3", "text": "The subnet is broken. Recreate **only** the subnet, without editing any file. The VPC must keep its ID." },
+    { "id": "t4", "text": "The security group `debug` is no longer needed. Destroy only this security group, then remove it from the configuration." },
+    { "id": "t5", "text": "Protect the VPC so that any plan that would destroy it fails." },
+    { "id": "t6", "text": "Finish clean: `terraform plan -var-file=prod.tfvars` reports no changes." }
+  ]
+}

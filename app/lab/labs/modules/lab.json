@@ -1,0 +1,15 @@
+{
+  "id": "modules",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Refactor into modules",
+  "objectives": ["4a", "4b", "4c", "4d"],
+  "domain": "d4",
+  "minutes": 45,
+  "intro": "`/home/coder/lab` manages a VPC, two subnets and a security group in one flat file; everything is applied. The platform team publishes a security group module as a Git repository at `/home/coder/repos/web-sg` with the tags `v1.0.0` and `v1.1.0` (see its README). **No resource may be destroyed or recreated in this lab.** Open a terminal via **☰ → Terminal → New Terminal**.",
+  "tasks": [
+    { "id": "t1", "text": "Move the VPC and the subnets into a local module in `modules/network`, called as `module.network`. Inside the module, name them `aws_vpc.this` and `aws_subnet.this`. The module takes `cidr_block` and `subnet_cidrs` and outputs `vpc_id` and `subnet_ids`." },
+    { "id": "t2", "text": "Inside the module, create the subnets with `for_each` keyed by CIDR instead of `count`, e.g. `module.network.aws_subnet.this[\"10.0.1.0/24\"]`." },
+    { "id": "t3", "text": "Replace `aws_security_group.web` with the platform module as `module.web_sg`, using the Git source `git::file:///home/coder/repos/web-sg` pinned to the version that lets you keep the existing description." },
+    { "id": "t4", "text": "Finish clean: `terraform plan` reports no changes." }
+  ]
+}

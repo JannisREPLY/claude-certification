@@ -1,0 +1,2645 @@
+{
+ "id": "terraform-authoring-ops-advanced",
+ "title": "Terraform Authoring & Operations Advanced (AWS)",
+ "shortTitle": "TF-AOA",
+ "exam": {
+  "items": 12,
+  "minutes": 30,
+  "scenariosPerExam": 1,
+  "passScore": 70,
+  "minScore": 0,
+  "maxScore": 100
+ },
+ "levelTitles": [
+  "Init Initiate",
+  "Plan Reader",
+  "Apply Operator",
+  "State Keeper",
+  "Drift Hunter",
+  "Module Smith",
+  "Provider Wrangler",
+  "Workflow Architect",
+  "Terraform Grandmaster"
+ ],
+ "domains": [
+  {
+   "id": "d1",
+   "name": "Manage resource lifecycle",
+   "weight": 0.1667,
+   "short": "Lifecycle",
+   "taskStatements": [
+    {
+     "id": "1a",
+     "title": "Initialize a configuration using terraform init and its options",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "1b",
+     "title": "Generate an execution plan using terraform plan and its options",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "1c",
+     "title": "Apply configuration changes using terraform apply and its options",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "1d",
+     "title": "Destroy resources using terraform destroy and its options",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "1e",
+     "title": "Manage resource state, including importing resources and reconciling resource drift",
+     "knowledge": [],
+     "skills": []
+    }
+   ]
+  },
+  {
+   "id": "d2",
+   "name": "Develop and troubleshoot dynamic configuration",
+   "weight": 0.1667,
+   "short": "Dynamic Config",
+   "taskStatements": [
+    {
+     "id": "2a",
+     "title": "Use language features to validate configuration",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "2b",
+     "title": "Query providers using data sources",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "2c",
+     "title": "Compute and interpolate data using HCL functions",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "2d",
+     "title": "Use meta-arguments in configuration",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "2e",
+     "title": "Configure input variables and outputs, including complex types",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "2f",
+     "title": "Analyze best practices for managing sensitive data, such as using Vault for secrets management",
+     "knowledge": [],
+     "skills": []
+    }
+   ]
+  },
+  {
+   "id": "d3",
+   "name": "Develop collaborative Terraform workflows",
+   "weight": 0.1667,
+   "short": "Collaboration",
+   "taskStatements": [
+    {
+     "id": "3a",
+     "title": "Manage the Terraform binary, providers, and modules using version constraints",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "3b",
+     "title": "Configure remote state",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "3c",
+     "title": "Use the Terraform workflow in automation",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "3d",
+     "title": "Share data across configurations and workspaces",
+     "knowledge": [],
+     "skills": []
+    }
+   ]
+  },
+  {
+   "id": "d4",
+   "name": "Create, maintain, and use Terraform modules",
+   "weight": 0.1667,
+   "short": "Module",
+   "taskStatements": [
+    {
+     "id": "4a",
+     "title": "Create a module",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "4b",
+     "title": "Use a module in configuration",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "4c",
+     "title": "Refactor a module and use module versioning",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "4d",
+     "title": "Refactor an existing configuration into modules",
+     "knowledge": [],
+     "skills": []
+    }
+   ]
+  },
+  {
+   "id": "d5",
+   "name": "Configure and use Terraform providers",
+   "weight": 0.1667,
+   "short": "Provider",
+   "taskStatements": [
+    {
+     "id": "5a",
+     "title": "Understand Terraform's plugin-based architecture",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "5b",
+     "title": "Configure providers, including aliasing, versioning, sourcing, and managing upgrades",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "5c",
+     "title": "Manage provider authentication",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "5d",
+     "title": "Troubleshoot provider errors",
+     "knowledge": [],
+     "skills": []
+    }
+   ]
+  },
+  {
+   "id": "d6",
+   "name": "Collaborate on infrastructure as code using HCP Terraform",
+   "weight": 0.1667,
+   "short": "HCP Terraform",
+   "taskStatements": [
+    {
+     "id": "6a",
+     "title": "Analyze the HCP Terraform run workflow",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "6b",
+     "title": "Understand HCP Terraform workspaces and their configuration options, including access management",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "6c",
+     "title": "Manage provider credentials in HCP Terraform",
+     "knowledge": [],
+     "skills": []
+    },
+    {
+     "id": "6d",
+     "title": "Analyze policy as code and governance features",
+     "knowledge": [],
+     "skills": []
+    }
+   ]
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "multiple-choice",
+   "name": "Multiple choice",
+   "description": "Standalone multiple-choice questions like the non-lab part of the exam.",
+   "officialBank": true
+  }
+ ],
+ "lessons": [
+  {
+   "id": "overview",
+   "title": "Exam overview",
+   "kind": "overview",
+   "markdown": "HashiCorp Certified: **Terraform Authoring & Operations Advanced** ([official page](https://developer.hashicorp.com/certifications/terraform-advanced)). This trainer prepares the **AWS** edition.\n\n## Format\n\n| | |\n|---|---|\n| Duration | 4 hours, one 15-minute break |\n| Parts | Lab-based scenarios + multiple-choice questions |\n| Terraform version | **1.6** |\n| Environment | Pre-provisioned Linux machine with terminal and editor; Terraform docs and the cloud console/CLI are available |\n| Grading | Each lab is scored on its own: configuration syntax, state files and the settings of the provisioned resources |\n\nCommunity reports describe about **4 labs** and about **12 multiple-choice questions**. HashiCorp doesn't publish the pass mark or the time per part. The mock exam here uses 12 questions, 30 minutes and 70% as estimates.\n\n## Version 1.6 matters\n\nThe exam tests Terraform 1.6, and the lab runs 1.6.6. Features from later versions don't exist there:\n\n- `removed` blocks and `import` blocks with `for_each` (1.7)\n- provider-defined functions (1.8)\n- ephemeral resources and write-only arguments (1.10+)\n\n## How to use this trainer\n\n1. Read the lessons of a domain, then do its **Lab**. Labs cover domains 1–5; domain 6 (HCP Terraform) needs an HCP account, so it is lessons and questions only.\n2. Drill the multiple-choice questions in **Practice**.\n3. *Exam ready* needs every lab passed plus the usual readiness checks.\n\nIn the real exam you may use the Terraform documentation. Practise looking things up there instead of memorising argument lists.\n\n> Lessons and questions here are AI-drafted from the official objectives and the Terraform docs. Check the linked docs when something looks off.\n"
+  },
+  {
+   "id": "d1-init-plan",
+   "title": "1a–1b. Init and plan",
+   "domain": "d1",
+   "kind": "theory",
+   "markdown": "## 1. What terraform init does\n\nRun `terraform init` first in every new or cloned working directory. It is safe to run again at any time; it never deletes configuration or state.\n\n| Step | Result | Skip with |\n|---|---|---|\n| Backend | Configures where state lives | `-backend=false` |\n| Child modules | Downloads `module` sources into `.terraform/modules` | `-get=false` |\n| Providers | Installs plugins, writes `.terraform.lock.hcl` | — |\n\n- Commit `.terraform.lock.hcl` to version control. Don't commit `.terraform/`.\n- Re-running `init` installs newly added modules and providers but keeps the ones already installed.\n- Use `-backend=false` / `-get=false` only in a directory that was already initialized; other steps need them.\n\n## 2. Providers, modules and the lock file\n\n| Situation | Command |\n|---|---|\n| Lock file pins `aws` 5.10, constraint `~> 5.0`, you want the newest 5.x | `terraform init -upgrade` |\n| Newer module version wanted (within `version` constraint) | `terraform init -upgrade` |\n| CI must fail instead of changing the lock file | `terraform init -lockfile=readonly` |\n| Install providers only from a local directory | `terraform init -plugin-dir=PATH` |\n| Start from an empty directory by copying a module | `terraform init -from-module=SOURCE` |\n\nHow the lock file behaves: lesson **3a**, section 3.\n\n## 3. Backend options\n\n```hcl\nterraform {\n  backend \"s3\" {}   # partial configuration\n}\n```\n\n```sh\nterraform init -backend-config=prod.s3.tfbackend \\\n               -backend-config=\"key=app/terraform.tfstate\"\n```\n\n- `-backend-config=PATH` (file) or `-backend-config=\"KEY=VALUE\"` fill in a partial backend configuration. Use it for dynamic or secret values.\n- Later options override earlier ones. Command-line values override the configuration.\n- The merged settings are stored in plain text in `.terraform/`.\n\nAfter you change the `backend` block, `init` requires one of these:\n\n| Option | Effect on existing state |\n|---|---|\n| `-migrate-state` | Copies existing state to the new backend (may prompt) |\n| `-force-copy` | Same as `-migrate-state`, answers \"yes\" to the prompts |\n| `-reconfigure` | Ignores the old backend config; **no** state is migrated |\n\n## 4. What terraform plan does\n\n1. Refreshes state from the real objects.\n2. Compares configuration with that state.\n3. Proposes create, update, replace or destroy actions.\n\n`plan` changes nothing. Without `-out` it is a **speculative plan**.\n\n```sh\nterraform plan -out=tfplan\nterraform show tfplan          # review\nterraform apply tfplan         # apply exactly this plan\n```\n\n- The plan file is opaque, contains all values in **cleartext** (sensitive ones too) and the input variables. Treat it as a secret.\n- Don't give it a `.tf` suffix; Terraform would parse it as configuration.\n\n## 5. Planning modes and options\n\nModes are mutually exclusive. They work on `plan` and `apply`.\n\n| Mode | Goal |\n|---|---|\n| Normal (default) | Make real objects match the configuration |\n| `-destroy` | Destroy all objects in state |\n| `-refresh-only` | Update state and outputs to match real objects; no infrastructure changes |\n\n| Option | Effect |\n|---|---|\n| `-refresh=false` | Skip refresh. Faster, but ignores drift. Not allowed with `-refresh-only` |\n| `-replace=ADDR` | Plan a replace for that instance even if no change is needed. Repeatable. Not with `-destroy` |\n| `-target=ADDR` | Plan only that resource/module **plus everything it depends on**. Exceptional use only |\n| `-var 'NAME=VALUE'` | Set one root module variable. Repeatable. No spaces around `=` |\n| `-var-file=FILE` | Set variables from a `.tfvars` file. Repeatable |\n\n- `-target=aws_instance.web` selects all instances; `-target='aws_instance.web[0]'` selects one.\n- `-target=module.network` selects all resources in that module and its child modules.\n- Complex types on the command line: `-var 'azs=[\"a\",\"b\"]'`.\n\n## 6. Automation options\n\n| Option | Effect |\n|---|---|\n| `-detailed-exitcode` | `0` = no changes, `1` = error, `2` = changes present |\n| `-input=false` | Never prompt for unset variables; error instead |\n| `-json` | Machine-readable output; implies `-input=false` |\n| `-lock=false` | Don't lock state. Dangerous with concurrent runs |\n| `-lock-timeout=60s` | Retry a held lock for 60s. Default `0s` = fail immediately |\n| `-parallelism=n` | Max concurrent operations. Default `10` |\n| `-no-color` | No terminal color codes |\n\nTypical CI sequence:\n\n```sh\nterraform init -input=false\nterraform plan -input=false -out=tfplan\nterraform apply -input=false tfplan\n```\n\nDocs: [init](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/init), [plan](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/plan), [Dependency lock file](https://developer.hashicorp.com/terraform/language/v1.6.x/files/dependency-lock), [Partial backend configuration](https://developer.hashicorp.com/terraform/language/v1.6.x/settings/backends/configuration#partial-configuration)\n"
+  },
+  {
+   "id": "d1-apply-destroy",
+   "title": "1c–1d. Apply and destroy",
+   "domain": "d1",
+   "kind": "theory",
+   "markdown": "## 1. Two ways to apply\n\n| | `terraform apply` | `terraform apply tfplan` |\n|---|---|---|\n| Plan | Creates a new plan now | Uses the saved plan |\n| Approval prompt | Yes (skip with `-auto-approve`) | No; passing the file is the approval |\n| Planning modes/options (`-target`, `-var`, `-replace`, `-destroy`, …) | Allowed | **Not allowed**; they are baked into the file |\n| Typical use | Interactive work | CI: review the plan, then apply exactly it |\n\n- `-auto-approve` is ignored with a saved plan file.\n- If state changed after the plan was saved, the saved plan is stale and apply fails. Run `plan -out` again.\n\n## 2. Apply options\n\n| Option | Effect |\n|---|---|\n| `-auto-approve` | Skip the \"yes\" prompt |\n| `-input=false` | Disable all prompts, including approval. Without `-auto-approve` or a plan file, apply fails |\n| `-json` | Machine-readable output. Requires `-auto-approve` or a saved plan file |\n| `-parallelism=n` | Max concurrent operations. Default `10`. Lower it for API rate limits |\n| `-lock=false` / `-lock-timeout=DURATION` | Same as on `plan` |\n| `-replace=ADDR` | Recreate one instance (replaces `terraform taint`) |\n| `-refresh-only` | Accept drift into state, see lesson 1e |\n\nReplacement order:\n\n- Default: destroy the old object, then create the new one.\n- `lifecycle { create_before_destroy = true }`: create the new one first, then destroy the old one. Use it to avoid downtime; the resource type must allow both objects to exist at once (e.g. unique names).\n\n## 3. Destroy\n\n`terraform destroy` = `terraform apply -destroy`. It accepts most `apply` options but **no plan file**.\n\n| Need | Command |\n|---|---|\n| Preview what would be destroyed | `terraform plan -destroy` |\n| Save a destroy plan for review, then apply it | `terraform plan -destroy -out=destroy.tfplan`, then `terraform apply destroy.tfplan` |\n| Destroy everything without a prompt | `terraform destroy -auto-approve` |\n| Destroy one resource only | `terraform destroy -target=aws_instance.web` |\n| Set required variables | `terraform destroy -var-file=prod.tfvars` |\n\n- `destroy -target` also destroys resources that depend on the target.\n- To permanently remove one resource, delete its block from the configuration and run `terraform apply`. Prefer this over `-target`.\n- To stop managing a resource but keep it in AWS: `terraform state rm ADDR` (see lesson 1e).\n\n## 4. prevent_destroy\n\n```hcl\nresource \"aws_db_instance\" \"main\" {\n  # ...\n  lifecycle {\n    prevent_destroy = true\n  }\n}\n```\n\n- Any plan that would destroy this object fails with an error: `terraform destroy`, `-destroy`, `-replace`, or a change that forces replacement.\n- Protection exists only while the argument is in the configuration. If you **remove the whole resource block**, the protection goes with it and the destroy succeeds.\n- To destroy on purpose: set `prevent_destroy = false` (or delete the line), then destroy.\n- `-target` does not bypass it.\n\nDocs: [apply](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/apply), [destroy](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/destroy), [lifecycle](https://developer.hashicorp.com/terraform/language/v1.6.x/meta-arguments/lifecycle)\n"
+  },
+  {
+   "id": "import-drift",
+   "title": "1e. Import and drift",
+   "domain": "d1",
+   "kind": "theory",
+   "markdown": "## 1. Two ways to import\n\n| | `import` block (1.5+) | `terraform import` command |\n|---|---|---|\n| Where | In configuration | CLI, one resource per call |\n| Plan first | Yes, import shows up in `terraform plan` | No, writes state immediately |\n| Config generation | `terraform plan -generate-config-out=FILE` | No, you write the resource block first |\n| Works in HCP Terraform / CI | Yes | Only with local CLI access to state |\n\n```hcl\nimport {\n  to = aws_vpc.legacy\n  id = \"vpc-0abc123\"\n}\n```\n\n- `id` is the provider-specific import ID (VPC ID, security group ID, bucket name, …). The resource docs list it under **Import**.\n- Since **1.6**, `id` may be an expression (e.g. `data.aws_vpc.legacy.id`) as long as it is known at plan time.\n- No `for_each` in 1.6. Write one block per instance; you can target instances like `aws_subnet.app[\"a\"]`.\n- Import blocks are idempotent: after the apply you may keep or delete them.\n\n## 2. Generating configuration\n\n```sh\nterraform plan -generate-config-out=generated.tf\n```\n\n- The file must **not** exist yet; Terraform refuses to overwrite it.\n- Only resources that have an `import` block but no `resource` block get generated.\n- The output is a starting point. It often contains arguments that conflict or are invalid, for example `ipv6_netmask_length = 0` on `aws_vpc`. Fix them until `terraform plan` shows **only imports and no changes**.\n\n## 3. Drift: what changed outside Terraform\n\n`terraform plan` refreshes state first, then compares it with the configuration. Drift shows up as changes on resources you didn't edit.\n\nFor each drifted value, decide which side is right:\n\n| Decision | What to do |\n|---|---|\n| Configuration is right (revert the manual change) | `terraform apply` |\n| Real-world change is right (keep it) | Update the configuration, then `plan` must show no changes |\n| Only update state, don't touch infrastructure | `terraform apply -refresh-only` |\n| Value is owned by someone else permanently | `lifecycle { ignore_changes = [tags[\"Owner\"]] }` |\n\n**Order matters.** If you apply before updating the config, Terraform reverts *every* drifted value, including the ones you wanted to keep.\n\n`apply -refresh-only` writes the real values to state but doesn't change your configuration. The next normal `plan` will still try to revert them.\n\n## 4. Other state operations\n\n| Need | Use |\n|---|---|\n| Force recreation of one resource | `terraform apply -replace=ADDR` (replaces `taint`) |\n| Rename/move a resource in config | `moved { from = … to = … }` block (or `terraform state mv`) |\n| Stop managing a resource, keep it in the cloud | `terraform state rm ADDR` (1.6 has no `removed` block) |\n| Inspect | `terraform state list`, `terraform state show ADDR`, `terraform show -json` |\n| Skip refresh for speed | `terraform plan -refresh=false` |\n\nDocs: [Import](https://developer.hashicorp.com/terraform/language/import), [Generating configuration](https://developer.hashicorp.com/terraform/language/import/generating-configuration), [Refresh-only mode](https://developer.hashicorp.com/terraform/cli/commands/plan#planning-modes)\n"
+  },
+  {
+   "id": "d2-validation",
+   "title": "2a. Validation",
+   "domain": "d2",
+   "kind": "theory",
+   "markdown": "## 1. Which check to use\n\n| Feature | Where | Can reference | Failure |\n|---|---|---|---|\n| `validation` | `variable` block | **Only the variable itself** (in 1.6) | Error, plan stops |\n| `precondition` | `lifecycle` of resource/data, or `output` block | Any object in the module (no cycles) | Error, object not planned/applied |\n| `postcondition` | `lifecycle` of resource/data | Any object, plus `self` | Error, stops dependent resources |\n| `check` + `assert` | Top-level `check` block | Anything in the module + its scoped data source | **Warning only**, run continues |\n| `terraform validate` | CLI | Configuration only | Error on syntax/type/reference problems |\n\nRule of thumb: inputs → `validation`. Assumptions before a resource → `precondition`. Guarantees about a result → `postcondition`. Health of the whole system, non-blocking → `check`.\n\n## 2. Variable validation\n\n```hcl\nvariable \"image_id\" {\n  type = string\n\n  validation {\n    condition     = can(regex(\"^ami-\", var.image_id))\n    error_message = \"image_id must start with \\\"ami-\\\".\"\n  }\n\n  validation {\n    condition     = length(var.image_id) > 4\n    error_message = \"image_id is too short.\"\n  }\n}\n```\n\n- `condition` must return `true` (valid) or `false`. It must not produce an error, so wrap error-prone calls in `can()`.\n- In 1.6 `condition` may refer **only to `var.<this variable>`**. `var.max > var.min` fails with *\"Invalid reference in variable validation\"*. Put cross-variable rules in a `precondition` instead.\n- Several `validation` blocks are allowed. Terraform reports every failed one.\n- Validation runs early, during plan, because the variable value is always known.\n- Useful condition helpers:\n\n| Need | Expression |\n|---|---|\n| Allowed values | `contains([\"dev\", \"prod\"], var.env)` |\n| Non-empty collection | `length(var.items) > 0` (better than `!= []`) |\n| Pattern | `can(regex(\"^[a-z]+$\", var.name))` |\n| Every element | `alltrue([for i in var.instances : contains([\"t3.micro\"], i.type)])` |\n| Any element | `anytrue([...])` |\n| Convertible type | `can(tolist(var.x))` |\n\n## 3. Preconditions and postconditions\n\n```hcl\nresource \"aws_instance\" \"web\" {\n  ami           = data.aws_ami.app.id\n  instance_type = var.instance_type\n\n  lifecycle {\n    precondition {\n      condition     = data.aws_ami.app.architecture == \"x86_64\"\n      error_message = \"The AMI must be x86_64.\"\n    }\n    postcondition {\n      condition     = self.public_dns != \"\"\n      error_message = \"The instance needs a public DNS name.\"\n    }\n  }\n}\n\noutput \"url\" {\n  value = \"https://${aws_instance.web.public_dns}\"\n  precondition {\n    condition     = var.env == \"prod\" || var.allow_public\n    error_message = \"Public URL only in prod.\"\n  }\n}\n```\n\n- Both live **inside `lifecycle`** for resources and data sources. Outputs support only `precondition`, directly in the `output` block.\n- `self` works **only in postconditions**.\n- Preconditions run after `count`/`for_each` are evaluated, so `each.key` and `count.index` work in them.\n- A condition on a value that is unknown at plan time is checked during apply.\n- A failed precondition prevents the action. A failed postcondition stops downstream resources but **does not undo** the action already taken.\n- To verify a managed resource through a data source, put the check as a postcondition **on the data source**. Terraform then reads it after the resource changes.\n\n## 4. Check blocks\n\n```hcl\ncheck \"website_up\" {\n  data \"http\" \"site\" {\n    url = \"https://${aws_lb.web.dns_name}\"\n  }\n\n  assert {\n    condition     = data.http.site.status_code == 200\n    error_message = \"${data.http.site.url} returned ${data.http.site.status_code}.\"\n  }\n}\n```\n\n- Runs as the **last step of every plan and apply**. A failing `assert` is a **warning**, never an error.\n- At least one `assert`. Zero or one scoped `data` block.\n- The scoped data source can only be referenced inside its `check`. Its provider errors become warnings too.\n- The scoped data source supports `depends_on` and `provider`, but **not** `count` or `for_each`. The `check` block itself has no meta-arguments.\n- HCP Terraform can re-run checks on a schedule (continuous validation).\n- Use a postcondition instead when a failure must block the run.\n\n## 5. terraform validate\n\n- Checks syntax and internal consistency: attribute names, types, references, invalid meta-argument use.\n- Never contacts remote services (no state, no provider APIs).\n- Needs an initialized directory. In CI without backend access: `terraform init -backend=false` then `terraform validate`.\n- It does **not** evaluate input values. A `default` that breaks a `validation` rule passes `validate` and fails at `terraform plan`.\n- `-json` gives machine-readable output (`valid`, `error_count`, `diagnostics`).\n- `terraform plan` always runs validation implicitly.\n\nDocs: [Custom conditions](https://developer.hashicorp.com/terraform/language/v1.6.x/expressions/custom-conditions), [Checks](https://developer.hashicorp.com/terraform/language/v1.6.x/checks), [Input variable validation](https://developer.hashicorp.com/terraform/language/v1.6.x/values/variables#custom-validation-rules), [terraform validate](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/validate)\n"
+  },
+  {
+   "id": "d2-data-meta",
+   "title": "2b/2d. Data sources and meta-arguments",
+   "domain": "d2",
+   "kind": "theory",
+   "markdown": "## 1. Data sources\n\n```hcl\ndata \"aws_ami\" \"app\" {\n  most_recent = true\n  owners      = [\"self\"]\n\n  filter {\n    name   = \"tag:Component\"\n    values = [\"web\"]\n  }\n}\n\ndata \"aws_availability_zones\" \"available\" {\n  state = \"available\"\n}\n\nresource \"aws_instance\" \"web\" {\n  ami               = data.aws_ami.app.id\n  availability_zone = data.aws_availability_zones.available.names[0]\n}\n```\n\n- Reference: `data.<TYPE>.<NAME>.<ATTRIBUTE>`.\n- Data sources only **read**. Arguments are query constraints defined by the data source.\n- `aws_ami` must match **exactly one** AMI. More than one → error, unless `most_recent = true`. For many AMIs use `aws_ami_ids`.\n- Commonly used AWS data sources: `aws_caller_identity` (`account_id`), `aws_region`, `aws_vpc`, `aws_subnets`, `aws_iam_policy_document` (`.json`). Cross-configuration: `terraform_remote_state` (`.outputs.<name>`).\n\nWhen is it read?\n\n| Situation | Read during |\n|---|---|\n| All arguments known | Plan (results shown in the plan) |\n| An argument is unknown (e.g. ID of a resource not created yet) | Apply; attributes are `(known after apply)` |\n| Depends directly on a managed resource with planned changes | Apply |\n| `depends_on` on something with planned changes | Apply |\n\n- Supported meta-arguments: `count`, `for_each`, `provider`, `depends_on`. `lifecycle` only holds `precondition`/`postcondition`.\n- With `count`/`for_each`, reference instances like `data.aws_vpc.this[\"prod\"].id`.\n\n## 2. count vs for_each\n\n| | `count` | `for_each` |\n|---|---|---|\n| Input | Whole number | **Map** or **set of strings** |\n| Instance key | `count.index` (0, 1, …) | `each.key`, `each.value` |\n| Address | `aws_instance.web[0]` | `aws_instance.web[\"a\"]` |\n| Removing a middle element | Shifts indices → later instances change/replace | Only that instance is destroyed |\n| Typical use | On/off switch: `var.create ? 1 : 0`; identical copies | Distinct objects from a collection |\n\n- A **list is rejected** by `for_each` (*\"must be a map, or set of strings, and you have provided a value of type tuple\"*). Use `toset(var.names)`.\n- For a set, `each.value == each.key`.\n- `for_each` keys and `count` must be **known at plan time**. Not from resource IDs created in the same run, and not from `uuid()`/`timestamp()`.\n- **Sensitive values can't be used in `for_each`** (keys show up in addresses). Workaround if only values are sensitive: `toset([for k, v in local.m : k])`.\n- A block can't have both `count` and `for_each`.\n- Chaining: `for_each = aws_vpc.this` then `each.value.id`.\n- Both work on modules too: `module.app[\"eu\"].url`.\n\n## 3. depends_on\n\n```hcl\nresource \"aws_instance\" \"app\" {\n  # app reads S3 at boot; the role policy is a hidden dependency\n  depends_on = [aws_iam_role_policy.s3_read]\n}\n```\n\n- Only for **hidden** dependencies. Normal references create dependencies automatically.\n- List of **whole objects** (resources, data sources, modules). `aws_x.y.id` is rejected: *\"References in depends_on must be to a whole object\"*.\n- No arbitrary expressions; must be static.\n- Last resort: it makes plans more conservative (more `known after apply`, especially on modules and data sources).\n- Works on resources, data sources, modules, outputs.\n\n## 4. provider meta-argument\n\n```hcl\nprovider \"aws\" {\n  region = \"eu-central-1\"\n}\n\nprovider \"aws\" {\n  alias  = \"us\"\n  region = \"us-east-1\"\n}\n\nresource \"aws_acm_certificate\" \"cf\" {\n  provider = aws.us          # unquoted <PROVIDER>.<ALIAS>\n}\n\nmodule \"dr\" {\n  source    = \"./dr\"\n  providers = { aws = aws.us }   # map: child name = parent config\n}\n```\n\n- Without `provider`, a resource uses the default (no `alias`) configuration of the provider named by its type prefix.\n- The value must be a static reference, not an expression or string.\n- Modules: without `providers`, a child inherits default configurations. With `providers`, it gets only what you pass. A child that expects an aliased config declares it in `required_providers` with `configuration_aliases`.\n\n## 5. lifecycle\n\n| Argument | Effect | Gotchas |\n|---|---|---|\n| `create_before_destroy = true` | Replacement: create new, then destroy old | Unique names may collide (use `name_prefix`). Propagates to resources it depends on. Destroy provisioners don't run |\n| `prevent_destroy = true` | Any plan that destroys this object errors | Includes `terraform destroy` and forced replacement. **Removing the block from config removes the protection** |\n| `ignore_changes = [tags[\"Owner\"], user_data]` | Ignore drift/changes of these attributes on update | Still used at create. `all` ignores everything. Can't list meta-arguments |\n| `replace_triggered_by = [aws_launch_template.app.id]` | Replace when the referenced resource/attribute changes | **Only managed resources** (plus `count.index`/`each.key`). For a variable: route it through `terraform_data` |\n| `precondition` / `postcondition` | Custom checks | See 2a |\n\n```hcl\nresource \"terraform_data\" \"ami\" {\n  input = var.ami_id\n}\n\nresource \"aws_instance\" \"web\" {\n  lifecycle {\n    replace_triggered_by = [terraform_data.ami]\n  }\n}\n```\n\n- All `lifecycle` values must be **literal/static**. `ignore_changes = local.list` fails: *\"A static list expression is required\"*.\n- `lifecycle` can't be generated by a `dynamic` block.\n\nDocs: [Data sources](https://developer.hashicorp.com/terraform/language/v1.6.x/data-sources), [count](https://developer.hashicorp.com/terraform/language/v1.6.x/meta-arguments/count), [for_each](https://developer.hashicorp.com/terraform/language/v1.6.x/meta-arguments/for_each), [depends_on](https://developer.hashicorp.com/terraform/language/v1.6.x/meta-arguments/depends_on), [provider](https://developer.hashicorp.com/terraform/language/v1.6.x/meta-arguments/resource-provider), [Module providers](https://developer.hashicorp.com/terraform/language/v1.6.x/meta-arguments/module-providers), [lifecycle](https://developer.hashicorp.com/terraform/language/v1.6.x/meta-arguments/lifecycle)\n"
+  },
+  {
+   "id": "d2-expressions",
+   "title": "2c. Functions and expressions",
+   "domain": "d2",
+   "kind": "theory",
+   "markdown": "## 1. for expressions\n\n| Form | Result |\n|---|---|\n| `[for s in var.list : upper(s)]` | Tuple (list) |\n| `[for i, v in var.list : \"${i}=${v}\"]` | Index + value. `[\"a\",\"b\"]` → `[\"0=a\",\"1=b\"]` |\n| `{for k, v in var.map : k => v.id}` | Object (map) |\n| `[for s in var.list : s if s != \"\"]` | Filtered |\n| `{for name, u in var.users : u.role => name...}` | **Grouping**: map of lists |\n\n- `[ ]` gives a list, `{ }` gives a map and needs `key => value`.\n- Maps/objects iterate in **lexical key order**. Sets of strings iterate in sorted order.\n- In `{ }` mode keys must be unique. Duplicates fail with *\"Duplicate object key\"* unless you add `...` after the value.\n\n```hcl\nlocals {\n  users = { alice = \"admin\", bob = \"dev\", carol = \"admin\" }\n\n  by_role = { for name, role in local.users : role => name... }\n  # { admin = [\"alice\", \"carol\"], dev = [\"bob\"] }\n\n  admins = { for name, role in local.users : name => role if role == \"admin\" }\n  # { alice = \"admin\", carol = \"admin\" }\n}\n```\n\n## 2. Splat expressions\n\n- `var.list[*].id` = `[for o in var.list : o.id]`.\n- Works on **lists, sets, tuples only**. For a map use `values(var.map)[*].id` or a `for` expression.\n- A `for_each` resource is a map of objects, so `aws_instance.web[*].id` does **not** work for it. Use `[for i in aws_instance.web : i.id]` or `values(aws_instance.web)[*].id`.\n- A `count` resource is a list, so `aws_instance.web[*].id` works.\n- On a non-list value: `null[*]` → `[]`, `x[*]` → `[x]`. Handy for optional objects (see dynamic blocks).\n- Legacy `.*` splat exists; prefer `[*]`.\n\n## 3. Flattening nested data for for_each\n\n`for_each` needs one element per instance. Turn a tree into a flat list with nested `for` + `flatten`, then project it into a map with unique keys.\n\n```hcl\nvariable \"networks\" {\n  default = {\n    vpc1 = { cidr = \"10.0.0.0/16\", subnets = { a = \"10.0.1.0/24\", b = \"10.0.2.0/24\" } }\n    vpc2 = { cidr = \"10.1.0.0/16\", subnets = { a = \"10.1.1.0/24\" } }\n  }\n}\n\nlocals {\n  subnets = flatten([\n    for vpc_key, vpc in var.networks : [\n      for subnet_key, cidr in vpc.subnets : {\n        vpc_key    = vpc_key\n        subnet_key = subnet_key\n        cidr       = cidr\n      }\n    ]\n  ])\n}\n\nresource \"aws_subnet\" \"this\" {\n  for_each   = { for s in local.subnets : \"${s.vpc_key}.${s.subnet_key}\" => s }\n  vpc_id     = aws_vpc.this[each.value.vpc_key].id\n  cidr_block = each.value.cidr\n}\n# keys: \"vpc1.a\", \"vpc1.b\", \"vpc2.a\"\n```\n\n- Without `flatten` you get a list of lists, which can't be turned into the map.\n- `flatten` flattens nested lists recursively, but not lists inside maps.\n\n## 4. Combinations with setproduct\n\n```hcl\nlocals {\n  pairs = setproduct([\"dev\", \"prod\"], [\"app1\", \"app2\"])\n  # [[\"dev\",\"app1\"], [\"dev\",\"app2\"], [\"prod\",\"app1\"], [\"prod\",\"app2\"]]\n\n  combos = { for p in local.pairs : \"${p[0]}-${p[1]}\" => { env = p[0], app = p[1] } }\n  # keys: dev-app1, dev-app2, prod-app1, prod-app2\n}\n```\n\n- Needs at least two arguments. Any empty argument → empty result.\n- All lists in → list out (ordered). Any set in → set out.\n- To combine maps, first turn each into a list of objects with `for`.\n\n## 5. Function cheat sheet\n\n| Call | Result |\n|---|---|\n| `lookup({a=\"x\"}, \"b\", \"def\")` | `\"def\"` (without default: error) |\n| `merge({a=1,b=2}, {b=3,c=4})` | `{a=1, b=3, c=4}` (later wins) |\n| `merge([{a=1}, {a=2,b=3}]...)` | `{a=2, b=3}` (`...` expands a list into arguments) |\n| `flatten([[\"a\",[\"b\"]], [], \"c\"])` | `[\"a\",\"b\",\"c\"]` |\n| `zipmap([\"a\",\"b\"], [1,2])` | `{a=1, b=2}`. Duplicate key: last one wins |\n| `keys({b=1,a=2})` / `values({b=1,a=2})` | `[\"a\",\"b\"]` / `[2,1]` (sorted by key) |\n| `toset([\"b\",\"a\",\"b\"])` | `toset([\"a\",\"b\"])` (dedup, unordered) |\n| `tomap({a=1, b=\"x\"})` | `{a=\"1\", b=\"x\"}` (one element type) |\n| `distinct([\"a\",\"b\",\"a\"])` | `[\"a\",\"b\"]` (keeps order) |\n| `compact([\"a\",\"\",null,\"b\"])` | `[\"a\",\"b\"]` |\n| `length(\"hello\")` / `length({a=1,b=2})` | `5` / `2` |\n| `contains([\"a\",\"b\"], \"c\")` | `false` |\n| `element([\"a\",\"b\",\"c\"], 4)` | `\"b\"` (index wraps modulo length) |\n| `split(\",\", \"a,b,,c\")` | `[\"a\",\"b\",\"\",\"c\"]` |\n| `join(\"-\", [\"a\",\"b\"])` | `\"a-b\"` |\n| `format(\"%s-%03d\", \"web\", 7)` | `\"web-007\"` |\n| `cidrsubnet(\"10.0.0.0/16\", 8, 3)` | `\"10.0.3.0/24\"` |\n| `cidrsubnet(\"10.0.0.0/16\", 4, 1)` | `\"10.0.16.0/20\"` |\n| `cidrsubnets(\"10.0.0.0/16\", 8, 8, 4)` | `[\"10.0.0.0/24\",\"10.0.1.0/24\",\"10.0.16.0/20\"]` |\n| `jsonencode({b=1, a=[true]})` | `\"{\\\"a\\\":[true],\\\"b\\\":1}\"` (keys sorted) |\n| `yamldecode(file(\"${path.module}/cfg.yaml\"))` | HCL value from YAML |\n| `file(\"${path.module}/key.pub\")` | File content as string, no templating |\n\n`cidrsubnet(prefix, newbits, netnum)`: new prefix length = old + `newbits`. `netnum` picks the n-th subnet of that size.\n\n## 6. try, can, coalesce, one\n\n| Call | Result |\n|---|---|\n| `try(local.cfg.vpc3.cidr, \"none\")` | First argument that doesn't error → `\"none\"` if `vpc3` is missing |\n| `can(local.cfg.vpc3)` | `false` (bool: did it evaluate without error?) |\n| `coalesce(\"\", null, \"x\")` | `\"x\"` (first non-null, non-empty string). All empty → error |\n| `coalesce(1, \"a\")` | `\"1\"` (arguments converted to one type) |\n| `coalescelist([], [\"a\"])` | `[\"a\"]` |\n| `one([])` / `one([\"a\"])` | `null` / `\"a\"`. Two or more elements → error |\n\n- `try` and `can` only catch runtime errors. A reference to an undeclared object (`local.nonexist`) is still an error.\n- Use `can` in validation conditions. Use `try` to normalize data.\n- `one(aws_instance.web[*].private_ip)` returns the IP or `null` when `count = 0`.\n\n## 7. Conditionals and string templates\n\n```hcl\ncount         = var.create ? 1 : 0\ninstance_type = var.env == \"prod\" ? \"m5.large\" : \"t3.micro\"\n```\n\n- Both result arms must convert to one type. `var.x ? 12 : \"hello\"` always returns a string.\n- `null` as one arm means \"leave the argument unset\".\n\n| Syntax | Meaning |\n|---|---|\n| `\"Hello, ${var.name}!\"` | Interpolation |\n| `\"%{ if var.on }on%{ else }off%{ endif }\"` | Conditional directive |\n| `%{ for ip in var.ips ~}` … `%{ endfor ~}` | Loop directive. `~` strips whitespace/newline on that side |\n| `<<-EOT` … `EOT` | Indented heredoc (leading indent trimmed) |\n| `$${` / `%%{` | Literal `${` / `%{` |\n\n```hcl\nuser_data = templatefile(\"${path.module}/init.tftpl\", {\n  port     = 8080\n  ip_addrs = [\"10.0.0.1\", \"10.0.0.2\"]\n})\n```\n\n- `templatefile(path, vars)`: the template sees only the keys of `vars`. The file must exist before the run.\n- To produce JSON/YAML, use `jsonencode`/`yamlencode` (also inside templates), not hand-written heredocs.\n\n## 8. Dynamic blocks\n\n```hcl\nresource \"aws_security_group\" \"web\" {\n  name = \"web\"\n\n  dynamic \"ingress\" {\n    for_each = var.ingress_rules          # list or map\n    iterator = rule                       # optional, default: \"ingress\"\n    content {\n      from_port   = rule.value.port\n      to_port     = rule.value.port\n      protocol    = \"tcp\"\n      cidr_blocks = rule.value.cidrs\n    }\n  }\n}\n```\n\n- `<iterator>.key` = map key or list index. `<iterator>.value` = element.\n- Without `iterator`, the variable name is the block label (`ingress.value`).\n- Generates **nested blocks only**. You cannot generate `lifecycle` or `provisioner` blocks, or arguments.\n- Optional single block from a nullable object: `for_each = var.website[*]` (0 or 1 block).\n- Nested dynamic blocks: each has its own iterator name, e.g. `origin_group.value` vs `origin.value`.\n- Don't overuse; write blocks literally when they are static.\n\nDocs: [for](https://developer.hashicorp.com/terraform/language/v1.6.x/expressions/for), [Splat](https://developer.hashicorp.com/terraform/language/v1.6.x/expressions/splat), [Dynamic blocks](https://developer.hashicorp.com/terraform/language/v1.6.x/expressions/dynamic-blocks), [Strings and templates](https://developer.hashicorp.com/terraform/language/v1.6.x/expressions/strings), [Conditionals](https://developer.hashicorp.com/terraform/language/v1.6.x/expressions/conditionals), [flatten](https://developer.hashicorp.com/terraform/language/v1.6.x/functions/flatten), [setproduct](https://developer.hashicorp.com/terraform/language/v1.6.x/functions/setproduct), [cidrsubnet](https://developer.hashicorp.com/terraform/language/v1.6.x/functions/cidrsubnet), [try](https://developer.hashicorp.com/terraform/language/v1.6.x/functions/try)\n"
+  },
+  {
+   "id": "d2-vars-secrets",
+   "title": "2e/2f. Variables, outputs and secrets",
+   "domain": "d2",
+   "kind": "theory",
+   "markdown": "## 1. Declaring variables\n\n```hcl\nvariable \"instance_type\" {\n  type        = string\n  default     = \"t3.micro\"\n  description = \"EC2 instance type.\"\n  nullable    = false\n  sensitive   = false\n  validation { ... }\n}\n```\n\n- With `default` the variable is optional. Without it, a value is required (prompted interactively or error in automation).\n- `default` must be a **literal**. `default = var.other` fails: *\"Variables may not be used here\"*. Use a `local` for derived defaults.\n- Reserved names: `source`, `version`, `providers`, `count`, `for_each`, `lifecycle`, `depends_on`, `locals`.\n- Inside the module: `var.<name>`. Child modules get values from arguments in the `module` block.\n\n## 2. Type constraints\n\n| Type | Example value | Notes |\n|---|---|---|\n| `string`, `number`, `bool` | `\"a\"`, `15`, `true` | Auto-convert: `15` ↔ `\"15\"`, `true` ↔ `\"true\"` |\n| `list(string)` | `[\"a\", \"b\"]` | Ordered, one element type |\n| `set(string)` | `toset([\"a\"])` | Unique, unordered, no index access |\n| `map(number)` | `{ a = 1 }` | String keys, one value type |\n| `object({ name = string, port = number })` | `{ name = \"x\", port = 80 }` | Named attributes, each with its own type. Extra attributes are dropped |\n| `tuple([string, number])` | `[\"a\", 1]` | Fixed length, type per position |\n| `any` | anything | Only when passing data through (e.g. into `jsonencode`) |\n\n- `list(string)` given `[\"a\", 15, true]` becomes `[\"a\", \"15\", \"true\"]`.\n- `map(string)` given an attribute holding a list → type error.\n\n## 3. optional() and nullable\n\n```hcl\nvariable \"cfg\" {\n  type = object({\n    name = string                       # required\n    size = optional(number, 10)         # default 10\n    tags = optional(map(string))        # default null\n  })\n}\n# input:  { name = \"a\", size = null }\n# result: { name = \"a\", size = 10, tags = null }\n```\n\n- `optional(type, default)`: default is used when the attribute is **omitted or set to `null`**.\n- `optional(type)` without default → `null`.\n- Defaults apply top-down in nested objects: `website = optional(object({...}), {})` then the inner defaults fill in.\n\n| Variable setting | Caller passes `null` | Result |\n|---|---|---|\n| `nullable = true` (default) | `null` | `null`, even if a `default` exists |\n| `nullable = false` + `default` | `null` | The `default` |\n| `nullable = false`, no default | `null` | Error |\n\n`nullable` only affects the variable's own value, not nested attributes.\n\n## 4. Assigning values and precedence\n\nFrom **lowest to highest**; later wins:\n\n1. Environment variables `TF_VAR_<name>`\n2. `terraform.tfvars`\n3. `terraform.tfvars.json`\n4. `*.auto.tfvars` / `*.auto.tfvars.json`, in **lexical filename order** (`b.auto.tfvars` beats `a.auto.tfvars`)\n5. `-var` and `-var-file` on the command line, **in the order given** (the last one wins).\n\n- The variable's `default` applies only when nothing sets a value.\n- Other `.tfvars` names are loaded only with `-var-file=…`.\n- `TF_VAR_` name matching is case-sensitive: `TF_VAR_instance_type`.\n- Complex types in `TF_VAR_`/`-var` are parsed as HCL: `export TF_VAR_azs='[\"eu-central-1a\",\"eu-central-1b\"]'`.\n- Maps and objects are **replaced**, not merged, across sources.\n- A value for an undeclared variable: env var → ignored; in a file → warning; `-var` → error.\n\n## 5. Outputs\n\n```hcl\noutput \"db_endpoint\" {\n  value       = aws_db_instance.main.endpoint\n  description = \"Connection endpoint.\"\n  sensitive   = false\n  depends_on  = [aws_security_group_rule.db]  # rare\n  precondition {\n    condition     = aws_db_instance.main.storage_encrypted\n    error_message = \"DB must be encrypted.\"\n  }\n}\n```\n\n- Parent access: `module.<NAME>.<OUTPUT>`. For multi-instance modules: `module.app[\"eu\"].url` or `[for m in module.app : m.url]`.\n- Other configurations: `data.terraform_remote_state.<NAME>.outputs.<OUTPUT>`.\n- Values are rendered after `apply`; `plan` shows them under *Changes to Outputs*.\n\n## 6. Sensitive values\n\n- `sensitive = true` on a variable or output hides the value in plan/apply output: `(sensitive value)`.\n- Sensitivity **propagates**: any expression derived from a sensitive value is sensitive.\n- A root output that contains a sensitive value **must** be marked `sensitive = true`, or plan fails with *\"Output refers to sensitive values\"*.\n- Providers mark some attributes sensitive themselves (e.g. passwords).\n- `terraform output` shows `<sensitive>`, but `terraform output db_password`, `-raw` and `-json` print the **plaintext**.\n- Sensitive values can't be used in `for_each`.\n- `sensitive(x)` marks a value. `nonsensitive(x)` removes the mark (error if `x` isn't sensitive). Use it only on derived non-secret data, e.g. a hash.\n- Not a security boundary: values still reach providers, can appear in provider error messages or resource IDs, and are **stored in state and plan files in plaintext**.\n\n## 7. Secrets in state\n\n| Do | Why |\n|---|---|\n| Treat state and saved plan files as secrets | They hold every attribute in cleartext |\n| Use a remote backend with encryption: S3 `encrypt = true` + restrictive IAM/KMS, or HCP Terraform (always encrypted, access-controlled, audited) | Local state is plain JSON on disk |\n| Never commit `terraform.tfstate` or `.tfvars` with secrets | Git history is forever |\n| Pass secrets via `TF_VAR_…` from a CI secret store, or read them from Vault | No secrets in code |\n| Prefer short-lived, dynamic credentials | A leaked state is useless after expiry |\n| Let the service generate/manage passwords where possible (e.g. RDS `manage_master_user_password = true` → Secrets Manager) | The password never enters state |\n\n## 8. Vault\n\n| Data source | Reads | Key attributes |\n|---|---|---|\n| `vault_generic_secret` | Any `vault read` path, e.g. KV v1 `secret/app` | `data[\"key\"]`, `data_json` |\n| `vault_kv_secret_v2` | KV v2: `mount` + `name` (+ `version`) | `data[\"key\"]`, `data_json` |\n| `vault_aws_access_credentials` | **Dynamic** AWS creds from the AWS secrets engine: `backend` + `role` (`type = \"creds\"` or `\"sts\"`) | `access_key`, `secret_key`, `security_token` |\n\n```hcl\ndata \"vault_kv_secret_v2\" \"db\" {\n  mount = \"kv\"\n  name  = \"prod/db\"\n}\n\nresource \"aws_db_instance\" \"main\" {\n  password = data.vault_kv_secret_v2.db.data[\"password\"]\n}\n\ndata \"vault_aws_access_credentials\" \"creds\" {\n  backend = \"aws\"\n  role    = \"terraform\"\n  type    = \"sts\"\n}\n\nprovider \"aws\" {\n  access_key = data.vault_aws_access_credentials.creds.access_key\n  secret_key = data.vault_aws_access_credentials.creds.secret_key\n  token      = data.vault_aws_access_credentials.creds.security_token\n}\n```\n\n- Vault keeps secrets **out of code and VCS**, centralizes access policy and audit, and can issue short-lived credentials.\n- It does **not** keep secrets out of state: everything a data source reads is written to **state and plan files in cleartext**.\n- Dynamic AWS creds are leased and revoked after their TTL. The Vault provider requests its own child token with a short TTL (default 20 min, `max_lease_ttl_seconds`). Data sources are read at plan time, so applying an old saved plan can fail once the lease expired.\n- Terraform can't renew the lease; make it long enough for the run.\n- Data sources need only the `read` capability on the path.\n\nDocs: [Input variables](https://developer.hashicorp.com/terraform/language/v1.6.x/values/variables), [Type constraints](https://developer.hashicorp.com/terraform/language/v1.6.x/expressions/type-constraints), [Outputs](https://developer.hashicorp.com/terraform/language/v1.6.x/values/outputs), [Sensitive data in state](https://developer.hashicorp.com/terraform/language/v1.6.x/state/sensitive-data), [nonsensitive](https://developer.hashicorp.com/terraform/language/v1.6.x/functions/nonsensitive), [Vault provider](https://registry.terraform.io/providers/hashicorp/vault/latest/docs), [vault_kv_secret_v2](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/kv_secret_v2), [vault_aws_access_credentials](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/data-sources/aws_access_credentials)\n"
+  },
+  {
+   "id": "d3-versions",
+   "title": "3a. Version constraints",
+   "domain": "d3",
+   "kind": "theory",
+   "markdown": "## 1. Constraint syntax\n\nA constraint is a string of one or more conditions, separated by commas. All conditions must match.\n\n| Operator | Meaning | Example |\n|---|---|---|\n| `=` or none | Exactly this version. Can't be combined with other conditions | `\"5.31.0\"` |\n| `!=` | Exclude one version | `\">= 5.0, != 5.12.0\"` |\n| `>` `>=` `<` `<=` | Comparison | `\">= 1.6.0, < 2.0.0\"` |\n| `~>` | Only the **rightmost** given component may increase | see below |\n\n| `~>` constraint | Allows | Doesn't allow |\n|---|---|---|\n| `~> 5.31.0` | 5.31.1, 5.31.10 | 5.32.0 |\n| `~> 5.31` | 5.32, 5.90 | 6.0 |\n| `~> 5.0` | any 5.x | 6.0 |\n\n- Pre-releases (`1.7.0-beta1`) match **only** an exact constraint, never `>=` or `~>`.\n- Root and child modules can both set constraints. Terraform needs a version that satisfies **all** of them, otherwise it stops.\n- Best practice: reusable modules set only a minimum (`>= 5.0`). Root modules use `~>` for a lower and upper bound.\n\n## 2. Where constraints go\n\n```hcl\nterraform {\n  required_version = \"~> 1.6.0\"\n\n  required_providers {\n    aws = {\n      source  = \"hashicorp/aws\"\n      version = \"~> 5.31\"\n    }\n  }\n}\n\nmodule \"vpc\" {\n  source  = \"terraform-aws-modules/vpc/aws\"\n  version = \"~> 5.5\"\n}\n```\n\n| Setting | Constrains | If not met |\n|---|---|---|\n| `required_version` | Terraform CLI only (not providers) | Error, no plan/apply/state operation |\n| `required_providers` → `version` | One provider. Omitted = any version | `init` fails to find a matching version |\n| `module` → `version` | **Registry modules only** (public registry, HCP Terraform private registry) | — |\n\n- `version` is not supported for local paths (`./modules/x`) or Git/HTTP/S3 sources. For Git, pin in the source: `source = \"git::https://example.com/vpc.git?ref=v1.2.0\"`.\n- Modules use the newest version that matches. They are **not** recorded in the lock file. For a fixed module version, use an exact constraint.\n\n## 3. The dependency lock file\n\n`.terraform.lock.hcl` sits in the root module directory. It tracks **providers only**. Commit it to version control. Don't commit `.terraform/`.\n\n```hcl\nprovider \"registry.terraform.io/hashicorp/aws\" {\n  version     = \"5.31.0\"\n  constraints = \"~> 5.31\"\n  hashes = [\n    \"h1:...\",\n    \"zh:...\",\n  ]\n}\n```\n\n| Field | Meaning |\n|---|---|\n| `version` | The selected version. `init` reinstalls exactly this version |\n| `constraints` | For humans only. Terraform doesn't use it for selection |\n| `hashes` | Valid checksums. `init` errors if a package matches none of them |\n\nWhen does the file change?\n\n| Action | Effect on lock file |\n|---|---|\n| `terraform init`, provider has no entry yet | Adds the newest matching version |\n| `terraform init`, entry exists | No change, even if a newer version exists |\n| `terraform init -upgrade` | Ignores entries, picks the newest version that matches the constraints. Also upgrades modules |\n| Constraint changed so the locked version no longer matches | `init` fails; run `init -upgrade` |\n| Provider removed from config **and** state | `init` removes the entry |\n| `terraform init -lockfile=readonly` | Never changes; still verifies checksums. Conflicts with `-upgrade` |\n| `terraform providers lock` | Adds versions and checksums (see section 4) |\n\n`init` prints *\"Terraform has made some changes to the provider dependency selections…\"* when it changed the file. Review and commit.\n\n## 4. Locking for multiple platforms\n\nBy default, the lock file may hold an `h1:` hash only for the platform that ran `init`. Another OS then adds hashes, or fails when providers come from a mirror. Fix: pre-fill hashes for every platform.\n\n```sh\nterraform providers lock \\\n  -platform=linux_amd64 \\\n  -platform=darwin_arm64 \\\n  -platform=windows_amd64\n```\n\n- `-platform=OS_ARCH` can be repeated.\n- Optional provider addresses at the end limit the command to those providers.\n- `-fs-mirror=PATH` / `-net-mirror=URL` read packages from a mirror instead of the registry (for in-house providers).\n- Commit the updated lock file.\n\nDocs: [Version constraints](https://developer.hashicorp.com/terraform/language/v1.6.x/expressions/version-constraints), [Terraform settings](https://developer.hashicorp.com/terraform/language/v1.6.x/settings), [Module version](https://developer.hashicorp.com/terraform/language/v1.6.x/modules/syntax#version), [Dependency lock file](https://developer.hashicorp.com/terraform/language/v1.6.x/files/dependency-lock), [terraform init](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/init), [terraform providers lock](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/providers/lock)\n"
+  },
+  {
+   "id": "d3-remote-state",
+   "title": "3b. Remote state and workspaces",
+   "domain": "d3",
+   "kind": "theory",
+   "markdown": "## 1. S3 backend\n\n```hcl\nterraform {\n  backend \"s3\" {\n    bucket         = \"acme-tfstate\"\n    key            = \"network/terraform.tfstate\"\n    region         = \"eu-central-1\"\n    encrypt        = true\n    dynamodb_table = \"tf-locks\"\n  }\n}\n```\n\n| Argument | Required | Notes |\n|---|---|---|\n| `bucket` | Yes | Bucket must exist. Enable versioning to recover state |\n| `key` | Yes | Path of the state object in the bucket |\n| `region` | Yes | Region of bucket and DynamoDB table. Or `AWS_REGION` / `AWS_DEFAULT_REGION` |\n| `encrypt` | No | Server-side encryption of the state object |\n| `kms_key_id` | No | KMS key ARN for encryption. Needs `kms:Encrypt`, `kms:Decrypt`, `kms:GenerateDataKey` |\n| `dynamodb_table` | No | Enables locking. Table partition key **`LockID`**, type **String**. Not set = no locking |\n| `workspace_key_prefix` | No | Prefix for non-default workspaces. Default `env:` |\n| `profile` | No | AWS profile. Or `AWS_PROFILE` |\n\n- One DynamoDB table can lock many state files.\n- IAM on the bucket: `s3:ListBucket` on the bucket, `s3:GetObject`, `s3:PutObject`, `s3:DeleteObject` on the key.\n- IAM on the table: `dynamodb:DescribeTable`, `GetItem`, `PutItem`, `DeleteItem`.\n- Only one `backend` block per configuration. It **can't use variables, locals or data sources**.\n- Credentials: use environment variables or `~/.aws/credentials`, not backend arguments. Values in the backend block or in `-backend-config` end up in plain text in `.terraform/` and in plan files.\n\n## 2. What changed in 1.6\n\nTerraform 1.6 reworked the S3 backend to match the AWS provider. Old arguments still work but are deprecated.\n\n| Deprecated | Use in 1.6 |\n|---|---|\n| `force_path_style` | `use_path_style` |\n| `endpoint`, `dynamodb_endpoint`, `iam_endpoint`, `sts_endpoint` | `endpoints = { s3 = …, dynamodb = …, iam = …, sts = … }` |\n| `role_arn`, `session_name`, `external_id`, `assume_role_*` | `assume_role = { role_arn = … }` |\n| `shared_credentials_file` | `shared_credentials_files` (list) |\n| `AWS_S3_ENDPOINT`, `AWS_DYNAMODB_ENDPOINT` | `AWS_ENDPOINT_URL_S3`, `AWS_ENDPOINT_URL_DYNAMODB` |\n\nNew in 1.6: `assume_role_with_web_identity`, `allowed_account_ids` / `forbidden_account_ids`, `shared_config_files`, `custom_ca_bundle`, `sts_region`, `retry_mode`.\n\n```hcl\nbackend \"s3\" {\n  bucket         = \"tfstate\"\n  key            = \"app/terraform.tfstate\"\n  region         = \"us-east-1\"\n  use_path_style = true\n  endpoints = {\n    s3 = \"https://minio.internal:9000\"\n  }\n  assume_role = {\n    role_arn = \"arn:aws:iam::111122223333:role/Terraform\"\n  }\n}\n```\n\n## 3. Partial configuration\n\nLeave values out of the block and pass them at `init`. The block must still exist to set the type.\n\n```hcl\nterraform {\n  backend \"s3\" {}\n}\n```\n\n```sh\nterraform init -backend-config=prod.s3.tfbackend\nterraform init -backend-config=\"key=prod/app.tfstate\" -backend-config=\"region=eu-central-1\"\n```\n\n```hcl\n# prod.s3.tfbackend — top-level arguments only, no backend block\nbucket         = \"acme-tfstate\"\nkey            = \"prod/app.tfstate\"\nregion         = \"eu-central-1\"\ndynamodb_table = \"tf-locks\"\n```\n\n- Command-line values override the block. Later `-backend-config` options override earlier ones.\n- Missing required values are prompted for, unless `-input=false`, then `init` fails.\n- The merged config is stored in plain text in `.terraform/`. Keep `.terraform/` out of Git.\n\n## 4. Migrating and reconfiguring\n\nBackend config changed? `init` refuses until you choose `-migrate-state`, `-force-copy` or `-reconfigure` (lesson **1a–1b**, section 3).\n\nLocal → S3:\n\n1. Back up `terraform.tfstate`.\n2. Create bucket (versioning on) and DynamoDB table. Often a separate configuration.\n3. Add the `backend \"s3\"` block.\n4. `terraform init -migrate-state` → answer `yes` to copy the state.\n5. `terraform plan` → must show no changes. Then remove the local `terraform.tfstate`.\n\nS3 → local: remove the `backend` block and run `terraform init -migrate-state`.\n\n## 5. State locking\n\n- Automatic for every operation that can write state. Fails if the lock is held.\n- `-lock-timeout=5m` retries instead of failing. Default `0s` = fail immediately.\n- `-lock=false` disables locking. Dangerous.\n- A crashed run can leave a stale lock. The error shows a **lock ID**.\n\n```sh\nterraform force-unlock 6638cb80-0f6d-5b4c-a2e9-1b2c4d5e6f70\nterraform force-unlock -force <LOCK_ID>   # no confirmation prompt\n```\n\n- `force-unlock` doesn't change infrastructure. Only use it on your **own** lock; unlocking someone else's run allows two writers.\n\n## 6. CLI workspaces\n\nSeveral states for **one** configuration and **one** backend.\n\n| Command | Does |\n|---|---|\n| `terraform workspace list` | List; `*` marks the current one |\n| `terraform workspace show` | Print current name |\n| `terraform workspace new dev` | Create **and switch** to `dev` (empty state) |\n| `terraform workspace select dev` | Switch. Must exist, unless `-or-create` |\n| `terraform workspace delete dev` | Must not be current and must have no resources, else `-force` (resources become unmanaged) |\n\n- `default` always exists and can't be deleted.\n- `TF_WORKSPACE=dev` selects a workspace without `select` (for CI).\n- In configuration: `terraform.workspace`.\n\n```hcl\nresource \"aws_instance\" \"web\" {\n  count         = terraform.workspace == \"prod\" ? 3 : 1\n  instance_type = \"t3.micro\"\n  tags          = { Name = \"web-${terraform.workspace}\" }\n}\n```\n\nWhere the state lives:\n\n| Backend | `default` workspace | Workspace `dev` |\n|---|---|---|\n| local | `terraform.tfstate` | `terraform.tfstate.d/dev/terraform.tfstate` |\n| S3 (`key = \"app/terraform.tfstate\"`) | `app/terraform.tfstate` | `env:/dev/app/terraform.tfstate` |\n| S3 with `workspace_key_prefix = \"ws\"` | `app/terraform.tfstate` | `ws/dev/app/terraform.tfstate` |\n\nThe current workspace name is stored in `.terraform/`. All workspaces share the same backend credentials, so they are **not** a way to isolate prod from dev access. Use separate configurations/backends for that.\n\n## 7. HCP Terraform: the cloud block\n\n```hcl\nterraform {\n  cloud {\n    organization = \"acme\"\n    workspaces {\n      tags = [\"app\"]   # or: name = \"app-prod\"\n    }\n  }\n}\n```\n\n- Can't be combined with a `backend` block.\n- `hostname` defaults to `app.terraform.io`; set it for Terraform Enterprise.\n- Run `terraform login`, then `terraform init` to migrate existing state.\n- HCP Terraform workspaces are separate configurations with own variables and state, unlike CLI workspaces.\n\nDocs: [S3 backend](https://developer.hashicorp.com/terraform/language/v1.6.x/settings/backends/s3), [Backend configuration](https://developer.hashicorp.com/terraform/language/v1.6.x/settings/backends/configuration), [terraform init](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/init), [State locking](https://developer.hashicorp.com/terraform/language/v1.6.x/state/locking), [force-unlock](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/force-unlock), [Workspaces](https://developer.hashicorp.com/terraform/cli/v1.6.x/workspaces), [terraform.workspace](https://developer.hashicorp.com/terraform/language/v1.6.x/state/workspaces), [cloud block](https://developer.hashicorp.com/terraform/language/v1.6.x/settings/terraform-cloud), [1.6 changelog](https://github.com/hashicorp/terraform/blob/v1.6/CHANGELOG.md)\n"
+  },
+  {
+   "id": "d3-automation-sharing",
+   "title": "3c. Automation and sharing data",
+   "domain": "d3",
+   "kind": "theory",
+   "markdown": "## 1. Non-interactive workflow\n\n```sh\nexport TF_IN_AUTOMATION=1\nterraform init -input=false\nterraform plan -input=false -out=tfplan\nterraform show tfplan            # review, or: terraform show -json tfplan\nterraform apply -input=false tfplan\n```\n\nNo review needed (dev only): `terraform apply -input=false -auto-approve`.\n\nSaved plan rules:\n\n- `apply tfplan` never prompts. Passing the file is the approval; `-auto-approve` is ignored.\n- You can't add planning options (`-var`, `-target`, `-replace`, …) to `apply tfplan`. They are already in the file.\n- The plan becomes stale if the state changes after it was created. Apply it, or plan again.\n- Apply on the same OS/CPU architecture, same Terraform and provider versions, same absolute path. Plan and apply on different machines: archive the whole working directory **including `.terraform/`**.\n- The plan file holds config, state and variable values **in clear text**, sensitive values included. Protect it like state.\n\n## 2. Flags and exit codes\n\nAll `plan`/`apply` flags (`-input=false`, `-out`, `-json`, `-detailed-exitcode`, …) are in lesson **1a–1b**, section 6. For drift checks in CI: `terraform plan -detailed-exitcode`, exit code `2` = changes.\n\n## 3. Environment variables\n\n| Variable | Effect |\n|---|---|\n| `TF_IN_AUTOMATION=1` | Any non-empty value. Cosmetic only: no \"run terraform apply next\" hints |\n| `TF_INPUT=0` | Same as `-input=false` |\n| `TF_VAR_region=eu-west-1` | Sets `var.region`. Lowest precedence: `.tfvars` and `-var` win. Lists/maps as HCL: `TF_VAR_azs='[\"a\",\"b\"]'` |\n| `TF_CLI_ARGS_plan=\"-lock-timeout=5m\"` | Extra args for one command (`TF_CLI_ARGS` = all commands) |\n| `TF_WORKSPACE=prod` | Select workspace |\n| `TF_LOG`, `TF_LOG_PATH`, … | Debug logging: lesson **5c–5d**, section 4 |\n| `TF_DATA_DIR` | Other location for `.terraform/` |\n| `TF_PLUGIN_CACHE_DIR` | Plugin cache (lesson 5a–5b) |\n\nCredentials: pass AWS credentials as environment variables (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_PROFILE`, `AWS_REGION`) or use an instance/OIDC role. They are read by both the AWS provider and the S3 backend and are **not** written to plan files or `.terraform/`. Never hard-code them in `provider` or `backend` blocks.\n\n## 4. Plugin cache\n\nShare downloaded providers between working directories with `TF_PLUGIN_CACHE_DIR`: lesson **5a–5b**, section 2.\n\n## 5. terraform_remote_state\n\nReads the **root module outputs** of another configuration's state. No provider needed (built-in).\n\n```hcl\ndata \"terraform_remote_state\" \"network\" {\n  backend = \"s3\"\n  config = {\n    bucket = \"acme-tfstate\"\n    key    = \"network/terraform.tfstate\"\n    region = \"eu-central-1\"\n  }\n  # workspace = \"prod\"   # for a non-default CLI workspace\n}\n\nresource \"aws_instance\" \"app\" {\n  subnet_id = data.terraform_remote_state.network.outputs.private_subnet_id\n  # ...\n}\n```\n\n- `config` takes the same arguments as the backend block. Nested blocks become objects (`workspaces = { name = \"x\" }`).\n- Only outputs: `outputs.<name>`. Resources and **child module outputs** are not visible. The producer must re-export them: `output \"subnet_id\" { value = module.vpc.private_subnets[0] }`.\n- `defaults = { … }` supplies values when the state is empty or lacks an output.\n- **Limit:** the reader needs read access to the **whole state file** (here `s3:GetObject` on the key). Anyone who can read the outputs can read every secret in that state.\n- It couples both configurations: the consumer depends on the producer's backend, key and output names.\n\n## 6. Publishing data instead\n\nBetter: the producer writes only the values to share. The consumer reads them with a data source. Different access control than the state.\n\n```hcl\n# producer\nresource \"aws_ssm_parameter\" \"vpc_id\" {\n  name  = \"/network/prod/vpc_id\"\n  type  = \"String\"\n  value = aws_vpc.main.id\n}\n\n# consumer\ndata \"aws_ssm_parameter\" \"vpc_id\" {\n  name = \"/network/prod/vpc_id\"\n}\n# data.aws_ssm_parameter.vpc_id.value\n```\n\n| Option | Publish with | Read with |\n|---|---|---|\n| SSM Parameter Store | `aws_ssm_parameter` resource | `aws_ssm_parameter` data source |\n| S3 object | `aws_s3_object` resource | `aws_s3_object` data source |\n| Route 53 | `aws_route53_record` | DNS lookup |\n| Tags | Tag resources (e.g. `aws_vpc`) | Data source filtered by tag (`data \"aws_vpc\"`) |\n| HCP Terraform | Normal `output` blocks | `tfe_outputs` data source |\n\n`tfe_outputs` (provider `hashicorp/tfe`) is recommended over `terraform_remote_state` in HCP Terraform. It needs no full state access.\n\n```hcl\ndata \"tfe_outputs\" \"network\" {\n  organization = \"acme\"\n  workspace    = \"network-prod\"\n}\n# data.tfe_outputs.network.values.vpc_id              (all marked sensitive)\n# data.tfe_outputs.network.nonsensitive_values.vpc_id (non-sensitive outputs only)\n```\n\nDocs: [Running Terraform in automation](https://developer.hashicorp.com/terraform/tutorials/automation/automate-terraform), [terraform plan](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/plan), [terraform apply](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/apply), [Environment variables](https://developer.hashicorp.com/terraform/cli/v1.6.x/config/environment-variables), [Debugging](https://developer.hashicorp.com/terraform/internals/v1.6.x/debugging), [Plugin cache](https://developer.hashicorp.com/terraform/cli/v1.6.x/config/config-file#provider-plugin-cache), [terraform_remote_state](https://developer.hashicorp.com/terraform/language/v1.6.x/state/remote-state-data), [tfe_outputs](https://registry.terraform.io/providers/hashicorp/tfe/latest/docs/data-sources/outputs)\n"
+  },
+  {
+   "id": "d4-create-use-modules",
+   "title": "4a–4b. Create and use modules",
+   "domain": "d4",
+   "kind": "theory",
+   "markdown": "## 1. Module structure\n\nA module is a directory of `.tf` files. The directory where you run `terraform` is the **root module**. Every module it calls is a **child module**.\n\n```\nmodules/web/\n├── main.tf        # resources\n├── variables.tf   # inputs\n├── outputs.tf     # outputs\n└── versions.tf    # terraform { required_providers { … } }\n```\n\n| Element | Rule |\n|---|---|\n| Inputs | `variable` blocks. No `default` → the caller **must** set it in the `module` block |\n| Outputs | `output` blocks. The caller can read **only** outputs, never the module's resources directly |\n| Nested modules | Put them under `modules/` and call them with a relative path like `./modules/sg` |\n\n## 2. Providers inside a reusable module\n\n| Rule | Why |\n|---|---|\n| **No `provider` blocks** in a reusable module | Provider configurations belong in the root module. A module with its own `provider` block cannot be used with `count`, `for_each` or `depends_on` |\n| **Declare `required_providers`** (source + version) in every module | Child modules inherit provider *configurations*, not source or version requirements |\n| Shared modules: only a minimum version (`>=`) | The root module sets the upper bound |\n\n```hcl\n# modules/tunnel/versions.tf\nterraform {\n  required_providers {\n    aws = {\n      source                = \"hashicorp/aws\"\n      version               = \">= 5.0\"\n      configuration_aliases = [aws.src, aws.dst]\n    }\n  }\n}\n\n# modules/tunnel/main.tf\nresource \"aws_vpc\" \"src\" {\n  provider   = aws.src\n  cidr_block = var.src_cidr\n}\n```\n\n`configuration_aliases` declares the provider configuration names the module expects its caller to pass in.\n\n## 3. Passing providers to a module\n\n| Provider configuration in root | Reaches the child module? |\n|---|---|\n| Default (no `alias`) | Yes, inherited automatically if `providers` is not set |\n| Aliased (`aws.usw2`) | **Never** automatically. Pass it with `providers` |\n\n```hcl\nprovider \"aws\" {\n  region = \"us-west-1\"\n}\n\nprovider \"aws\" {\n  alias  = \"usw2\"\n  region = \"us-west-2\"\n}\n\nmodule \"dr\" {\n  source    = \"./modules/web\"\n  providers = { aws = aws.usw2 }   # child's default \"aws\" = root's aws.usw2\n}\n\nmodule \"tunnel\" {\n  source = \"./modules/tunnel\"\n  providers = {\n    aws.src = aws\n    aws.dst = aws.usw2\n  }\n}\n```\n\n- Keys are names **inside the child**. Values are configurations **in the caller**. Both are unquoted.\n- Once you set `providers`, inheritance stops. List **every** provider configuration the child needs.\n\n## 4. Module sources\n\n| Source | `source` example | How you pin a version |\n|---|---|---|\n| Local path | `\"./modules/web\"` (must start with `./` or `../`) | None. Same code as the caller |\n| Public registry | `\"terraform-aws-modules/vpc/aws\"` | `version = \"~> 5.0\"` |\n| Private registry | `\"app.terraform.io/acme/vpc/aws\"` | `version = \"1.4.0\"` |\n| Git | `\"git::https://example.com/vpc.git?ref=v1.2.0\"` | `?ref=` tag, branch or commit SHA |\n| GitHub shorthand | `\"github.com/acme/vpc?ref=v1.2.0\"` | `?ref=` |\n| Git over SSH | `\"git::ssh://git@example.com/vpc.git?ref=v1.2.0\"` | `?ref=` |\n| S3 | `\"s3::https://s3-eu-west-1.amazonaws.com/acme-modules/vpc.zip\"` | Object key |\n\n- `version` works **only** with registry sources. For Git, put the version in `?ref=`.\n- Registry address format: `<NAMESPACE>/<NAME>/<PROVIDER>`, with `<HOSTNAME>/` in front for private registries.\n- Subdirectory of a package: `//`, placed **before** `?ref=`, for example `git::https://example.com/net.git//modules/vpc?ref=v1.2.0`.\n- `source` must be a literal string. You can't use variables or expressions in it.\n- S3 sources use AWS credentials. In `us-east-1`, use the host `s3.amazonaws.com`.\n\n## 5. Calling a module and using its outputs\n\n```hcl\nmodule \"bucket\" {\n  source   = \"./modules/bucket\"\n  for_each = toset([\"logs\", \"data\"])\n  name     = \"acme-${each.key}\"\n}\n\nmodule \"app\" {\n  source     = \"./modules/app\"\n  count      = var.enabled ? 1 : 0\n  depends_on = [module.bucket]\n}\n\noutput \"logs_arn\" {\n  value = module.bucket[\"logs\"].arn\n}\n```\n\n| Module call | Output reference |\n|---|---|\n| Single | `module.vpc.vpc_id` |\n| `count` | `module.app[0].url` |\n| `for_each` | `module.bucket[\"logs\"].arn` |\n\n- Meta-arguments on `module`: `count`, `for_each`, `depends_on`, `providers`. Modules don't support `lifecycle`.\n- After you **add a `module` block or change its `source` or `version`**, run `terraform init`. Until then, `plan` fails because the module is not installed.\n- `terraform get` downloads modules only (`-update` checks for newer ones). `terraform init` installs modules, providers and the backend.\n\nDocs: [Module blocks](https://developer.hashicorp.com/terraform/language/v1.6.x/modules/syntax), [Module sources](https://developer.hashicorp.com/terraform/language/v1.6.x/modules/sources), [Providers within modules](https://developer.hashicorp.com/terraform/language/v1.6.x/modules/develop/providers), [Module providers meta-argument](https://developer.hashicorp.com/terraform/language/v1.6.x/meta-arguments/module-providers), [Standard module structure](https://developer.hashicorp.com/terraform/language/v1.6.x/modules/develop/structure), [terraform get](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/get)\n"
+  },
+  {
+   "id": "d4-refactor-version",
+   "title": "4c–4d. Refactor and version modules",
+   "domain": "d4",
+   "kind": "theory",
+   "markdown": "## 1. moved blocks\n\nTerraform matches state to configuration **by address**. If you rename or move a block without telling Terraform, it plans to destroy the old object and create a new one. A `moved` block maps the old address to the new one.\n\n```hcl\nmoved {\n  from = aws_instance.a\n  to   = aws_instance.b\n}\n```\n\n| Change | `from` → `to` |\n|---|---|\n| Rename a resource | `aws_instance.a` → `aws_instance.b` |\n| Single resource → `for_each` | `aws_instance.a` → `aws_instance.a[\"small\"]` |\n| `count` → `for_each` (one block per instance) | `aws_instance.c[0]` → `aws_instance.c[\"small\"]` |\n| Rename a module call | `module.a` → `module.b` |\n| Single module → `count` | `module.a` → `module.a[0]` |\n| Root resource → into a module | `aws_vpc.main` → `module.network.aws_vpc.main` |\n| Into a module that uses `for_each`/`count` | `aws_vpc.main` → `module.net[\"eu\"].aws_vpc.main` (instance key required) |\n| Module → into another module | `module.app` → `module.platform.module.app` |\n\nRules:\n- Same resource type only. You can't move a `resource` to a `data` block or to another type.\n- A module can only move **its own** objects and objects of **its child modules**. Addresses are relative to the module that contains the `moved` block.\n- Remove the old block from the configuration. If it is still there, plan fails with **\"Moved object still exists\"**.\n- Adding `count` to a single resource moves it to `[0]` automatically. Write the `moved` block anyway, for readers.\n- In shared modules, **keep** old `moved` blocks. Removing them breaks upgrades for callers that still have the old address. For a second rename, chain the blocks: `a → b`, then `b → c`.\n\n## 2. Refactor a configuration into a module\n\nGoal: move `aws_vpc.main` and `aws_subnet.app` from the root into `./modules/network` without destroying anything.\n\n1. Create `modules/network/` with the resource blocks, `variables.tf`, `outputs.tf` (e.g. `vpc_id`) and `required_providers`. No `provider` block.\n2. Delete the resource blocks from the root. Add the call:\n   ```hcl\n   module \"network\" {\n     source = \"./modules/network\"\n     cidr   = \"10.0.0.0/16\"\n   }\n   ```\n3. Update references in the root: `aws_vpc.main.id` → `module.network.vpc_id`.\n4. Add one `moved` block per resource, **in the root module**:\n   ```hcl\n   moved {\n     from = aws_vpc.main\n     to   = module.network.aws_vpc.main\n   }\n\n   moved {\n     from = aws_subnet.app\n     to   = module.network.aws_subnet.app\n   }\n   ```\n5. Run `terraform init`. The new module call must be installed.\n6. Run `terraform plan`. Expect `# aws_vpc.main has moved to module.network.aws_vpc.main` and **0 to add, 0 to destroy**.\n7. Run `terraform apply` to write the new addresses to state.\n\nIf the plan shows a destroy/create, a `moved` block is missing or has a wrong address, or the module changes an argument. Fix it **before** applying.\n\n## 3. terraform state mv as alternative\n\n```sh\nterraform state mv aws_vpc.main module.network.aws_vpc.main\nterraform state mv 'aws_instance.web[0]' 'aws_instance.web[\"a\"]'\nterraform state mv -dry-run module.app module.platform.module.app\n```\n\n| | `moved` block | `terraform state mv` |\n|---|---|---|\n| Shown in a plan first | Yes | No, it changes state immediately |\n| Reaches every state that uses the module | Yes, the block ships with the module | No, you run it once per state |\n| Team risk | Low | Someone may plan between your config change and the `state mv` and destroy objects |\n| Typical use | Default choice (1.1+) | One-off moves too complex for `moved` |\n\nBoth require the same resource type on both sides. Quote addresses that contain `[` or `\"`.\n\n## 4. Module versioning and upgrades\n\nRegistry module versions come from Git **tags** that are semantic versions: `v1.4.0` or `1.4.0`.\n\n| Part | Bump when |\n|---|---|\n| MAJOR (`2.0.0`) | Breaking: removed or renamed variable or output, removed `moved` blocks, resources replaced |\n| MINOR (`1.5.0`) | New optional feature, backward compatible |\n| PATCH (`1.4.1`) | Bug fix only |\n\n| Constraint | Allows |\n|---|---|\n| `\"1.4.0\"` or `\"= 1.4.0\"` | Exactly 1.4.0 |\n| `\"~> 1.4\"` | `>= 1.4, < 2.0` |\n| `\"~> 1.4.0\"` | `>= 1.4.0, < 1.5.0` |\n| `\">= 1.4, < 2.0\"` | Explicit range |\n\n- Third-party modules: pin exact versions. Internal modules with clean semver: ranges are fine.\n- The lock file tracks **providers only**, not modules. Terraform picks the newest installed module version that matches the constraint.\n\n| Upgrade situation | Command |\n|---|---|\n| You changed `version` and the installed version no longer matches | `terraform init` |\n| The constraint already allows a newer version and you want it | `terraform init -upgrade` |\n| You changed `?ref=v1.2.0` → `?ref=v1.3.0` (the source string changed) | `terraform init` |\n| Same `?ref=` branch, you want its latest commits | `terraform init -upgrade` |\n\nAfter every upgrade, run `terraform plan` and review it before you apply.\n\nDocs: [Refactoring with moved](https://developer.hashicorp.com/terraform/language/v1.6.x/modules/develop/refactoring), [terraform state mv](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/state/mv), [Version constraints](https://developer.hashicorp.com/terraform/language/v1.6.x/expressions/version-constraints), [Module blocks: version](https://developer.hashicorp.com/terraform/language/v1.6.x/modules/syntax#version), [Publishing modules](https://developer.hashicorp.com/terraform/registry/modules/publish)\n"
+  },
+  {
+   "id": "d5-provider-config",
+   "title": "5a–5b. Provider architecture and configuration",
+   "domain": "d5",
+   "kind": "theory",
+   "markdown": "## 1. Core and plugins\n\n| Part | Does |\n|---|---|\n| Terraform Core (`terraform` binary) | Reads config and modules, manages state, builds the resource graph, executes plans, talks to plugins over RPC |\n| Provider plugins | Separate binaries, one process each. They authenticate to the API and define resource types and data sources |\n\nProviders are released and versioned **independently** of Terraform. That is why each configuration must say which providers and versions it needs.\n\n## 2. Source addresses and installation\n\nSource address: `[<HOSTNAME>/]<NAMESPACE>/<TYPE>`\n\n| Address | Meaning |\n|---|---|\n| `hashicorp/aws` | Short form of `registry.terraform.io/hashicorp/aws` |\n| `integrations/github` | Namespace `integrations` (the publisher), type `github` |\n| `app.terraform.io/acme/internal` | Private registry host |\n\n- If you omit `source`, Terraform assumes `registry.terraform.io/hashicorp/<local name>`. Non-HashiCorp providers need an explicit `source` in **every** module that uses them.\n- `terraform init` finds all providers that the root and child modules require. It downloads them into `.terraform/providers/` and writes `.terraform.lock.hcl`.\n- `terraform providers` shows which module requires which provider.\n\n**Plugin cache** (download each provider once for all working directories):\n\n```hcl\n# ~/.terraformrc  (Windows: %APPDATA%/terraform.rc)\nplugin_cache_dir = \"$HOME/.terraform.d/plugin-cache\"\n```\n\n- Or set `export TF_PLUGIN_CACHE_DIR=\"$HOME/.terraform.d/plugin-cache\"`.\n- Create the directory yourself first. Terraform doesn't create it and never cleans it up.\n- Terraform uses a cached package only if it matches a checksum in the lock file.\n- Air-gapped hosts: use `provider_installation { filesystem_mirror { … } }` or `network_mirror` in the CLI config, or the one-off `terraform init -plugin-dir=PATH`.\n\n## 3. required_providers and versions\n\n```hcl\nterraform {\n  required_version = \">= 1.6.0\"\n  required_providers {\n    aws = {\n      source  = \"hashicorp/aws\"\n      version = \"~> 5.30\"   # >= 5.30, < 6.0\n    }\n  }\n}\n```\n\n| Where | Recommended constraint |\n|---|---|\n| Root module | `~>` (lower and upper bound) |\n| Reusable module | `>=` minimum only |\n\n- The key (`aws`) is the **local name**. It is used everywhere else in the module.\n- Terraform combines the constraints from **all** modules. It needs one version that satisfies all of them.\n- `version` inside a `provider` block is deprecated. Use `required_providers`.\n\n## 4. Multiple configurations with alias\n\n```hcl\nprovider \"aws\" {\n  region = \"eu-central-1\"            # default: aws\n}\n\nprovider \"aws\" {\n  alias  = \"use1\"\n  region = \"us-east-1\"               # aws.use1\n}\n\nresource \"aws_acm_certificate\" \"cdn\" {\n  provider          = aws.use1\n  domain_name       = \"example.com\"\n  validation_method = \"DNS\"\n}\n\ndata \"aws_ami\" \"al2023\" {\n  provider    = aws.use1\n  most_recent = true\n  owners      = [\"amazon\"]\n}\n\nmodule \"replica\" {\n  source    = \"./modules/bucket\"\n  providers = { aws = aws.use1 }\n}\n```\n\n- Resources without `provider` use the default configuration that matches the first word of the type (`aws_…` → `aws`).\n- `aws.use1` is an unquoted reference. It is valid only in `provider` and `providers`.\n- If every `aws` block has an alias, the default is an empty configuration.\n- Provider arguments can only use values known before apply, such as variables. Resource attributes don't work.\n\n## 5. Lock file and upgrades\n\n`.terraform.lock.hcl` sits in the root directory. It records each provider's selected `version`, the `constraints` and the `hashes`. **Commit it.** It doesn't track modules.\n\nLock file behaviour and `terraform providers lock`: lesson **3a**, sections 3–4.\n\n**Upgrading a major provider version** (e.g. AWS 4 → 5):\n1. Read the provider's upgrade guide (AWS: \"Version 5 Upgrade Guide\").\n2. Change the constraint in the root: `\"~> 4.67\"` → `\"~> 5.0\"`. Check that child module constraints allow 5.x.\n3. Run `terraform init -upgrade`. The lock file now records 5.x.\n4. Run `terraform plan`. Fix removed or renamed arguments until the plan shows no unintended changes.\n5. Commit the configuration and the lock file together.\n\nDocs: [How Terraform works with plugins](https://developer.hashicorp.com/terraform/plugin/how-terraform-works), [Provider requirements](https://developer.hashicorp.com/terraform/language/v1.6.x/providers/requirements), [Provider configuration](https://developer.hashicorp.com/terraform/language/v1.6.x/providers/configuration), [Dependency lock file](https://developer.hashicorp.com/terraform/language/v1.6.x/files/dependency-lock), [CLI config: plugin cache](https://developer.hashicorp.com/terraform/cli/v1.6.x/config/config-file#provider-plugin-cache), [terraform providers lock](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/providers/lock), [terraform init](https://developer.hashicorp.com/terraform/cli/v1.6.x/commands/init), [AWS v5 upgrade guide](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/guides/version-5-upgrade)\n"
+  },
+  {
+   "id": "d5-provider-auth-troubleshoot",
+   "title": "5c–5d. Provider authentication and troubleshooting",
+   "domain": "d5",
+   "kind": "theory",
+   "markdown": "## 1. AWS credential chain\n\nThe AWS provider looks for credentials in this order. The first match wins.\n\n| # | Source | Example |\n|---|---|---|\n| 1 | Provider arguments | `access_key`, `secret_key`, `profile`, `assume_role` |\n| 2 | Environment variables | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_PROFILE` |\n| 3 | Shared credentials file | `~/.aws/credentials` |\n| 4 | Shared config file | `~/.aws/config` (profiles, SSO, `credential_process`) |\n| 5 | Container credentials | ECS/CodeBuild task role, EKS IRSA |\n| 6 | Instance profile | EC2 instance metadata (IMDS) |\n\n- **Never hardcode** `access_key`/`secret_key` in `.tf` files. They end up in version control. Use env vars, profiles or roles.\n- Region: `region` argument, or `AWS_REGION` / `AWS_DEFAULT_REGION`.\n- No profile set → the `default` profile is used.\n\n## 2. Profiles and assume_role\n\n```hcl\nprovider \"aws\" {\n  region  = \"eu-central-1\"\n  profile = \"dev\"                    # or: export AWS_PROFILE=dev\n}\n\nprovider \"aws\" {\n  alias  = \"prod\"\n  region = \"eu-central-1\"\n  assume_role {\n    role_arn     = \"arn:aws:iam::111122223333:role/terraform\"\n    session_name = \"terraform\"\n    external_id  = \"acme\"            # only if the role's trust policy requires it\n  }\n}\n```\n\n- `assume_role` uses the credentials found by the chain to call STS AssumeRole. This is the usual way to deploy into **several accounts**: one aliased provider per account.\n- For OIDC (e.g. CI), use `assume_role_with_web_identity` or the `AWS_ROLE_ARN` + `AWS_WEB_IDENTITY_TOKEN_FILE` env vars.\n\n## 3. default_tags\n\n```hcl\nprovider \"aws\" {\n  region = \"eu-central-1\"\n  default_tags {\n    tags = {\n      Environment = \"dev\"\n      Owner       = \"platform\"\n    }\n  }\n}\n\nresource \"aws_s3_bucket\" \"logs\" {\n  bucket = \"acme-logs\"\n  tags   = { Owner = \"security\" }    # overrides Owner, keeps Environment\n}\n```\n\n- `default_tags` applies to every taggable resource of **that** provider configuration. Aliased providers need their own block.\n- A resource's `tags` override keys with the same name. You can't exclude a default tag from a single resource.\n- Not supported on `aws_autoscaling_group`.\n\n## 4. Debug logging\n\n| Variable | Effect |\n|---|---|\n| `TF_LOG=TRACE` | Most verbose. Levels: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`. `JSON` = TRACE as JSON. `off` disables logging |\n| `TF_LOG_CORE=DEBUG` | Logs from Terraform Core only |\n| `TF_LOG_PROVIDER=DEBUG` | Logs from provider plugins only (e.g. AWS API calls) |\n| `TF_LOG_PATH=./terraform.log` | Appends logs to a file instead of stderr. **`TF_LOG` must also be set** |\n\n```sh\nexport TF_LOG=DEBUG\nexport TF_LOG_PATH=./terraform.log\nterraform plan\n```\n\n## 5. Common provider errors\n\n| Error (abridged) | Cause | Fix |\n|---|---|---|\n| `Inconsistent dependency lock file` … `required by this configuration but no version is selected` | You added a provider, or a module that needs one, without running init | `terraform init` |\n| `Inconsistent dependency lock file` … `locked version selection 4.67.0 doesn't match the updated version constraints` | You changed the version constraint | `terraform init -upgrade` |\n| `Failed to query available provider packages` … `no available releases match the given constraints ~> 4.0, >= 5.0` | Root and a child module have constraints that can't both be met | Align the constraints: change the root constraint or use a module version that supports it |\n| `Failed to install provider` … `doesn't match any of the checksums previously recorded in the dependency lock file` | The downloaded package isn't in the lock file's hashes. Typical causes: a mirror, a platform missing from the lock, or a tampered package | Find the cause. For a missing platform: `terraform providers lock -platform=…`. Don't just delete the lock file |\n| `Provider configuration not present` | You removed a `provider` block (often an alias) while resources in state still use it | Re-add the provider block. Destroy or move those resources, then remove the block |\n| `No valid credential sources found` | The AWS provider found no credentials in the chain | Set env vars, a profile or a role. Check with `aws sts get-caller-identity` |\n| `Cannot assume IAM Role` | Bad base credentials, missing `sts:AssumeRole` permission, or a wrong `role_arn`/trust policy | Fix the role ARN, trust policy or caller permissions |\n\nDocs: [AWS provider authentication](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication-and-configuration), [AWS default_tags](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#default_tags-configuration-block), [Debugging](https://developer.hashicorp.com/terraform/internals/debugging), [Environment variables](https://developer.hashicorp.com/terraform/cli/v1.6.x/config/environment-variables), [Dependency lock file](https://developer.hashicorp.com/terraform/language/v1.6.x/files/dependency-lock), [Providers within modules](https://developer.hashicorp.com/terraform/language/v1.6.x/modules/develop/providers)\n"
+  },
+  {
+   "id": "d6-runs",
+   "title": "6a. HCP Terraform runs",
+   "domain": "d6",
+   "kind": "theory",
+   "markdown": "## 1. Three run workflows\n\n| Workflow | Config comes from | Runs start when | Typical use |\n|---|---|---|---|\n| VCS-driven (UI/VCS) | Linked repo branch, via webhook | Commit/merge to the linked branch; PR opens a speculative plan; manual **+ New run** | Default, review in PRs |\n| CLI-driven | Local directory, uploaded by `terraform plan`/`apply` | You run the CLI with a `cloud` block | Developers, existing CI |\n| API-driven | Your tool uploads a `.tar.gz` configuration version | Upload finishes (run is created automatically) | Custom pipelines, unsupported VCS |\n\n```hcl\nterraform {\n  cloud {\n    organization = \"my-org\"\n    workspaces {\n      project = \"networking\"\n      name    = \"net-prod\"   # or tags = { layer = \"networking\" }, not both\n    }\n  }\n}\n```\n\n- Run `terraform login`, then `terraform init`. A missing workspace (or project) is created on `init`.\n- CLI `terraform plan` = remote **speculative** plan. It uses local code but the workspace's variables.\n- CLI `terraform apply` is **not allowed** on VCS-linked workspaces. The repo is the source of truth: merge to the branch instead.\n- The `cloud` block needs Terraform 1.1+. Older versions use `backend \"remote\"`.\n- Use `.terraformignore` to exclude files from the CLI upload.\n- A manual UI run uses the current configuration version. It does not fetch the latest commit.\n- A new VCS workspace needs one manual run before webhooks start runs.\n\n## 2. Run stages\n\nOrder of a run (stages only run if configured):\n\n| # | Stage | What happens |\n|---|---|---|\n| 1 | Pending | Waits in the workspace queue until earlier runs finish |\n| 2 | Pre-plan run tasks | External check on the configuration |\n| 3 | Plan | `terraform plan`. Fails → **Plan Errored** |\n| 4 | Post-plan run tasks | External check, gets the plan JSON |\n| 5 | OPA policy evaluation | Before cost estimation |\n| 6 | Cost estimation | Estimates resource costs |\n| 7 | Sentinel policy check | After cost estimation |\n| 8 | Pre-apply run tasks | Only for confirmed runs |\n| 9 | Apply | `terraform apply` → **Applied** or **Apply Errored** |\n| 10 | Post-apply run tasks | Advisory only, can't stop anything |\n\n- Plan with no changes → **Planned and Finished**. Nothing is applied.\n- Waiting for approval → **Needs Confirmation** (or **Policy Checked**). Someone with **Apply runs** confirms or discards.\n- While a plan waits for confirmation, no other run can start in that workspace.\n- A run is locked to its configuration version and variable values. Later changes only affect future runs.\n\n## 3. Speculative plans, auto-apply, run triggers\n\n**Speculative (plan-only) plans**\n- Can never be applied. Still run policy checks and run tasks.\n- Skip the run queue and ignore workspace locks.\n- Started by: opening/updating a PR against the linked branch, `terraform plan` from the CLI, **Plan only** in the UI, or the API.\n- PRs from **forks** don't trigger speculative plans (on HCP Terraform).\n- Can use a different Terraform version than the workspace, to test an upgrade.\n\n**Auto-apply**\n\n| Run source | Auto-applies? |\n|---|---|\n| VCS commit, UI, API | Yes, if workspace **Auto-apply** is on |\n| CLI `terraform apply` | Only with `-auto-approve` |\n| Run trigger | Only if **Auto-apply run triggers** is on (separate setting) |\n| Queued by a user without Apply permission | No, someone with Apply must confirm |\n| Saved plan (`plan -out`) | Never |\n\n**Run triggers**\n- Queue a run in this workspace after a **successful apply** in a source workspace.\n- Up to 20 source workspaces. Configuring needs admin on the target workspace plus read runs on the source.\n- Use them when this workspace reads another workspace's outputs (e.g. app reads VPC IDs from network).\n\n## 4. Run modes\n\n| Mode | CLI | Effect |\n|---|---|---|\n| Plan and apply (standard) | `terraform apply` | Plan, then apply after confirmation |\n| Plan only | `terraform plan` | Speculative, never applied |\n| Refresh-only | `plan/apply -refresh-only` | Updates state to match real objects. Changes no infrastructure |\n| Destroy | `terraform destroy` | Plans to destroy everything |\n| Replace | `-replace=ADDR` | Forces replacement of one resource |\n| Target | `-target=ADDR` | Exceptional use. Disables cost estimation |\n| Saved plan | `plan -out` + `apply FILE` | CLI 1.6+. Never auto-applied. Discarded if state changes first |\n| Allow empty apply | UI/API | Apply with no changes, e.g. to upgrade state format |\n\n`terraform import` (the command) never runs remotely. It runs locally against the workspace state, so workspace environment variables aren't available. Prefer `import` blocks.\n\n## 5. Locking\n\n| Fact | Detail |\n|---|---|\n| Effect | New runs can be queued but don't start until unlock |\n| Ignored by | Plan-only runs and the plan stage of saved plans |\n| Who can lock | **Lock/unlock workspace** permission (Write and Admin roles) |\n| Unlock someone else's lock | Only a workspace **admin** (force unlock) |\n| State upload | Workspace must be locked by the uploading user |\n| Automatic lock | A running run locks the workspace |\n\n## 6. Execution modes\n\n| Mode | Where Terraform runs | Workspace variables used? | HCP features |\n|---|---|---|---|\n| Remote (default) | HCP Terraform's disposable VMs | Yes | Policies, cost estimation, run tasks, notifications, VCS |\n| Local | Your machine or CI | **No**, workspace only stores state | Remote-run features off |\n| Agent | Your self-hosted agent (outbound-only connection) | Yes | Like Remote, but reaches private networks |\n\n- Default is **Project Default** (project inherits the organization default).\n- Local mode needs a token with **Read and write state** and **Lock/unlock**.\n- Agents are a paid feature. Pick them for private/on-prem targets without opening inbound access.\n\nDocs: [Remote operations](https://developer.hashicorp.com/terraform/cloud-docs/run/remote-operations), [Run states and stages](https://developer.hashicorp.com/terraform/cloud-docs/run/states), [Run modes and options](https://developer.hashicorp.com/terraform/cloud-docs/run/modes-and-options), [CLI-driven runs](https://developer.hashicorp.com/terraform/cloud-docs/run/cli), [UI/VCS-driven runs](https://developer.hashicorp.com/terraform/cloud-docs/run/ui), [API-driven runs](https://developer.hashicorp.com/terraform/cloud-docs/run/api), [Run triggers](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/settings/run-triggers), [Workspace settings](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/settings)\n"
+  },
+  {
+   "id": "d6-workspaces",
+   "title": "6b. Workspaces, variables and access",
+   "domain": "d6",
+   "kind": "theory",
+   "markdown": "## 1. Organizations, projects, workspaces\n\n| Level | Holds | Key facts |\n|---|---|---|\n| Organization | Projects, teams, policy sets, run tasks, private registry, VCS connections | **Owners** team has all permissions |\n| Project | Workspaces | Every workspace is in exactly **one** project. **Default Project** can't be deleted |\n| Workspace | Config, state, variables, run history | Acts like a separate working directory |\n\n**HCP Terraform workspace vs CLI workspace**\n\n| | HCP Terraform workspace | CLI workspace (`terraform workspace`) |\n|---|---|---|\n| Purpose | Separate config, state, variables, permissions | Several states for **one** config in one directory |\n| Required | Yes | No |\n| Access control | Yes, per team | No |\n\n## 2. Workspace settings\n\n| Setting | What to know |\n|---|---|\n| Terraform version | Exact version or constraint. Default: latest release when the workspace was created |\n| Working directory | Relative path in the repo where Terraform runs. In VCS workspaces, only changes there trigger runs by default |\n| Execution mode | Project Default, Remote, Local, Agent |\n| Auto-apply | Off by default. Separate toggle for run-trigger runs |\n| VCS trigger | Branch, path filters, or Git tags |\n| Health | Drift detection and continuous validation |\n| Remote state sharing | Who may read this workspace's state |\n\nChanging settings needs workspace **admin**.\n\n## 3. Variables\n\n| Category | Use for | HCL option | How Terraform gets it |\n|---|---|---|---|\n| Terraform variable | Values for `variable` blocks | Yes, for lists/maps | Input variable |\n| Environment variable | Provider credentials, `TF_LOG`, `TF_CLI_ARGS_*` | No | `export` in the run shell |\n\n- **Sensitive** = write-only. Nobody can read it in the UI or API, including admins. You can only set a new value.\n- Sensitive Terraform variables can still end up in state or logs if the config outputs them. Prefer environment variables for credentials.\n- Descriptions are not encrypted.\n- `*.auto.tfvars` and `terraform.tfvars` in the config are used but not shown in the UI.\n- Local `AWS_*` environment variables are **not** sent to a remote run. Set credentials in the workspace.\n- Local execution mode ignores workspace variables and variable sets.\n\n## 4. Variable sets and precedence\n\nA variable set is a reusable group of variables.\n\n| Scope | Applies to |\n|---|---|\n| Global | All current and future workspaces in the organization |\n| Project | All current and future workspaces in chosen projects |\n| Workspace | Chosen workspaces |\n\n- Owned by the organization (needs owners, **Manage all projects** or **Manage all workspaces**) or by a project (needs project-level **Manage variable sets**, or Write/Maintain/Admin on the project).\n- **Priority** variable set: beats every more specific value, including `-var`.\n\nPrecedence, highest first:\n\n| # | Source |\n|---|---|\n| 1 | Priority variable sets (global > project > workspace scope) |\n| 2 | CLI `-var` / `-var-file` |\n| 3 | Local `TF_VAR_*` (CLI workflow) |\n| 4 | **Workspace-specific variables** |\n| 5 | Normal variable sets: project-owned before org-owned, workspace-scoped before project-scoped |\n| 6 | Global variable sets |\n| 7 | `*.auto.tfvars` |\n| 8 | `terraform.tfvars` |\n\n- Same key in two sets of the same scope → the **lexically first name wins** (`A_set` beats `B_set`), not the newest edit.\n- To override a set's value for one workspace, create a workspace variable with the same key and category. The UI marks the set's value **OVERWRITTEN**.\n- Global sets can't share a key with another global set.\n\n## 5. Teams and permissions\n\nPermissions go to **teams**, never to single users. They are **additive**: the highest grant from any level wins.\n\n**Workspace roles**\n\n| Permission | Read | Plan | Write | Admin |\n|---|---|---|---|---|\n| Read runs, variables, state | ✅ | ✅ | ✅ | ✅ |\n| Queue plans | ❌ | ✅ | ✅ | ✅ |\n| Apply runs | ❌ | ❌ | ✅ | ✅ |\n| Write variables, write state | ❌ | ❌ | ✅ | ✅ |\n| Lock/unlock, download Sentinel mocks | ❌ | ❌ | ✅ | ✅ |\n| Manage workspace run tasks | ❌ | ❌ | ❌ | ✅ |\n| Settings, team access, delete workspace | ❌ | ❌ | ❌ | ✅ |\n\n- **Custom** workspace role: pick any non-admin permission. Example: apply runs but no state read, or **Read outputs only** state access.\n- **Project roles**: Read, Write, Maintain (+ create/delete workspaces), Admin (+ project settings, team access, move workspaces), or Custom. They apply to all workspaces in the project.\n- **Organization permissions**: e.g. View/Manage all projects, View/Manage all workspaces, Manage policies, Manage policy overrides, Manage run tasks, Manage VCS settings, Manage modules/providers.\n- **Owners** team: every permission. Some actions are owner-only, e.g. organization health settings.\n- Anyone who can merge to a VCS-linked branch can indirectly queue runs.\n\n## 6. Remote state sharing\n\n| Option | Who can read the state |\n|---|---|\n| Share with specific workspaces (**default**, list empty) | Only listed workspaces |\n| Share with all workspaces in this project | Same project |\n| Share with all workspaces in this organization | Everyone in the org |\n\n- Needed for the `terraform_remote_state` data source against this workspace.\n- Prefer the `tfe_outputs` data source (tfe provider). It reads outputs only, not the full state.\n- For users, **Read outputs only** state permission is enough for `terraform output` and `terraform_remote_state`.\n\n## 7. Health assessments\n\n| Check | Finds |\n|---|---|\n| Drift detection | Real infrastructure no longer matches the configuration |\n| Continuous validation | `check` blocks, preconditions, postconditions that now fail (needs TF 1.3+) |\n\n- Paid tier (Standard/Premium).\n- Runs periodically (e.g. every 24 hours) in Remote or Agent mode only. Needs a successful apply first. Paused after an errored run.\n- Never changes infrastructure or state, never blocks runs.\n- Workspace admin enables it or starts an on-demand check. Organization owners can enforce it org-wide.\n- Fix drift: apply a normal run to revert, or update the config to accept the change.\n\nDocs: [Workspaces](https://developer.hashicorp.com/terraform/cloud-docs/workspaces), [Projects](https://developer.hashicorp.com/terraform/cloud-docs/projects), [Workspace settings](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/settings), [Variables](https://developer.hashicorp.com/terraform/cloud-docs/variables), [Manage variables](https://developer.hashicorp.com/terraform/cloud-docs/variables/managing-variables), [Permissions](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/permissions), [Workspace permissions](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/permissions/workspace), [Project permissions](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/permissions/project), [Health](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/health)\n"
+  },
+  {
+   "id": "d6-credentials-policy",
+   "title": "6c–6d. Credentials and governance",
+   "domain": "d6",
+   "kind": "theory",
+   "markdown": "## 1. Static credentials\n\n| Approach | How | Downside |\n|---|---|---|\n| Workspace env variables | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` as **sensitive environment** variables | Long-lived keys, rotate by hand per workspace |\n| Variable set | Same variables in one set, scoped to a project or many workspaces | One place to rotate, still long-lived |\n| Terraform variables | `variable \"secret_key\"` | Avoid. Values can leak into state, logs and Sentinel mocks |\n\n- Use **environment** category, not Terraform category, for credentials.\n- Mark them **sensitive** (write-only).\n- Never hardcode keys in the provider block.\n- A workspace-specific variable with the same key overrides the set, e.g. a different account for one workspace.\n\n## 2. Dynamic provider credentials (AWS OIDC)\n\nPer run, HCP Terraform creates a signed OIDC **workload identity token**. AWS verifies it and returns **temporary** credentials. They are discarded when the plan/apply ends.\n\n**AWS side**\n\n| Item | Value |\n|---|---|\n| IAM OIDC identity provider | URL `https://app.terraform.io`, audience `aws.workload.identity` |\n| IAM role trust policy | `Action: sts:AssumeRoleWithWebIdentity`, `Principal.Federated` = OIDC provider ARN |\n| Condition `app.terraform.io:aud` | `aws.workload.identity` |\n| Condition `app.terraform.io:sub` | `organization:ORG:project:PROJECT:workspace:WS:run_phase:plan` or `apply` (`StringLike` with `*` for wildcards) |\n| Permissions policy | What the role may do in AWS |\n\nAlways check at least `aud` and the organization name in `sub`. Otherwise other organizations could assume the role.\n\n**HCP Terraform side** (environment variables, on the workspace or in a variable set):\n\n| Variable | Value |\n|---|---|\n| `TFC_AWS_PROVIDER_AUTH` | `true` (required, otherwise no OIDC auth) |\n| `TFC_AWS_RUN_ROLE_ARN` | Role ARN to assume (required unless both plan/apply roles are set) |\n| `TFC_AWS_PLAN_ROLE_ARN` / `TFC_AWS_APPLY_ROLE_ARN` | Optional: read-only role for plan, write role for apply |\n| `TFC_AWS_WORKLOAD_IDENTITY_AUDIENCE` | Optional, custom `aud` |\n\n- The provider block sets only `region` (or `AWS_REGION`). Remove other auth arguments, they interfere.\n- Agents need v1.7.0+.\n\n**Why it beats static keys**\n\n| Static keys | Dynamic credentials |\n|---|---|\n| Long-lived, leakable | Valid only for one plan/apply |\n| Manual rotation | Nothing to rotate |\n| Same rights for plan and apply | Separate roles per run phase |\n| Any holder can use them | Trust policy limits to org/project/workspace |\n\n## 3. Policy sets\n\nPolicies check the **plan** before apply. A **policy set** groups policies of one framework.\n\n| Scope of a policy set | Effect |\n|---|---|\n| Global | All workspaces in the organization |\n| Projects | All workspaces in selected projects |\n| Workspaces | Selected workspaces |\n| Tags | Workspaces with matching tags |\n| Exclusions | Skip specific workspaces/projects |\n\n- One framework per set (Sentinel **or** OPA). A workspace can have sets of both.\n- Sources: VCS repo (recommended, policy as code), API/`tfe_policy_set`, UI, pre-written library.\n- Free tier: one policy set with up to five policies. VCS-connected sets need a paid tier.\n- Creating policies needs the org **Manage policies** permission.\n- Runs order: **OPA** before cost estimation. **Sentinel** policy checks after cost estimation, so they can use cost data.\n- Speculative plans run policies too, so PR authors see failures before merging.\n- Policies need remote or agent execution. Local mode skips them.\n\n## 4. Enforcement levels and overrides\n\n| Framework | Level | Failed policy |\n|---|---|---|\n| Sentinel | `advisory` | Warning, run continues |\n| Sentinel | `soft-mandatory` | Run stops in **Policy Override**. Authorized user can override |\n| Sentinel | `hard-mandatory` | Run stops (**Plan Errored**). Fix the code or the policy |\n| OPA | `advisory` | Warning, run continues |\n| OPA | `mandatory` | Run stops. User with **Manage policy overrides** can override |\n\n**Who can override**\n\n| Permission | Effect |\n|---|---|\n| Organization owners | Always |\n| Team with **Manage policy overrides** | Override in all workspaces (also gets read on all workspaces) |\n| Team with **Delegate policy overrides** | Override only where a project/workspace admin enabled **Allow policy overrides** |\n\n- Discarding a run needs **Apply runs**. Overriding needs override permission.\n- Exception: a Sentinel set using **policy evaluations** with \"can be overridden\" enabled also allows overriding hard-mandatory failures.\n- Need a rule nobody can bypass? Sentinel `hard-mandatory`.\n\n## 5. Run tasks\n\nRun tasks send run data to an external service (security scan, cost tool, HCP Packer check). The service replies passed/failed.\n\n| Stage | Gets | Can block? |\n|---|---|---|\n| Pre-plan | Configuration version | Yes |\n| Post-plan | Plan JSON | Yes |\n| Pre-apply | Configuration version (confirmed runs only) | Yes |\n| Post-apply | Run data | No, advisory only |\n\n| Enforcement | Failure (incl. 10-minute timeout) |\n|---|---|\n| Advisory | Run continues with a warning |\n| Mandatory | Run errors |\n\n- Created at org level (**Manage run tasks**). Attached per workspace (**Manage workspace run tasks**, workspace admin) or scoped to org/projects.\n- Optional **HMAC key** lets the service verify requests.\n- Policy vs run task: policy = rules on the plan inside HCP Terraform. Run task = third-party tool via webhook.\n\n## 6. Private registry\n\n- Share modules and providers only inside the organization. Versioned, with docs.\n- Source format: `app.terraform.io/<ORG>/<NAME>/<PROVIDER>`, e.g. `app.terraform.io/example_corp/vpc/aws`.\n- `localterraform.com` is a generic hostname that resolves to the current instance.\n- Public modules/providers can be added to the private registry to mark them as approved.\n- Publishing needs **Manage modules** / **Manage providers**.\n- Enforce usage with a Sentinel policy (e.g. only modules from the private registry).\n\nDocs: [Dynamic provider credentials](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/dynamic-provider-credentials), [AWS configuration](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/dynamic-provider-credentials/aws-configuration), [Policy enforcement](https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement), [Manage policy sets](https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/manage-policy-sets), [Organization permissions](https://developer.hashicorp.com/terraform/cloud-docs/users-teams-organizations/permissions/organization), [Run tasks](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/settings/run-tasks), [Private registry](https://developer.hashicorp.com/terraform/cloud-docs/registry)\n"
+  }
+ ],
+ "questions": [
+  {
+   "id": "tf-1",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1e",
+   "situation": "A VPC was created by hand. You want the import to be reviewed in a plan before state changes.",
+   "question": "What do you use?",
+   "options": [
+    {
+     "text": "An `import` block, then `terraform plan` and `terraform apply`",
+     "correct": true
+    },
+    {
+     "text": "`terraform import aws_vpc.legacy vpc-0abc`",
+     "correct": false
+    },
+    {
+     "text": "`terraform apply -refresh-only`",
+     "correct": false
+    },
+    {
+     "text": "`terraform state push`",
+     "correct": false
+    }
+   ],
+   "explanation": "Import blocks are planned like any other change. The `terraform import` command writes state immediately without a plan.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "import-drift",
+    "heading": "1. Two ways to import"
+   }
+  },
+  {
+   "id": "tf-2",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1e",
+   "situation": "You added an `import` block for `aws_security_group.web` but no `resource` block.",
+   "question": "Which command writes a starting configuration for it?",
+   "options": [
+    {
+     "text": "`terraform plan -generate-config-out=generated.tf`",
+     "correct": true
+    },
+    {
+     "text": "`terraform import -generate-config aws_security_group.web sg-123`",
+     "correct": false
+    },
+    {
+     "text": "`terraform show -json > generated.tf`",
+     "correct": false
+    },
+    {
+     "text": "`terraform console`",
+     "correct": false
+    }
+   ],
+   "explanation": "`-generate-config-out` generates `resource` blocks for import blocks without a matching resource. The target file must not exist yet.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "import-drift",
+    "heading": "2. Generating configuration"
+   }
+  },
+  {
+   "id": "tf-3",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1e",
+   "situation": "You run `terraform plan -generate-config-out=generated.tf` a second time and `generated.tf` already exists.",
+   "question": "What happens?",
+   "options": [
+    {
+     "text": "Terraform errors out and doesn't overwrite the file",
+     "correct": true
+    },
+    {
+     "text": "Terraform appends new resources to the file",
+     "correct": false
+    },
+    {
+     "text": "Terraform overwrites the file",
+     "correct": false
+    },
+    {
+     "text": "Terraform writes `generated.tf.1`",
+     "correct": false
+    }
+   ],
+   "explanation": "Config generation refuses to write to an existing file. Use a new file name or delete the old one.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "import-drift",
+    "heading": "2. Generating configuration"
+   }
+  },
+  {
+   "id": "tf-4",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1e",
+   "situation": "In Terraform 1.6 you need to import 3 subnets into `aws_subnet.app[\"a\"]`, `[\"b\"]` and `[\"c\"]`.",
+   "question": "How do you write the imports?",
+   "options": [
+    {
+     "text": "Three `import` blocks, one per instance address",
+     "correct": true
+    },
+    {
+     "text": "One `import` block with `for_each`",
+     "correct": false
+    },
+    {
+     "text": "One `import` block with `count = 3`",
+     "correct": false
+    },
+    {
+     "text": "Import blocks can't target instances",
+     "correct": false
+    }
+   ],
+   "explanation": "`for_each` on `import` blocks arrived in 1.7. In 1.6 you write one block per instance.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "import-drift",
+    "heading": "1. Two ways to import"
+   }
+  },
+  {
+   "id": "tf-5",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1e",
+   "situation": "Someone added a tag to an EC2 instance in the console. The team wants to keep it.",
+   "question": "What is the correct fix?",
+   "options": [
+    {
+     "text": "Add the tag to the configuration so that `terraform plan` shows no changes",
+     "correct": true
+    },
+    {
+     "text": "Run `terraform apply`",
+     "correct": false
+    },
+    {
+     "text": "Run `terraform apply -refresh-only` and stop there",
+     "correct": false
+    },
+    {
+     "text": "Run `terraform state rm` and import the instance again",
+     "correct": false
+    }
+   ],
+   "explanation": "`apply` would remove the tag. `-refresh-only` only updates state, so the next plan would still remove it. Updating the configuration makes both sides match.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "import-drift",
+    "heading": "3. Drift: what changed outside Terraform"
+   }
+  },
+  {
+   "id": "tf-6",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1e",
+   "situation": "After `terraform apply -refresh-only`, the manual tag change is recorded in state.",
+   "question": "What does the next normal `terraform plan` show?",
+   "options": [
+    {
+     "text": "A change that removes the tag again, because the configuration still differs",
+     "correct": true
+    },
+    {
+     "text": "No changes",
+     "correct": false
+    },
+    {
+     "text": "An error about state drift",
+     "correct": false
+    },
+    {
+     "text": "The resource will be replaced",
+     "correct": false
+    }
+   ],
+   "explanation": "Refresh-only aligns state with reality, not configuration with reality.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "import-drift",
+    "heading": "3. Drift: what changed outside Terraform"
+   }
+  },
+  {
+   "id": "tf-7",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1e",
+   "situation": "An EC2 instance is unhealthy and you want Terraform to destroy and recreate exactly that instance.",
+   "question": "Which command does that in Terraform 1.6?",
+   "options": [
+    {
+     "text": "`terraform apply -replace=aws_instance.web`",
+     "correct": true
+    },
+    {
+     "text": "`terraform taint aws_instance.web` is the only way",
+     "correct": false
+    },
+    {
+     "text": "`terraform destroy` and then `terraform apply`",
+     "correct": false
+    },
+    {
+     "text": "`terraform apply -refresh-only`",
+     "correct": false
+    }
+   ],
+   "explanation": "`-replace` plans a replacement for one address. `taint` still exists but is deprecated in favour of `-replace`.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "import-drift",
+    "heading": "4. Other state operations"
+   }
+  },
+  {
+   "id": "tf-8",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1e",
+   "situation": "A bucket must stay in AWS, but this configuration must no longer manage it. You use Terraform 1.6.",
+   "question": "What do you do?",
+   "options": [
+    {
+     "text": "Delete the resource block and run `terraform state rm aws_s3_bucket.logs`",
+     "correct": true
+    },
+    {
+     "text": "Add a `removed` block with `destroy = false`",
+     "correct": false
+    },
+    {
+     "text": "Delete the resource block and run `terraform apply`",
+     "correct": false
+    },
+    {
+     "text": "Run `terraform destroy -target=aws_s3_bucket.logs`",
+     "correct": false
+    }
+   ],
+   "explanation": "`removed` blocks arrived in 1.7. In 1.6 you remove the object from state with `terraform state rm`. Just deleting the block would destroy the bucket.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "import-drift",
+    "heading": "4. Other state operations"
+   }
+  },
+  {
+   "id": "tf-d1-01",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1a",
+   "situation": "`.terraform.lock.hcl` pins `hashicorp/aws` 5.10.0. The constraint is `~> 5.0` and 5.40.0 is now available.",
+   "question": "How do you move to the newest allowed version?",
+   "options": [
+    {
+     "text": "Run `terraform init` again; it picks the newest version",
+     "correct": false
+    },
+    {
+     "text": "`terraform init -upgrade`",
+     "correct": true
+    },
+    {
+     "text": "`terraform init -reconfigure`",
+     "correct": false
+    },
+    {
+     "text": "`terraform init -lockfile=readonly`",
+     "correct": false
+    }
+   ],
+   "explanation": "`-upgrade` ignores the lock file selections and picks the newest version matching the constraint. A plain `init` re-selects the locked 5.10.0, `-reconfigure` is about the backend, and `-lockfile=readonly` prevents lock file changes.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d1-init-plan",
+    "heading": "2. Providers, modules and the lock file"
+   }
+  },
+  {
+   "id": "tf-d1-02",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1a",
+   "situation": "You changed the `backend \"s3\"` block to a new bucket. The existing state must end up in the new bucket.",
+   "question": "Which command do you run?",
+   "options": [
+    {
+     "text": "`terraform init -backend=false`",
+     "correct": false
+    },
+    {
+     "text": "`terraform init -upgrade`",
+     "correct": false
+    },
+    {
+     "text": "`terraform init -migrate-state`",
+     "correct": true
+    },
+    {
+     "text": "`terraform init -reconfigure`",
+     "correct": false
+    }
+   ],
+   "explanation": "`-migrate-state` copies existing state to the new backend. `-reconfigure` ignores the old configuration and migrates nothing, `-backend=false` skips backend setup, and `-upgrade` only affects providers and modules.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d1-init-plan",
+    "heading": "3. Backend options"
+   }
+  },
+  {
+   "id": "tf-d1-03",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1a",
+   "situation": "The configuration has `backend \"s3\" {}`. The pipeline must pass the bucket and key per environment without committing them.",
+   "question": "Which option do you use?",
+   "options": [
+    {
+     "text": "`terraform init -var-file=prod.tfvars`",
+     "correct": false
+    },
+    {
+     "text": "`terraform plan -backend-config=prod.s3.tfbackend`",
+     "correct": false
+    },
+    {
+     "text": "`terraform init -from-module=prod`",
+     "correct": false
+    },
+    {
+     "text": "`terraform init -backend-config=prod.s3.tfbackend`",
+     "correct": true
+    }
+   ],
+   "explanation": "`-backend-config` on `init` completes a partial backend configuration. Input variables (`-var-file`) can't be used in a backend block, and `plan` has no `-backend-config` option.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d1-init-plan",
+    "heading": "3. Backend options"
+   }
+  },
+  {
+   "id": "tf-d1-04",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1b",
+   "situation": "A nightly drift check runs `terraform plan`. The job must tell 'no changes' apart from 'changes present' by exit code.",
+   "question": "Which option do you add?",
+   "options": [
+    {
+     "text": "`-detailed-exitcode`",
+     "correct": true
+    },
+    {
+     "text": "`-json`",
+     "correct": false
+    },
+    {
+     "text": "`-refresh-only`",
+     "correct": false
+    },
+    {
+     "text": "`-input=false`",
+     "correct": false
+    }
+   ],
+   "explanation": "With `-detailed-exitcode`, plan returns 0 for no changes, 1 for an error and 2 for changes. `-json` changes the output format, not the exit code; `-input=false` only disables prompts.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d1-init-plan",
+    "heading": "6. Automation options"
+   }
+  },
+  {
+   "id": "tf-d1-05",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1b",
+   "situation": "An EC2 instance `aws_instance.web` is unhealthy. Its configuration is unchanged.",
+   "question": "How do you get a plan that recreates only this instance?",
+   "options": [
+    {
+     "text": "`terraform plan -refresh=false`",
+     "correct": false
+    },
+    {
+     "text": "`terraform plan -replace=aws_instance.web`",
+     "correct": true
+    },
+    {
+     "text": "`terraform plan -target=aws_instance.web`",
+     "correct": false
+    },
+    {
+     "text": "`terraform plan -destroy -target=aws_instance.web`",
+     "correct": false
+    }
+   ],
+   "explanation": "`-replace` forces a replace action even when no change is needed. `-target` alone plans no change because the config is unchanged, and `-destroy -target` only destroys it.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d1-init-plan",
+    "heading": "5. Planning modes and options"
+   }
+  },
+  {
+   "id": "tf-d1-06",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1c",
+   "situation": "CI ran `terraform plan -out=tfplan -var-file=prod.tfvars`. A reviewer approved the plan.",
+   "question": "What is the correct next step?",
+   "options": [
+    {
+     "text": "`terraform apply -var-file=prod.tfvars tfplan`",
+     "correct": false
+    },
+    {
+     "text": "`terraform apply -refresh=false tfplan`",
+     "correct": false
+    },
+    {
+     "text": "`terraform apply tfplan`",
+     "correct": true
+    },
+    {
+     "text": "`terraform apply -auto-approve -var-file=prod.tfvars`",
+     "correct": false
+    }
+   ],
+   "explanation": "A saved plan already contains the variables and options and needs no approval. Planning options like `-var-file` or `-refresh=false` are not allowed with a plan file, and a fresh `apply -auto-approve` could differ from the reviewed plan.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d1-apply-destroy",
+    "heading": "1. Two ways to apply"
+   }
+  },
+  {
+   "id": "tf-d1-07",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1c",
+   "situation": "`terraform apply` hits AWS API rate limit errors when creating many resources at once.",
+   "question": "Which option reduces the number of concurrent operations?",
+   "options": [
+    {
+     "text": "`-lock-timeout=3m`",
+     "correct": false
+    },
+    {
+     "text": "`-refresh=false`",
+     "correct": false
+    },
+    {
+     "text": "`-target=module.app`",
+     "correct": false
+    },
+    {
+     "text": "`-parallelism=3`",
+     "correct": true
+    }
+   ],
+   "explanation": "`-parallelism` limits concurrent graph operations (default 10). `-lock-timeout` only affects waiting for the state lock, and `-refresh=false` skips the refresh but still runs creates at full concurrency.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d1-apply-destroy",
+    "heading": "2. Apply options"
+   }
+  },
+  {
+   "id": "tf-d1-08",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1d",
+   "situation": "`aws_db_instance.main` has `lifecycle { prevent_destroy = true }`. The environment is retired and the database must be deleted with `terraform destroy`.",
+   "question": "What do you do?",
+   "options": [
+    {
+     "text": "Set `prevent_destroy = false`, then run `terraform destroy`",
+     "correct": true
+    },
+    {
+     "text": "`terraform destroy -target=aws_db_instance.main`",
+     "correct": false
+    },
+    {
+     "text": "`terraform destroy -auto-approve`",
+     "correct": false
+    },
+    {
+     "text": "`terraform apply -destroy -refresh=false`",
+     "correct": false
+    }
+   ],
+   "explanation": "`prevent_destroy` rejects any plan that destroys the object while it is in the configuration, so you must turn it off first. `-target`, `-auto-approve` and `-refresh=false` don't bypass it.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d1-apply-destroy",
+    "heading": "4. prevent_destroy"
+   }
+  },
+  {
+   "id": "tf-d2-01",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2a",
+   "situation": "```hcl\nvariable \"min_size\" { type = number }\n\nvariable \"max_size\" {\n  type = number\n  validation {\n    condition     = var.max_size >= var.min_size\n    error_message = \"max_size must be >= min_size.\"\n  }\n}\n```",
+   "question": "What happens in Terraform 1.6?",
+   "options": [
+    {
+     "text": "It works, but the condition is evaluated during apply because `min_size` may be unknown",
+     "correct": false
+    },
+    {
+     "text": "It produces a warning instead of an error because it references another variable",
+     "correct": false
+    },
+    {
+     "text": "Terraform rejects the configuration: a validation condition may only refer to `var.max_size`",
+     "correct": true
+    },
+    {
+     "text": "It works and fails the plan only when `max_size < min_size`",
+     "correct": false
+    }
+   ],
+   "explanation": "In 1.6 a validation condition can refer only to the variable it belongs to, so Terraform raises \"Invalid reference in variable validation\". Move cross-variable rules into a `precondition`, which can reference any object in the module.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-validation",
+    "heading": "2. Variable validation"
+   }
+  },
+  {
+   "id": "tf-d2-02",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2a",
+   "situation": "You want Terraform to tell you on every run whether the load balancer URL answers with HTTP 200. If it doesn't, the plan and apply must still go ahead.",
+   "question": "What do you use?",
+   "options": [
+    {
+     "text": "A `precondition` on the `aws_lb` resource",
+     "correct": false
+    },
+    {
+     "text": "A `check` block with a scoped `data \"http\"` and an `assert`",
+     "correct": true
+    },
+    {
+     "text": "A `postcondition` on a `data \"http\"` block",
+     "correct": false
+    },
+    {
+     "text": "A `validation` block on the URL variable",
+     "correct": false
+    }
+   ],
+   "explanation": "A failed `assert` in a `check` block only produces a warning, and errors from its scoped data source are downgraded to warnings too. Postconditions, preconditions and validation all fail the run.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-validation",
+    "heading": "4. Check blocks"
+   }
+  },
+  {
+   "id": "tf-d2-03",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2a",
+   "situation": "A variable has `default = \"qa\"` and a validation `contains([\"dev\", \"prod\"], var.env)`. No value is passed. CI runs `terraform init -backend=false && terraform validate`.",
+   "question": "What is the result?",
+   "options": [
+    {
+     "text": "`validate` fails with the validation error message",
+     "correct": false
+    },
+    {
+     "text": "`validate` fails because the backend isn't initialized",
+     "correct": false
+    },
+    {
+     "text": "`validate` prompts for a value of `env`",
+     "correct": false
+    },
+    {
+     "text": "`validate` succeeds; `terraform plan` would fail with the validation error",
+     "correct": true
+    }
+   ],
+   "explanation": "`terraform validate` checks syntax and internal consistency but doesn't evaluate input values, so the bad default only fails at plan. `-backend=false` is the documented way to initialize for validation without backend access.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-validation",
+    "heading": "5. terraform validate"
+   }
+  },
+  {
+   "id": "tf-d2-04",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2b",
+   "situation": "```hcl\ndata \"aws_ami\" \"app\" {\n  owners = [\"self\"]\n  filter {\n    name   = \"name\"\n    values = [\"app-*\"]\n  }\n}\n```\nYour account has 12 AMIs named `app-*`. The plan fails with an error saying the query returned more than one result.",
+   "question": "What is the smallest fix that picks the newest image?",
+   "options": [
+    {
+     "text": "Use `data.aws_ami.app[0].id` in the instance",
+     "correct": false
+    },
+    {
+     "text": "Wrap the reference in `one(data.aws_ami.app[*].id)`",
+     "correct": false
+    },
+    {
+     "text": "Add `most_recent = true`",
+     "correct": true
+    },
+    {
+     "text": "Add `count = 1`",
+     "correct": false
+    }
+   ],
+   "explanation": "`aws_ami` must match exactly one image unless `most_recent = true` is set. `count` only creates more data source instances, each failing the same way. `one()` doesn't help because the data source itself errors.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-data-meta",
+    "heading": "1. Data sources"
+   }
+  },
+  {
+   "id": "tf-d2-05",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2b",
+   "situation": "A data source `aws_subnet.lookup` has `id = aws_subnet.app.id`. In this plan, `aws_subnet.app` will be created.",
+   "question": "How does Terraform handle the data source?",
+   "options": [
+    {
+     "text": "It reads it during apply; its attributes show `(known after apply)` in the plan",
+     "correct": true
+    },
+    {
+     "text": "It reads it during plan using the old value from state",
+     "correct": false
+    },
+    {
+     "text": "The plan fails because a data source can't reference a managed resource",
+     "correct": false
+    },
+    {
+     "text": "It reads it during plan and again after apply",
+     "correct": false
+    }
+   ],
+   "explanation": "When a data source argument is unknown at plan time, or it depends on a resource with planned changes, Terraform defers the read to apply. Referencing managed resources from data sources is allowed.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-data-meta",
+    "heading": "1. Data sources"
+   }
+  },
+  {
+   "id": "tf-d2-06",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2c",
+   "situation": "```hcl\nlocals {\n  users   = { alice = \"admin\", bob = \"dev\", carol = \"admin\" }\n  by_role = { for name, role in local.users : role => name... }\n}\n```",
+   "question": "What is `local.by_role`?",
+   "options": [
+    {
+     "text": "`{ admin = \"carol\", dev = \"bob\" }`",
+     "correct": false
+    },
+    {
+     "text": "An error: duplicate object key `admin`",
+     "correct": false
+    },
+    {
+     "text": "`[[\"admin\", \"alice\"], [\"dev\", \"bob\"], [\"admin\", \"carol\"]]`",
+     "correct": false
+    },
+    {
+     "text": "`{ admin = [\"alice\", \"carol\"], dev = [\"bob\"] }`",
+     "correct": true
+    }
+   ],
+   "explanation": "The `...` after the value turns on grouping mode, so each key maps to a list of values (sorted by input key). Without `...` the duplicate key `admin` would raise an error; Terraform never silently keeps the last value.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-expressions",
+    "heading": "1. for expressions"
+   }
+  },
+  {
+   "id": "tf-d2-07",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2c",
+   "situation": "```hcl\nvariable \"networks\" {\n  default = {\n    vpc1 = { subnets = { a = \"10.0.1.0/24\", b = \"10.0.2.0/24\" } }\n    vpc2 = { subnets = { a = \"10.1.1.0/24\" } }\n  }\n}\n```\nYou need `for_each` on `aws_subnet` with keys `vpc1.a`, `vpc1.b`, `vpc2.a`.",
+   "question": "Which expression works?",
+   "options": [
+    {
+     "text": "`{ for s in [for vk, v in var.networks : [for sk, c in v.subnets : { key = \"${vk}.${sk}\", cidr = c }]] : s.key => s.cidr }`",
+     "correct": false
+    },
+    {
+     "text": "`{ for s in flatten([for vk, v in var.networks : [for sk, c in v.subnets : { key = \"${vk}.${sk}\", cidr = c }]]) : s.key => s.cidr }`",
+     "correct": true
+    },
+    {
+     "text": "`{ for vk, v in var.networks : vk => [for sk, c in v.subnets : \"${vk}.${sk}\"] }`",
+     "correct": false
+    },
+    {
+     "text": "`toset(flatten([for vk, v in var.networks : v.subnets]))`",
+     "correct": false
+    }
+   ],
+   "explanation": "Nested `for` builds a list of lists, `flatten` makes it a flat list of objects, and the outer `for` projects it into a map with unique keys. Without `flatten`, `s` is a list and has no `key` attribute; `flatten` doesn't flatten maps, so the `toset` option fails.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-expressions",
+    "heading": "3. Flattening nested data for for_each"
+   }
+  },
+  {
+   "id": "tf-d2-08",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2c",
+   "situation": "```hcl\nlocals {\n  vpcs = {\n    prod = { cidr = \"10.0.0.0/16\" }\n    dev  = { cidr = \"10.1.0.0/16\" }\n  }\n  cidrs = local.vpcs[*].cidr\n}\n```\nThe plan fails with *This object does not have an attribute named \"cidr\"*.",
+   "question": "Why, and what is the fix?",
+   "options": [
+    {
+     "text": "Splat works only on lists/sets/tuples; use `values(local.vpcs)[*].cidr` or `[for v in local.vpcs : v.cidr]`",
+     "correct": true
+    },
+    {
+     "text": "Splat needs the legacy form; use `local.vpcs.*.cidr`",
+     "correct": false
+    },
+    {
+     "text": "The attribute must be quoted; use `local.vpcs[*][\"cidr\"]`",
+     "correct": false
+    },
+    {
+     "text": "Locals can't use splat; move the expression into an output",
+     "correct": false
+    }
+   ],
+   "explanation": "On a non-list value, `[*]` wraps the whole map into a one-element tuple, so `.cidr` is looked up on the map itself. The legacy `.*` form has the same list-only limitation.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-expressions",
+    "heading": "2. Splat expressions"
+   }
+  },
+  {
+   "id": "tf-d2-09",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2c",
+   "situation": "`cidrsubnet(\"10.0.0.0/16\", 4, 1)`",
+   "question": "What does this evaluate to?",
+   "options": [
+    {
+     "text": "`\"10.0.1.0/24\"`",
+     "correct": false
+    },
+    {
+     "text": "`\"10.1.0.0/20\"`",
+     "correct": false
+    },
+    {
+     "text": "`\"10.0.16.0/20\"`",
+     "correct": true
+    },
+    {
+     "text": "`\"10.0.1.0/20\"`",
+     "correct": false
+    }
+   ],
+   "explanation": "4 new bits make a /20, and netnum 1 is the second /20 block. Each /20 covers 16 third-octet values, so it starts at 10.0.16.0. `10.0.1.0/24` would be `cidrsubnet(..., 8, 1)`.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-expressions",
+    "heading": "5. Function cheat sheet"
+   }
+  },
+  {
+   "id": "tf-d2-10",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2d",
+   "situation": "```hcl\nvariable \"bucket_names\" {\n  type    = list(string)\n  default = [\"logs\", \"assets\"]\n}\n\nresource \"aws_s3_bucket\" \"this\" {\n  for_each = var.bucket_names\n  bucket   = each.value\n}\n```",
+   "question": "What's wrong?",
+   "options": [
+    {
+     "text": "Nothing; Terraform converts the list to a set automatically",
+     "correct": false
+    },
+    {
+     "text": "`for_each` doesn't accept a list; use `toset(var.bucket_names)` or type `set(string)`",
+     "correct": true
+    },
+    {
+     "text": "`each.value` is not available for lists; use `each.key`",
+     "correct": false
+    },
+    {
+     "text": "`for_each` can't read input variables; use a local",
+     "correct": false
+    }
+   ],
+   "explanation": "`for_each` needs a map or a set of strings and deliberately doesn't convert lists implicitly. With a set, `each.key` and `each.value` are the same.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-data-meta",
+    "heading": "2. count vs for_each"
+   }
+  },
+  {
+   "id": "tf-d2-11",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2d",
+   "situation": "You want `aws_instance.web` to be replaced whenever `var.ami_id` changes. You write:\n```hcl\nlifecycle {\n  replace_triggered_by = [var.ami_id]\n}\n```\nTerraform rejects it.",
+   "question": "What is the correct approach in Terraform 1.6?",
+   "options": [
+    {
+     "text": "Use `replace_triggered_by = [\"${var.ami_id}\"]`",
+     "correct": false
+    },
+    {
+     "text": "Use `depends_on = [var.ami_id]`",
+     "correct": false
+    },
+    {
+     "text": "Add `ignore_changes = [ami]` and run `terraform apply -replace`",
+     "correct": false
+    },
+    {
+     "text": "Create `resource \"terraform_data\" \"ami\" { input = var.ami_id }` and use `replace_triggered_by = [terraform_data.ami]`",
+     "correct": true
+    }
+   ],
+   "explanation": "`replace_triggered_by` accepts only managed resource references (plus `count.index`/`each.key`). `terraform_data` gives a variable a resource lifecycle. `depends_on` can't reference variables either.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-data-meta",
+    "heading": "5. lifecycle"
+   }
+  },
+  {
+   "id": "tf-d2-12",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2e",
+   "situation": "`export TF_VAR_region=eu-west-1`. The directory has `terraform.tfvars` with `region = \"eu-central-1\"` and `prod.auto.tfvars` with `region = \"us-east-1\"`. The variable's default is `\"eu-north-1\"`. You run `terraform plan` with no flags.",
+   "question": "Which value is used?",
+   "options": [
+    {
+     "text": "`eu-central-1`",
+     "correct": false
+    },
+    {
+     "text": "`eu-north-1`",
+     "correct": false
+    },
+    {
+     "text": "`us-east-1`",
+     "correct": true
+    },
+    {
+     "text": "`eu-west-1`",
+     "correct": false
+    }
+   ],
+   "explanation": "Order from lowest to highest: environment variables, `terraform.tfvars`, `*.auto.tfvars`, then `-var`/`-var-file`. Environment variables are the lowest source, not the highest, and the default applies only when nothing sets a value.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-vars-secrets",
+    "heading": "4. Assigning values and precedence"
+   }
+  },
+  {
+   "id": "tf-d2-13",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2e",
+   "situation": "```hcl\nvariable \"cfg\" {\n  type = object({\n    name = string\n    size = optional(number, 10)\n    tags = optional(map(string))\n  })\n}\n```\nThe caller passes `cfg = { name = \"a\", size = null }`.",
+   "question": "What is `var.cfg`?",
+   "options": [
+    {
+     "text": "`{ name = \"a\", size = 10, tags = null }`",
+     "correct": true
+    },
+    {
+     "text": "`{ name = \"a\", size = null, tags = null }`",
+     "correct": false
+    },
+    {
+     "text": "`{ name = \"a\", size = 10, tags = {} }`",
+     "correct": false
+    },
+    {
+     "text": "An error: `size` can't be null",
+     "correct": false
+    }
+   ],
+   "explanation": "An `optional()` default is used both when the attribute is omitted and when it's explicitly `null`. `optional(map(string))` without a default becomes `null`, not an empty map.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-vars-secrets",
+    "heading": "3. optional() and nullable"
+   }
+  },
+  {
+   "id": "tf-d2-14",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2f",
+   "situation": "A root module reads a DB password with `data \"vault_kv_secret_v2\" \"db\"` and passes it to `aws_db_instance.main.password`. It also has `output \"db_password\" { value = data.vault_kv_secret_v2.db.data[\"password\"] }` without `sensitive = true`. State is in S3 with `encrypt = true`.",
+   "question": "Which statement is correct?",
+   "options": [
+    {
+     "text": "Marking the output sensitive keeps the password out of the state file",
+     "correct": false
+    },
+    {
+     "text": "Values read from Vault are never written to state, so only the output needs care",
+     "correct": false
+    },
+    {
+     "text": "S3 encryption means the password isn't stored in state",
+     "correct": false
+    },
+    {
+     "text": "The plan fails until the output is marked sensitive, and even then the password is stored in state in plaintext",
+     "correct": true
+    }
+   ],
+   "explanation": "Data from the Vault data source is sensitive, so a root output using it must set `sensitive = true`. `sensitive` only redacts CLI output: the secret is still in state and plan files, and S3 encryption protects data at rest without removing it from state.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d2-vars-secrets",
+    "heading": "8. Vault"
+   }
+  },
+  {
+   "id": "tf-d3-01",
+   "scenario": "multiple-choice",
+   "domain": "d3",
+   "task": "3a",
+   "situation": "Your root module uses AWS provider 5.31.0. You want to accept bug-fix releases of 5.31 automatically, but never 5.32 or later.",
+   "question": "Which constraint do you set?",
+   "options": [
+    {
+     "text": "`version = \"~> 5.31\"`",
+     "correct": false
+    },
+    {
+     "text": "`version = \"~> 5.31.0\"`",
+     "correct": true
+    },
+    {
+     "text": "`version = \">= 5.31.0\"`",
+     "correct": false
+    },
+    {
+     "text": "`version = \"5.31.0\"`",
+     "correct": false
+    }
+   ],
+   "explanation": "`~> 5.31.0` lets only the last component (patch) grow. `~> 5.31` also allows 5.32+, `>= 5.31.0` has no upper bound, and `5.31.0` blocks patch releases.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d3-versions",
+    "heading": "1. Constraint syntax"
+   }
+  },
+  {
+   "id": "tf-d3-02",
+   "scenario": "multiple-choice",
+   "domain": "d3",
+   "task": "3a",
+   "situation": "Developers run Terraform on Apple Silicon Macs, CI runs on Linux x86-64. CI keeps adding new hashes to `.terraform.lock.hcl`.",
+   "question": "How do you fix this once for everyone?",
+   "options": [
+    {
+     "text": "`terraform init -upgrade` on a Mac, then commit the lock file",
+     "correct": false
+    },
+    {
+     "text": "Add `.terraform.lock.hcl` to `.gitignore`",
+     "correct": false
+    },
+    {
+     "text": "`terraform init -lockfile=readonly` in CI",
+     "correct": false
+    },
+    {
+     "text": "`terraform providers lock -platform=darwin_arm64 -platform=linux_amd64`, then commit the lock file",
+     "correct": true
+    }
+   ],
+   "explanation": "`providers lock` with one `-platform` per OS/arch records checksums for all of them. `init -upgrade` only changes versions and records the local platform; ignoring the file loses version pinning; `readonly` just stops writing and may fail on missing hashes.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d3-versions",
+    "heading": "4. Locking for multiple platforms"
+   }
+  },
+  {
+   "id": "tf-d3-03",
+   "scenario": "multiple-choice",
+   "domain": "d3",
+   "task": "3a",
+   "situation": "A module block uses `source = \"git::https://git.acme.io/vpc.git\"` and `version = \"1.2.0\"`. `terraform init` fails.",
+   "question": "How do you pin the module to release 1.2.0?",
+   "options": [
+    {
+     "text": "Remove `version` and use `source = \"git::https://git.acme.io/vpc.git?ref=v1.2.0\"`",
+     "correct": true
+    },
+    {
+     "text": "Add the module to `required_providers` with `version = \"1.2.0\"`",
+     "correct": false
+    },
+    {
+     "text": "Run `terraform init -upgrade` so the lock file records the module version",
+     "correct": false
+    },
+    {
+     "text": "Change `version` to `\"~> 1.2.0\"`",
+     "correct": false
+    }
+   ],
+   "explanation": "The `version` argument works only for registry modules; Git sources are pinned with `?ref=`. The lock file never tracks modules, and `required_providers` is for providers.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d3-versions",
+    "heading": "2. Where constraints go"
+   }
+  },
+  {
+   "id": "tf-d3-04",
+   "scenario": "multiple-choice",
+   "domain": "d3",
+   "task": "3b",
+   "situation": "A configuration has used local state for months. You added a `backend \"s3\"` block with bucket, key, region and `dynamodb_table`.",
+   "question": "Which command moves the existing state to S3?",
+   "options": [
+    {
+     "text": "`terraform init -reconfigure`",
+     "correct": false
+    },
+    {
+     "text": "`terraform state push s3://bucket/key`",
+     "correct": false
+    },
+    {
+     "text": "`terraform init -migrate-state`",
+     "correct": true
+    },
+    {
+     "text": "`terraform apply -refresh-only`",
+     "correct": false
+    }
+   ],
+   "explanation": "`-migrate-state` copies the existing state to the new backend. `-reconfigure` ignores the existing state, so Terraform would start empty and try to recreate everything.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d3-remote-state",
+    "heading": "4. Migrating and reconfiguring"
+   }
+  },
+  {
+   "id": "tf-d3-05",
+   "scenario": "multiple-choice",
+   "domain": "d3",
+   "task": "3b",
+   "situation": "A CI runner was killed during `terraform apply`. Every new run now fails with \"Error acquiring the state lock\" and shows a lock ID. You confirmed nothing is running.",
+   "question": "What do you do?",
+   "options": [
+    {
+     "text": "Re-run with `-lock=false` from now on",
+     "correct": false
+    },
+    {
+     "text": "`terraform force-unlock <LOCK_ID>`",
+     "correct": true
+    },
+    {
+     "text": "`terraform init -reconfigure`",
+     "correct": false
+    },
+    {
+     "text": "Delete the state object from the S3 bucket",
+     "correct": false
+    }
+   ],
+   "explanation": "`force-unlock` with the shown ID removes the stale lock without touching infrastructure. `-lock=false` permanently removes protection against concurrent runs; `-reconfigure` doesn't release locks; deleting state loses tracking of all resources.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d3-remote-state",
+    "heading": "5. State locking"
+   }
+  },
+  {
+   "id": "tf-d3-06",
+   "scenario": "multiple-choice",
+   "domain": "d3",
+   "task": "3b",
+   "situation": "With Terraform 1.6 you store state in an S3-compatible MinIO server that only supports path-style URLs.",
+   "question": "Which backend arguments are the current (non-deprecated) way?",
+   "options": [
+    {
+     "text": "`use_path_style = true` and `endpoints = { s3 = \"https://minio.internal:9000\" }`",
+     "correct": true
+    },
+    {
+     "text": "`force_path_style = true` and `endpoint = \"https://minio.internal:9000\"`",
+     "correct": false
+    },
+    {
+     "text": "`use_path_style = true` and `endpoint = \"https://minio.internal:9000\"`",
+     "correct": false
+    },
+    {
+     "text": "`skip_s3_checksum = true` and `sts_endpoint = \"https://minio.internal:9000\"`",
+     "correct": false
+    }
+   ],
+   "explanation": "1.6 replaced `force_path_style` with `use_path_style` and moved endpoint overrides into `endpoints`. The old names still work but are deprecated, and `skip_s3_checksum` doesn't change URL style.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d3-remote-state",
+    "heading": "2. What changed in 1.6"
+   }
+  },
+  {
+   "id": "tf-d3-07",
+   "scenario": "multiple-choice",
+   "domain": "d3",
+   "task": "3c",
+   "situation": "A nightly CI job must fail only on errors and send an alert when the infrastructure no longer matches the configuration.",
+   "question": "Which command and check do you use?",
+   "options": [
+    {
+     "text": "`terraform plan`; alert when the exit code is 1",
+     "correct": false
+    },
+    {
+     "text": "`terraform plan -json`; alert when the exit code is 2",
+     "correct": false
+    },
+    {
+     "text": "`terraform apply -refresh-only -auto-approve`; alert when the exit code is 0",
+     "correct": false
+    },
+    {
+     "text": "`terraform plan -detailed-exitcode`; alert when the exit code is 2",
+     "correct": true
+    }
+   ],
+   "explanation": "With `-detailed-exitcode`, plan returns 0 for no changes, 1 for errors and 2 for changes. Without it (also with only `-json`), plan returns 0 whether or not there are changes; a refresh-only apply would silently accept the drift.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d3-automation-sharing",
+    "heading": "2. Flags and exit codes"
+   }
+  },
+  {
+   "id": "tf-d3-08",
+   "scenario": "multiple-choice",
+   "domain": "d3",
+   "task": "3c",
+   "situation": "To debug a provider error in CI you set `TF_LOG_PATH=/tmp/tf.log`. After the run the file doesn't exist.",
+   "question": "What is missing?",
+   "options": [
+    {
+     "text": "`TF_IN_AUTOMATION=1`",
+     "correct": false
+    },
+    {
+     "text": "The `-json` flag on `terraform plan`",
+     "correct": false
+    },
+    {
+     "text": "`TF_LOG` set to a level such as `DEBUG`",
+     "correct": true
+    },
+    {
+     "text": "`TF_CLI_ARGS=-no-color`",
+     "correct": false
+    }
+   ],
+   "explanation": "`TF_LOG_PATH` only sets the target file; logging is enabled only when `TF_LOG` (or `TF_LOG_CORE`/`TF_LOG_PROVIDER`) is set. `TF_IN_AUTOMATION` and `-no-color` only change the normal output, and `-json` affects the UI output, not logs.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d5-provider-auth-troubleshoot",
+    "heading": "4. Debug logging"
+   }
+  },
+  {
+   "id": "tf-d3-09",
+   "scenario": "multiple-choice",
+   "domain": "d3",
+   "task": "3d",
+   "situation": "The S3 backend has `key = \"app/terraform.tfstate\"` and no `workspace_key_prefix`. You run `terraform workspace new staging` and apply.",
+   "question": "Where is the staging state stored in the bucket?",
+   "options": [
+    {
+     "text": "`env:/staging/app/terraform.tfstate`",
+     "correct": true
+    },
+    {
+     "text": "`app/terraform.tfstate`, separated by a DynamoDB entry",
+     "correct": false
+    },
+    {
+     "text": "`app/staging/terraform.tfstate`",
+     "correct": false
+    },
+    {
+     "text": "`terraform.tfstate.d/staging/terraform.tfstate`",
+     "correct": false
+    }
+   ],
+   "explanation": "Non-default workspaces are stored under `<workspace_key_prefix>/<workspace>/<key>`, and the prefix defaults to `env:`. `terraform.tfstate.d/` is used only by the local backend.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d3-remote-state",
+    "heading": "6. CLI workspaces"
+   }
+  },
+  {
+   "id": "tf-d3-10",
+   "scenario": "multiple-choice",
+   "domain": "d3",
+   "task": "3d",
+   "situation": "The app team needs the VPC ID from the network team's configuration. Security says the app team must not be able to read the network state, which contains secrets.",
+   "question": "What do you implement?",
+   "options": [
+    {
+     "text": "`terraform_remote_state` in the app config, reading only the `vpc_id` output",
+     "correct": false
+    },
+    {
+     "text": "Network config writes `aws_ssm_parameter`; app config reads it with `data \"aws_ssm_parameter\"`",
+     "correct": true
+    },
+    {
+     "text": "Mark the network team's other outputs `sensitive = true` and use `terraform_remote_state`",
+     "correct": false
+    },
+    {
+     "text": "Put both teams in separate CLI workspaces of the same configuration",
+     "correct": false
+    }
+   ],
+   "explanation": "Publishing only the value lets you give the app team access to that parameter, not the state. `terraform_remote_state` always needs read access to the whole state file, whatever outputs you read or mark sensitive; CLI workspaces share one backend and its credentials.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d3-automation-sharing",
+    "heading": "6. Publishing data instead"
+   }
+  },
+  {
+   "id": "tf-d4-01",
+   "scenario": "multiple-choice",
+   "domain": "d4",
+   "task": "4a",
+   "situation": "You write a reusable module for an S3 bucket. Teams will call it with `for_each`.",
+   "question": "What belongs in the module's `versions.tf`?",
+   "options": [
+    {
+     "text": "A `provider \"aws\" { region = var.region }` block so callers can choose the region",
+     "correct": false
+    },
+    {
+     "text": "A `terraform { required_providers { aws = { source = \"hashicorp/aws\", version = \">= 5.0\" } } }` block, without any `provider` block",
+     "correct": true
+    },
+    {
+     "text": "Nothing: modules inherit `required_providers` from the root module",
+     "correct": false
+    },
+    {
+     "text": "A `required_providers` block with `version = \"= 5.31.0\"` to pin the exact version",
+     "correct": false
+    }
+   ],
+   "explanation": "Every module declares its own `required_providers`, because only provider configurations are inherited. A `provider` block makes the module incompatible with `for_each`. An exact pin in a shared module causes conflicts with the root's constraint.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d4-create-use-modules",
+    "heading": "2. Providers inside a reusable module"
+   }
+  },
+  {
+   "id": "tf-d4-02",
+   "scenario": "multiple-choice",
+   "domain": "d4",
+   "task": "4a",
+   "situation": "The root module defines `provider \"aws\" { alias = \"dst\" region = \"us-west-2\" }` and a default `aws` provider. A child module declares `configuration_aliases = [aws.replica]`.",
+   "question": "How do you call the module so its `aws.replica` resources go to us-west-2?",
+   "options": [
+    {
+     "text": "`providers = { aws.dst = aws.replica }`",
+     "correct": false
+    },
+    {
+     "text": "Nothing; aliased provider configurations are inherited automatically",
+     "correct": false
+    },
+    {
+     "text": "`providers = { aws = aws, aws.replica = aws.dst }`",
+     "correct": true
+    },
+    {
+     "text": "`provider = aws.dst` in the module block",
+     "correct": false
+    }
+   ],
+   "explanation": "Keys are names inside the child, values are configurations in the caller. Aliased configurations are never inherited, and setting `providers` turns off inheritance, so the default `aws` must be listed too. Module blocks take `providers` (a map), not `provider`.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d4-create-use-modules",
+    "heading": "3. Passing providers to a module"
+   }
+  },
+  {
+   "id": "tf-d4-03",
+   "scenario": "multiple-choice",
+   "domain": "d4",
+   "task": "4b",
+   "situation": "Your team's VPC module lives in a private Git repo, in the subdirectory `modules/vpc`. You need release tag `v2.1.0`.",
+   "question": "Which `source` is correct?",
+   "options": [
+    {
+     "text": "`git::https://git.example.com/infra.git?ref=v2.1.0//modules/vpc`",
+     "correct": false
+    },
+    {
+     "text": "`git::https://git.example.com/infra.git//modules/vpc` with `version = \"2.1.0\"`",
+     "correct": false
+    },
+    {
+     "text": "`git.example.com/infra/vpc/aws?ref=v2.1.0`",
+     "correct": false
+    },
+    {
+     "text": "`git::https://git.example.com/infra.git//modules/vpc?ref=v2.1.0`",
+     "correct": true
+    }
+   ],
+   "explanation": "The `//` subdirectory comes before the `?ref=` argument. `version` works only with registry sources. The last option is a registry-style address, not a Git source.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d4-create-use-modules",
+    "heading": "4. Module sources"
+   }
+  },
+  {
+   "id": "tf-d4-04",
+   "scenario": "multiple-choice",
+   "domain": "d4",
+   "task": "4b",
+   "situation": "You added `module \"cdn\" { source = \"terraform-aws-modules/cloudfront/aws\" version = \"~> 3.4\" }` to an initialized working directory.",
+   "question": "What must you run before `terraform plan` works?",
+   "options": [
+    {
+     "text": "`terraform init`",
+     "correct": true
+    },
+    {
+     "text": "`terraform validate`",
+     "correct": false
+    },
+    {
+     "text": "`terraform plan -refresh=false`",
+     "correct": false
+    },
+    {
+     "text": "`terraform providers lock`",
+     "correct": false
+    }
+   ],
+   "explanation": "New module blocks must be installed by `terraform init` (or `terraform get`). It also installs any new providers the module needs. `validate` and `providers lock` don't download modules.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d4-create-use-modules",
+    "heading": "5. Calling a module and using its outputs"
+   }
+  },
+  {
+   "id": "tf-d4-05",
+   "scenario": "multiple-choice",
+   "domain": "d4",
+   "task": "4b",
+   "situation": "`module \"bucket\"` uses `for_each = toset([\"logs\", \"data\"])`. The module has an output `arn`.",
+   "question": "How do you reference the ARN of the logs bucket in the root module?",
+   "options": [
+    {
+     "text": "`module.bucket.arn[\"logs\"]`",
+     "correct": false
+    },
+    {
+     "text": "`module.bucket[\"logs\"].arn`",
+     "correct": true
+    },
+    {
+     "text": "`module.bucket[\"logs\"].aws_s3_bucket.this.arn`",
+     "correct": false
+    },
+    {
+     "text": "`module.bucket.logs.arn`",
+     "correct": false
+    }
+   ],
+   "explanation": "With `for_each`, you select the module instance by key, then the output. The caller can only read outputs, not resources inside the module.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d4-create-use-modules",
+    "heading": "5. Calling a module and using its outputs"
+   }
+  },
+  {
+   "id": "tf-d4-06",
+   "scenario": "multiple-choice",
+   "domain": "d4",
+   "task": "4c",
+   "situation": "`aws_instance.web` used `count = 2`. You change it to `for_each = toset([\"blue\", \"green\"])` and want to keep both instances.",
+   "question": "What do you add?",
+   "options": [
+    {
+     "text": "One `moved` block: `aws_instance.web` → `aws_instance.web`",
+     "correct": false
+    },
+    {
+     "text": "Nothing; Terraform maps count indexes to for_each keys automatically",
+     "correct": false
+    },
+    {
+     "text": "Two `moved` blocks: `aws_instance.web[0]` → `aws_instance.web[\"blue\"]` and `aws_instance.web[1]` → `aws_instance.web[\"green\"]`",
+     "correct": true
+    },
+    {
+     "text": "`lifecycle { prevent_destroy = true }` on the resource",
+     "correct": false
+    }
+   ],
+   "explanation": "When you switch from count to for_each, you map each instance key explicitly. A whole-resource move to the same address is redundant. `prevent_destroy` only makes the plan fail; it doesn't move anything.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d4-refactor-version",
+    "heading": "1. moved blocks"
+   }
+  },
+  {
+   "id": "tf-d4-07",
+   "scenario": "multiple-choice",
+   "domain": "d4",
+   "task": "4d",
+   "situation": "You moved `aws_vpc.main` from the root into `./modules/network` and added a `module \"network\"` block. `terraform plan` shows `aws_vpc.main` destroyed and `module.network.aws_vpc.main` created.",
+   "question": "What fixes this without touching the VPC?",
+   "options": [
+    {
+     "text": "Add the same `moved` block inside `modules/network/main.tf`",
+     "correct": false
+    },
+    {
+     "text": "Run `terraform apply -replace=module.network.aws_vpc.main`",
+     "correct": false
+    },
+    {
+     "text": "Run `terraform apply -refresh-only`",
+     "correct": false
+    },
+    {
+     "text": "Add `moved { from = aws_vpc.main  to = module.network.aws_vpc.main }` to the root module and plan again",
+     "correct": true
+    }
+   ],
+   "explanation": "The move goes from the root into a child, so the block belongs in the root. A module can only move its own and its children's objects. `-replace` forces recreation, and refresh-only doesn't change addresses.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d4-refactor-version",
+    "heading": "2. Refactor a configuration into a module"
+   }
+  },
+  {
+   "id": "tf-d4-08",
+   "scenario": "multiple-choice",
+   "domain": "d4",
+   "task": "4c",
+   "situation": "Your root module uses `source = \"acme/vpc/aws\"`, `version = \"~> 1.4\"`. Version 1.4.2 is installed. The registry now has 1.6.0 and 2.0.0.",
+   "question": "You want 1.6.0. What do you run?",
+   "options": [
+    {
+     "text": "`terraform init -upgrade`",
+     "correct": true
+    },
+    {
+     "text": "`terraform init` (it always fetches the newest module version)",
+     "correct": false
+    },
+    {
+     "text": "`terraform providers lock`",
+     "correct": false
+    },
+    {
+     "text": "Delete `.terraform.lock.hcl`, then `terraform init`",
+     "correct": false
+    }
+   ],
+   "explanation": "1.4.2 still meets `~> 1.4`, so a plain init keeps it. `-upgrade` fetches the newest match, which is 1.6.0 (2.0.0 is excluded). The lock file tracks only providers, not modules.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d4-refactor-version",
+    "heading": "4. Module versioning and upgrades"
+   }
+  },
+  {
+   "id": "tf-d5-01",
+   "scenario": "multiple-choice",
+   "domain": "d5",
+   "task": "5a",
+   "situation": "A configuration uses `required_providers { github = { version = \"~> 6.0\" } }` without a `source`. `terraform init` fails to find the provider.",
+   "question": "Why?",
+   "options": [
+    {
+     "text": "Terraform Core has no built-in GitHub support and needs a newer release",
+     "correct": false
+    },
+    {
+     "text": "Without `source`, Terraform assumes `registry.terraform.io/hashicorp/github`, but the provider is published as `integrations/github`",
+     "correct": true
+    },
+    {
+     "text": "The plugin cache directory doesn't exist",
+     "correct": false
+    },
+    {
+     "text": "Version constraints aren't allowed without a `provider` block",
+     "correct": false
+    }
+   ],
+   "explanation": "If you omit `source`, Terraform implies the `hashicorp` namespace. Providers are separate plugins, not part of Core. A missing cache directory only disables caching.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d5-provider-config",
+    "heading": "2. Source addresses and installation"
+   }
+  },
+  {
+   "id": "tf-d5-02",
+   "scenario": "multiple-choice",
+   "domain": "d5",
+   "task": "5a",
+   "situation": "Ten working directories on a build agent each download the 400 MB AWS provider on every `terraform init`.",
+   "question": "How do you download it only once?",
+   "options": [
+    {
+     "text": "Commit the `.terraform/` directory to Git",
+     "correct": false
+    },
+    {
+     "text": "Run `terraform init -upgrade` once in a shared directory",
+     "correct": false
+    },
+    {
+     "text": "Set `plugin_cache_dir` in `~/.terraformrc` (or `TF_PLUGIN_CACHE_DIR`) and create that directory",
+     "correct": true
+    },
+    {
+     "text": "Set `TF_LOG_PROVIDER=off`",
+     "correct": false
+    }
+   ],
+   "explanation": "The plugin cache stores each provider package once and links it into each working directory. The directory must already exist. `.terraform/` should not be committed, and `-upgrade` or logging settings don't share downloads.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d5-provider-config",
+    "heading": "2. Source addresses and installation"
+   }
+  },
+  {
+   "id": "tf-d5-03",
+   "scenario": "multiple-choice",
+   "domain": "d5",
+   "task": "5b",
+   "situation": "You need an ACM certificate in us-east-1 for CloudFront. Everything else is in eu-central-1.",
+   "question": "Which configuration is correct?",
+   "options": [
+    {
+     "text": "`region = \"us-east-1\"` as an argument on `aws_acm_certificate`",
+     "correct": false
+    },
+    {
+     "text": "A second `provider \"aws\"` block without alias, and `provider = \"aws.us-east-1\"` on the certificate",
+     "correct": false
+    },
+    {
+     "text": "A `provider \"aws_use1\"` block and `provider = aws_use1`",
+     "correct": false
+    },
+    {
+     "text": "A second `provider \"aws\"` block with `alias = \"use1\"` and `region = \"us-east-1\"`, and `provider = aws.use1` on the certificate",
+     "correct": true
+    }
+   ],
+   "explanation": "Extra configurations of the same provider need `alias`. You select them with an unquoted `aws.<alias>` reference. Two unaliased blocks for the same provider conflict, and `aws_use1` isn't a provider local name.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d5-provider-config",
+    "heading": "4. Multiple configurations with alias"
+   }
+  },
+  {
+   "id": "tf-d5-04",
+   "scenario": "multiple-choice",
+   "domain": "d5",
+   "task": "5b",
+   "situation": "The lock file pins AWS 4.67.0. You change the root constraint from `~> 4.67` to `~> 5.0` to follow the v5 upgrade guide.",
+   "question": "What is the next step?",
+   "options": [
+    {
+     "text": "Run `terraform init -upgrade`, then `terraform plan`, and fix deprecated arguments",
+     "correct": true
+    },
+    {
+     "text": "Run `terraform plan`; Terraform downloads 5.x automatically",
+     "correct": false
+    },
+    {
+     "text": "Edit the version in `.terraform.lock.hcl` by hand",
+     "correct": false
+    },
+    {
+     "text": "Run `terraform providers lock -platform=linux_amd64`",
+     "correct": false
+    }
+   ],
+   "explanation": "`init -upgrade` ignores the locked selection and picks the newest version allowed by the new constraint. `plan` never installs providers. You don't edit the lock file by hand. `providers lock` only adds checksums.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d5-provider-config",
+    "heading": "5. Lock file and upgrades"
+   }
+  },
+  {
+   "id": "tf-d5-05",
+   "scenario": "multiple-choice",
+   "domain": "d5",
+   "task": "5c",
+   "situation": "A CI pipeline needs to deploy into account 111122223333. It runs with base credentials from env vars and must not store keys in code.",
+   "question": "What is the recommended provider configuration?",
+   "options": [
+    {
+     "text": "`access_key` and `secret_key` set from `var.` inputs with defaults in `variables.tf`",
+     "correct": false
+    },
+    {
+     "text": "An `assume_role { role_arn = \"arn:aws:iam::111122223333:role/terraform\" }` block in the `aws` provider",
+     "correct": true
+    },
+    {
+     "text": "`profile = \"111122223333\"`, with no shared config file on the CI runner",
+     "correct": false
+    },
+    {
+     "text": "A `default_tags` block with `Account = \"111122223333\"`",
+     "correct": false
+    }
+   ],
+   "explanation": "`assume_role` uses the credentials from the chain (here env vars) to get credentials for the target account. Default values in code are hardcoded secrets. A profile needs a shared config file, and `default_tags` doesn't change identity.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d5-provider-auth-troubleshoot",
+    "heading": "2. Profiles and assume_role"
+   }
+  },
+  {
+   "id": "tf-d5-06",
+   "scenario": "multiple-choice",
+   "domain": "d5",
+   "task": "5c",
+   "situation": "Both `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY` and a `[default]` profile in `~/.aws/credentials` are present. The provider block sets only `region`.",
+   "question": "Which credentials does the AWS provider use?",
+   "options": [
+    {
+     "text": "The `[default]` profile from `~/.aws/credentials`",
+     "correct": false
+    },
+    {
+     "text": "The EC2 instance profile, because it is checked first",
+     "correct": false
+    },
+    {
+     "text": "The environment variables",
+     "correct": true
+    },
+    {
+     "text": "None; Terraform fails because the sources are ambiguous",
+     "correct": false
+    }
+   ],
+   "explanation": "Environment variables come before the shared credentials file in the AWS provider's lookup order. The instance profile is checked last. Multiple sources aren't an error; the first match wins.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d5-provider-auth-troubleshoot",
+    "heading": "1. AWS credential chain"
+   }
+  },
+  {
+   "id": "tf-d5-07",
+   "scenario": "multiple-choice",
+   "domain": "d5",
+   "task": "5d",
+   "situation": "`terraform apply` fails while creating an AWS resource. You want only the AWS provider's API calls in a file, at debug level.",
+   "question": "Which environment variables do you set?",
+   "options": [
+    {
+     "text": "`TF_LOG_CORE=DEBUG` and `TF_LOG_PATH=./tf.log`",
+     "correct": false
+    },
+    {
+     "text": "Only `TF_LOG_PATH=./tf.log`",
+     "correct": false
+    },
+    {
+     "text": "`TF_LOG=PROVIDER` and `TF_LOG_PATH=./tf.log`",
+     "correct": false
+    },
+    {
+     "text": "`TF_LOG_PROVIDER=DEBUG` and `TF_LOG_PATH=./tf.log`",
+     "correct": true
+    }
+   ],
+   "explanation": "`TF_LOG_PROVIDER` limits logging to provider plugins, and `TF_LOG_PATH` writes to a file. `TF_LOG_CORE` logs only Core. `TF_LOG_PATH` alone enables nothing, and `PROVIDER` isn't a log level.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d5-provider-auth-troubleshoot",
+    "heading": "4. Debug logging"
+   }
+  },
+  {
+   "id": "tf-d5-08",
+   "scenario": "multiple-choice",
+   "domain": "d5",
+   "task": "5d",
+   "situation": "You deleted the `provider \"aws\" { alias = \"west\" … }` block, together with the resource blocks that used it. You haven't applied yet. `terraform plan` now fails with `Provider configuration not present`.",
+   "question": "What do you do?",
+   "options": [
+    {
+     "text": "Re-add the `aws.west` provider block, apply so the resources are destroyed, then remove the provider block",
+     "correct": true
+    },
+    {
+     "text": "Run `terraform init -upgrade` to reinstall the provider",
+     "correct": false
+    },
+    {
+     "text": "Delete `.terraform.lock.hcl` and run `terraform init`",
+     "correct": false
+    },
+    {
+     "text": "Add `aws.west` to `configuration_aliases` in the root module",
+     "correct": false
+    }
+   ],
+   "explanation": "Terraform needs the original provider configuration to destroy objects still in state. Re-add the block, destroy the objects, then remove the block. The problem isn't the installed plugin or the lock file, and `configuration_aliases` is for child modules.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d5-provider-auth-troubleshoot",
+    "heading": "5. Common provider errors"
+   }
+  },
+  {
+   "id": "tf-d6-01",
+   "scenario": "multiple-choice",
+   "domain": "d6",
+   "task": "6a",
+   "situation": "A workspace is linked to the `main` branch of a GitHub repo. A developer runs `terraform apply` locally with a matching `cloud` block.",
+   "question": "What happens?",
+   "options": [
+    {
+     "text": "HCP Terraform rejects the apply; changes must be merged to `main`",
+     "correct": true
+    },
+    {
+     "text": "The apply runs remotely using the local configuration",
+     "correct": false
+    },
+    {
+     "text": "The apply runs locally and uploads the new state",
+     "correct": false
+    },
+    {
+     "text": "A speculative plan runs and waits for confirmation",
+     "correct": false
+    }
+   ],
+   "explanation": "Remote CLI applies are not allowed in VCS-linked workspaces because the repo is the source of truth. `terraform plan` would work (speculative), but `apply` is refused rather than run remotely or locally.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d6-runs",
+    "heading": "1. Three run workflows"
+   }
+  },
+  {
+   "id": "tf-d6-02",
+   "scenario": "multiple-choice",
+   "domain": "d6",
+   "task": "6a",
+   "situation": "A workspace has cost estimation, a Sentinel policy set and an OPA policy set enabled.",
+   "question": "In which order do these stages run after the plan?",
+   "options": [
+    {
+     "text": "OPA policy evaluation, cost estimation, Sentinel policy check",
+     "correct": true
+    },
+    {
+     "text": "Cost estimation, OPA policy evaluation, Sentinel policy check",
+     "correct": false
+    },
+    {
+     "text": "Sentinel policy check, OPA policy evaluation, cost estimation",
+     "correct": false
+    },
+    {
+     "text": "Sentinel and OPA run together before the plan, then cost estimation",
+     "correct": false
+    }
+   ],
+   "explanation": "OPA runs before cost estimation and Sentinel policy checks run after it, so Sentinel can use cost data. Policies always evaluate a finished plan, never before it.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d6-runs",
+    "heading": "2. Run stages"
+   }
+  },
+  {
+   "id": "tf-d6-03",
+   "scenario": "multiple-choice",
+   "domain": "d6",
+   "task": "6a",
+   "situation": "Workspace `app` has Auto-apply enabled and a run trigger on workspace `network`. After `network` applies, a run is queued in `app` but waits for confirmation.",
+   "question": "Why?",
+   "options": [
+    {
+     "text": "Run-trigger runs only auto-apply if **Auto-apply run triggers** is also enabled",
+     "correct": true
+    },
+    {
+     "text": "Run-trigger runs are always speculative plans",
+     "correct": false
+    },
+    {
+     "text": "The `network` workspace must share its state with `app` first",
+     "correct": false
+    },
+    {
+     "text": "Auto-apply only works for runs started from the CLI",
+     "correct": false
+    }
+   ],
+   "explanation": "Run-triggered runs have their own auto-apply setting, separate from the main one. They are real runs, not speculative, and state sharing affects reading outputs, not auto-apply.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d6-runs",
+    "heading": "3. Speculative plans, auto-apply, run triggers"
+   }
+  },
+  {
+   "id": "tf-d6-04",
+   "scenario": "multiple-choice",
+   "domain": "d6",
+   "task": "6a",
+   "situation": "An engineer locked a production workspace for maintenance. A teammate opens a pull request against the linked branch.",
+   "question": "What happens to the PR's speculative plan?",
+   "options": [
+    {
+     "text": "It runs normally, because plan-only runs ignore workspace locks",
+     "correct": true
+    },
+    {
+     "text": "It waits in Pending until the workspace is unlocked",
+     "correct": false
+    },
+    {
+     "text": "It fails immediately with a lock error",
+     "correct": false
+    },
+    {
+     "text": "It runs, then waits for the lock owner to confirm it",
+     "correct": false
+    }
+   ],
+   "explanation": "Plan-only runs can't change state or infrastructure, so they skip the queue and ignore locks. Normal runs would be queued and wait for the unlock.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d6-runs",
+    "heading": "5. Locking"
+   }
+  },
+  {
+   "id": "tf-d6-05",
+   "scenario": "multiple-choice",
+   "domain": "d6",
+   "task": "6a",
+   "situation": "Your AWS resources sit in a private VPC with no inbound internet access. You want remote runs with policy checks and workspace variables.",
+   "question": "Which execution mode do you choose?",
+   "options": [
+    {
+     "text": "Agent, with HCP Terraform agents in the private network",
+     "correct": true
+    },
+    {
+     "text": "Local, running Terraform from a CI runner in the VPC",
+     "correct": false
+    },
+    {
+     "text": "Remote, after allowing HCP Terraform's IPs inbound",
+     "correct": false
+    },
+    {
+     "text": "Remote with a VPN workspace variable",
+     "correct": false
+    }
+   ],
+   "explanation": "Agents connect outbound only and still give remote-run features like policies and workspace variables. Local mode would drop workspace variables and policy checks, and Remote needs inbound access you don't want.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d6-runs",
+    "heading": "6. Execution modes"
+   }
+  },
+  {
+   "id": "tf-d6-06",
+   "scenario": "multiple-choice",
+   "domain": "d6",
+   "task": "6b",
+   "situation": "A project-scoped variable set sets `instance_type = \"t3.small\"`. A workspace in that project has a workspace-specific Terraform variable `instance_type = \"t3.large\"`. No set is priority.",
+   "question": "Which value does a VCS-triggered run use?",
+   "options": [
+    {
+     "text": "`t3.large`, because workspace-specific variables beat non-priority variable sets",
+     "correct": true
+    },
+    {
+     "text": "`t3.small`, because variable sets are applied last",
+     "correct": false
+    },
+    {
+     "text": "The run fails because of a duplicate key",
+     "correct": false
+    },
+    {
+     "text": "Whichever value was edited most recently",
+     "correct": false
+    }
+   ],
+   "explanation": "Workspace-specific variables override normal variable sets, and the UI marks the set's value as OVERWRITTEN. Only a priority variable set would beat the workspace value; duplicates don't fail and edit time doesn't matter.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d6-workspaces",
+    "heading": "4. Variable sets and precedence"
+   }
+  },
+  {
+   "id": "tf-d6-07",
+   "scenario": "multiple-choice",
+   "domain": "d6",
+   "task": "6b",
+   "situation": "Junior engineers should queue plans in a workspace, but every apply must be approved by the platform team.",
+   "question": "Which workspace role do you give the junior team?",
+   "options": [
+    {
+     "text": "Plan",
+     "correct": true
+    },
+    {
+     "text": "Read",
+     "correct": false
+    },
+    {
+     "text": "Write",
+     "correct": false
+    },
+    {
+     "text": "Admin",
+     "correct": false
+    }
+   ],
+   "explanation": "Plan lets them queue plans but not apply runs. Read can't queue plans, and Write or Admin would let them apply.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d6-workspaces",
+    "heading": "5. Teams and permissions"
+   }
+  },
+  {
+   "id": "tf-d6-08",
+   "scenario": "multiple-choice",
+   "domain": "d6",
+   "task": "6b",
+   "situation": "Workspace `app` uses `terraform_remote_state` to read VPC outputs from a new workspace `network` in another project. The run fails with an access error.",
+   "question": "What do you change?",
+   "options": [
+    {
+     "text": "In `network`, add `app` to **Share with specific workspaces**",
+     "correct": true
+    },
+    {
+     "text": "Give `app` a run trigger on `network`",
+     "correct": false
+    },
+    {
+     "text": "Set `network` to Local execution mode",
+     "correct": false
+    },
+    {
+     "text": "Move both workspaces into the same organization",
+     "correct": false
+    }
+   ],
+   "explanation": "New workspaces share state with no one by default; `network` must allow `app`. A run trigger only queues runs, and they're already in the same organization.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d6-workspaces",
+    "heading": "6. Remote state sharing"
+   }
+  },
+  {
+   "id": "tf-d6-09",
+   "scenario": "multiple-choice",
+   "domain": "d6",
+   "task": "6c",
+   "situation": "You set up the IAM OIDC provider and role for HCP Terraform. Runs still fail with \"no valid credential sources\".",
+   "question": "Which workspace configuration is missing?",
+   "options": [
+    {
+     "text": "Environment variables `TFC_AWS_PROVIDER_AUTH = true` and `TFC_AWS_RUN_ROLE_ARN`",
+     "correct": true
+    },
+    {
+     "text": "Terraform variables `aws_role_arn` and `aws_oidc = true`",
+     "correct": false
+    },
+    {
+     "text": "`assume_role_with_web_identity` with a static token in the provider block",
+     "correct": false
+    },
+    {
+     "text": "Sensitive environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`",
+     "correct": false
+    }
+   ],
+   "explanation": "HCP Terraform only requests OIDC credentials when `TFC_AWS_PROVIDER_AUTH` is `true` and a role ARN is set, as environment variables. Static keys would bypass OIDC, and extra auth arguments in the provider block interfere with it.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d6-credentials-policy",
+    "heading": "2. Dynamic provider credentials (AWS OIDC)"
+   }
+  },
+  {
+   "id": "tf-d6-10",
+   "scenario": "multiple-choice",
+   "domain": "d6",
+   "task": "6c",
+   "situation": "Security wants plans to use a read-only role and applies to use a write role, without static keys.",
+   "question": "What do you configure?",
+   "options": [
+    {
+     "text": "Two IAM roles with trust policies matching `run_phase:plan` and `run_phase:apply`, set via `TFC_AWS_PLAN_ROLE_ARN` and `TFC_AWS_APPLY_ROLE_ARN`",
+     "correct": true
+    },
+    {
+     "text": "One role with `run_phase:*` and two Terraform variables for the policies",
+     "correct": false
+    },
+    {
+     "text": "Two variable sets with different `AWS_ACCESS_KEY_ID` values",
+     "correct": false
+    },
+    {
+     "text": "A Sentinel policy that blocks writes during the plan phase",
+     "correct": false
+    }
+   ],
+   "explanation": "The `sub` claim includes the run phase, so separate roles per phase need separate trust policies and the plan/apply role variables. A `run_phase:*` wildcard gives both phases the same role, and static keys are what you want to avoid.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d6-credentials-policy",
+    "heading": "2. Dynamic provider credentials (AWS OIDC)"
+   }
+  },
+  {
+   "id": "tf-d6-11",
+   "scenario": "multiple-choice",
+   "domain": "d6",
+   "task": "6d",
+   "situation": "A Sentinel policy must block untagged resources. Team leads should be able to let an urgent run through after review.",
+   "question": "Which setup fits?",
+   "options": [
+    {
+     "text": "`soft-mandatory`, and give the leads' team **Manage policy overrides**",
+     "correct": true
+    },
+    {
+     "text": "`hard-mandatory`, and give the leads' team workspace Admin",
+     "correct": false
+    },
+    {
+     "text": "`advisory`, and give the leads' team Apply runs",
+     "correct": false
+    },
+    {
+     "text": "`soft-mandatory`, and give the leads' team workspace Write",
+     "correct": false
+    }
+   ],
+   "explanation": "Soft-mandatory failures can be overridden by users with override permission. Hard-mandatory blocks the run for everyone, advisory never blocks, and workspace roles like Write or Admin don't include overriding policies.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d6-credentials-policy",
+    "heading": "4. Enforcement levels and overrides"
+   }
+  },
+  {
+   "id": "tf-d6-12",
+   "scenario": "multiple-choice",
+   "domain": "d6",
+   "task": "6d",
+   "situation": "You want a third-party security scanner to review the plan JSON and stop the run if it finds critical issues.",
+   "question": "What do you configure?",
+   "options": [
+    {
+     "text": "A post-plan run task with enforcement level Mandatory",
+     "correct": true
+    },
+    {
+     "text": "A post-apply run task with enforcement level Mandatory",
+     "correct": false
+    },
+    {
+     "text": "A pre-plan run task with enforcement level Advisory",
+     "correct": false
+    },
+    {
+     "text": "An OPA policy set with enforcement level advisory",
+     "correct": false
+    }
+   ],
+   "explanation": "Post-plan tasks receive the plan JSON, and Mandatory failures stop the run. Post-apply tasks can't block anything, pre-plan tasks only see the configuration, and advisory levels never block.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "d6-credentials-policy",
+    "heading": "5. Run tasks"
+   }
+  },
+  {
+   "id": "tf-ov1",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1e",
+   "situation": "In the exam lab (Terraform 1.6.6) you must stop managing `aws_s3_bucket.logs` with Terraform without deleting the bucket.",
+   "question": "What works?",
+   "options": [
+    {
+     "text": "`terraform state rm aws_s3_bucket.logs`, then remove the resource block",
+     "correct": true
+    },
+    {
+     "text": "A `removed` block with `lifecycle { destroy = false }`",
+     "correct": false
+    },
+    {
+     "text": "`terraform destroy -target=aws_s3_bucket.logs`",
+     "correct": false
+    },
+    {
+     "text": "Remove the resource block and run `terraform apply`",
+     "correct": false
+    }
+   ],
+   "explanation": "`removed` blocks arrive in Terraform 1.7, so in 1.6 you use `terraform state rm`. C and D both destroy the bucket.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "overview",
+    "heading": "Version 1.6 matters"
+   }
+  },
+  {
+   "id": "tf-ov2",
+   "scenario": "multiple-choice",
+   "domain": "d1",
+   "task": "1e",
+   "situation": "In Terraform 1.6 you want to import three existing subnets with `import` blocks.",
+   "question": "How do you write them?",
+   "options": [
+    {
+     "text": "One `import` block per subnet",
+     "correct": true
+    },
+    {
+     "text": "One `import` block with `for_each` over the subnet IDs",
+     "correct": false
+    },
+    {
+     "text": "`terraform import -all aws_subnet`",
+     "correct": false
+    },
+    {
+     "text": "`terraform apply -refresh-only`",
+     "correct": false
+    }
+   ],
+   "explanation": "`for_each` on `import` blocks needs Terraform 1.7. `terraform import` has no `-all` (C), and `-refresh-only` (D) only updates state for resources already managed.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "overview",
+    "heading": "Version 1.6 matters"
+   }
+  },
+  {
+   "id": "tf-ov3",
+   "scenario": "multiple-choice",
+   "domain": "d2",
+   "task": "2c",
+   "situation": "The exam tests Terraform 1.6.",
+   "question": "Which feature can you use there?",
+   "options": [
+    {
+     "text": "`import` blocks with `terraform plan -generate-config-out`",
+     "correct": true
+    },
+    {
+     "text": "Provider-defined functions such as `provider::aws::arn_parse`",
+     "correct": false
+    },
+    {
+     "text": "Ephemeral resources for secrets",
+     "correct": false
+    },
+    {
+     "text": "`removed` blocks",
+     "correct": false
+    }
+   ],
+   "explanation": "`import` blocks and config generation exist since 1.5. Provider-defined functions (1.8), ephemeral resources (1.10) and `removed` blocks (1.7) don't exist in 1.6.",
+   "source": "ai-draft",
+   "hint": {
+    "lesson": "overview",
+    "heading": "Version 1.6 matters"
+   }
+  }
+ ]
+}

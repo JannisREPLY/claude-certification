@@ -1,0 +1,33 @@
+{
+  "id": "import-drift",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Import resources and reconcile drift",
+  "objectives": [
+    "1e"
+  ],
+  "domain": "d1",
+  "minutes": 30,
+  "intro": "Your team manages an app VPC and subnet with Terraform. Someone created a legacy VPC and security group by hand, and someone else changed tags in the console.\n\nThe configuration is in `/home/coder/lab` and is already initialized and applied. Open a terminal in the editor via **☰ → Terminal → New Terminal**. The `aws` CLI talks to the emulated AWS account, region `us-east-1`.",
+  "tasks": [
+    {
+      "id": "t1",
+      "text": "Bring the VPC tagged `Name = legacy-vpc` under Terraform management as `aws_vpc.legacy`. Use an `import` block. Afterwards `terraform plan` must show no changes for it."
+    },
+    {
+      "id": "t2",
+      "text": "Bring the security group named `legacy-web` under management as `aws_security_group.legacy_web`, without changing it. Its rules must stay as they are."
+    },
+    {
+      "id": "t3",
+      "text": "Someone changed the `Environment` tag of the app VPC to `prod` in the console. That change was not approved: the VPC must be back to `Environment = dev`."
+    },
+    {
+      "id": "t4",
+      "text": "Someone added the tag `Owner = platform` to the app subnet. The team wants to keep it. Make the configuration match, and make sure the tag still exists in AWS."
+    },
+    {
+      "id": "t5",
+      "text": "Finish with a clean workspace: `terraform plan` reports no changes."
+    }
+  ]
+}

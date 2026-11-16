@@ -1,0 +1,16 @@
+{
+  "id": "dynamic-config",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Dynamic configuration",
+  "objectives": ["2a", "2b", "2c", "2d", "2e"],
+  "domain": "d2",
+  "minutes": 45,
+  "intro": "The networking team owns a VPC tagged `Name = shared-vpc`. You add subnets and a security group to it from `/home/coder/lab`. The variables are declared in `variables.tf` and set in `terraform.tfvars`; don't change those values. The folder is initialized; nothing is applied yet. Open a terminal via **☰ → Terminal → New Terminal**.",
+  "tasks": [
+    { "id": "t1", "text": "`environment` may only be `dev`, `stage` or `prod`. Any other value must fail at plan time with an error message that lists the allowed values." },
+    { "id": "t2", "text": "Look up the `shared-vpc` VPC with a data source. Its ID must not appear anywhere in your configuration." },
+    { "id": "t3", "text": "Create one subnet per entry of `var.subnets` as `aws_subnet.this`, keyed by the map key, in the shared VPC. Tag each `Name = \"<environment>-<key>\"` (e.g. `dev-web`) and set `map_public_ip_on_launch` from `public`." },
+    { "id": "t4", "text": "Create `aws_security_group.web` named `<environment>-web` in the shared VPC with one TCP ingress rule from `0.0.0.0/0` per port in `var.ingress_ports`. Use a `dynamic` block." },
+    { "id": "t5", "text": "Add the outputs `subnet_ids` (a map of subnet key to subnet ID) and `public_subnet_ids` (a list with the IDs of the public subnets only). Apply everything." }
+  ]
+}
