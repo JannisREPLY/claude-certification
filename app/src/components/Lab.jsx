@@ -26,7 +26,7 @@ export default function Lab({ cert }) {
         setActive(s.active)
         if (cert.labs.some((l) => l.id === s.active)) setSelected(s.active)
       })
-      .catch(() => setError('The lab service is not reachable. Start the full stack with `docker compose up -d --build`.'))
+      .catch(() => setOnline(false))
   }, [cert])
 
   const start = async (lab) => {
@@ -67,6 +67,7 @@ export default function Lab({ cert }) {
     return (
       <div className="grid">
         {error && <pre className="card span2 lab-error">{error}</pre>}
+        {!online && <p className="card span2 hint">🔒 Labs run only in the local Docker stack (<code>docker compose up -d --build</code>, then open localhost:8080). Your lab progress is shown here.</p>}
         {cert.labs.map((l) => {
           const done = progress.labs[l.id]
           return (
@@ -75,7 +76,7 @@ export default function Lab({ cert }) {
               <p className="hint">Objective {l.objectives.join(', ')} · {l.tasks.length} tasks · about {l.minutes} min{done ? ` · ${Object.keys(done.tasks).length}/${l.tasks.length} tasks passed so far` : ''}</p>
               <div className="q-actions">
                 {active === l.id && <button className="btn primary" onClick={() => setSelected(l.id)}>Continue</button>}
-                <button className={`btn ${active === l.id ? '' : 'primary'}`} disabled={!!busy || !online} onClick={() => start(l)}>
+                <button className={`btn ${active === l.id ? '' : 'primary'}`} disabled={!!busy || !online} title={online ? undefined : 'Needs the local Docker stack'} onClick={() => start(l)}>
                   {busy === 'start' ? '⏳ Setting up…' : active === l.id ? '↺ Restart' : '▶ Start'}
                 </button>
               </div>

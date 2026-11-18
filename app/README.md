@@ -9,7 +9,7 @@ cd app
 docker compose up -d --build
 ```
 
-Open http://localhost:8080 and pick a certification. Without Docker: `npm install && npm run dev` (no labs).
+Open http://localhost:8080 and pick a certification. Without Docker: `npm install && npm run dev` (labs and their progress are listed, but can't be started).
 
 The stack has three services and only listens on `127.0.0.1`:
 
@@ -23,7 +23,7 @@ AWS state lives in memory: after a restart of the stack, restart the lab.
 
 ## Phone
 
-`.github/workflows/app-pages.yml` deploys a static build without labs (`VITE_NO_LABS=true npm run build`) to GitHub Pages on every push to `main` that touches `app/`. Open it on the phone and use "Add to Home Screen" to run it as an app.
+`.github/workflows/app-pages.yml` deploys a static build to GitHub Pages on every push to `main` that touches `app/`. Open it on the phone and use "Add to Home Screen" to run it as an app.
 
 Sync: `.env` points at the Supabase project; the dashboard shows a Sync card (Google sign-in). Progress is stored per certification in `cert_progress` (`supabase/migrations/`), which only the owner account can read or write. The newest progress wins as a whole; it is pulled on sign-in and when the app comes back to the foreground, and pushed 1 s after each change. The first device that signs in with progress becomes the source. Without `.env` progress stays local; move it with Export/Import.
 
