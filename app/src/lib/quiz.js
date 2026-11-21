@@ -38,5 +38,9 @@ export function examScenarios(cert) {
 export function buildMockExam(cert, rand = Math.random) {
   const per = Math.floor(cert.exam.items / cert.exam.scenariosPerExam)
   const picked = shuffle(examScenarios(cert), rand).slice(0, cert.exam.scenariosPerExam)
-  return picked.flatMap((s) => shuffle(cert.questions.filter((q) => q.scenario === s.id), rand).slice(0, per))
+  return picked.flatMap((s) => {
+    const pool = shuffle(cert.questions.filter((q) => q.scenario === s.id), rand)
+    const required = Object.entries(cert.exam.minPerDomain || {}).flatMap(([d, n]) => pool.filter((q) => q.domain === d).slice(0, n))
+    return shuffle([...required, ...pool.filter((q) => !required.includes(q)).slice(0, per - required.length)], rand)
+  })
 }

@@ -1,0 +1,8 @@
+name,protocol,port,cidr,description
+https-public,tcp,443,0.0.0.0/0,Public HTTPS
+http-public,tcp,80,0.0.0.0/0,Public HTTP redirect
+ssh-admin,tcp,22,admin,SSH from the admin network
+app-office,tcp,8080,10.50.0.0/16,Tracking API from the office
+https-office,tcp,443,10.50.0.0/16,HTTPS from the office
+metrics-admin,tcp,9100,admin,Node exporter from the admin network
+dns-vpc,udp,53,172.31.0.0/16,DNS from the VPC

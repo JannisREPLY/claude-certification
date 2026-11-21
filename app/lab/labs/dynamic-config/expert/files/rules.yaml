@@ -1,0 +1,26 @@
+security_group:
+  name: orders-web
+  description: Orders web tier
+
+rules:
+  - name: http
+    port: 80
+    cidrs: ["0.0.0.0/0"]
+  - name: https
+    port: 443
+    cidrs: ["0.0.0.0/0", "::/0"]
+  - name: ssh
+    port: 22
+    cidrs: ["10.0.0.0/8"]
+  - name: telnet
+    port: 23
+    cidrs: ["10.0.0.0/8"]
+    enabled: false
+  - name: syslog
+    port: 514
+    protocol: udp
+    cidrs: ["0.0.0.0/0"]
+  - name: ephemeral
+    port: 32768
+    to_port: 60999
+    cidrs: ["10.0.0.0/8"]

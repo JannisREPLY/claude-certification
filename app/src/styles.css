@@ -228,6 +228,14 @@ button { font: inherit; color: inherit; }
 .lab-mark { flex-shrink: 0; }
 .lab-output, .lab-error { white-space: pre-wrap; font-size: .8rem; background: #0007; padding: 8px 10px; border-radius: 8px; margin: 8px 0 0; overflow-x: auto; }
 .lab-error { color: var(--bad); }
+.lab-levels { display: flex; flex-direction: column; gap: 6px; }
+.lab-level { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 10px; background: var(--panel2); border-radius: 10px; border: 1px solid transparent; }
+.lab-level > div:first-child { display: flex; flex-direction: column; }
+.lab-level.exam-like { border-color: var(--good); }
+.badge-exam { align-self: flex-start; font-size: .7rem; padding: 1px 6px; border-radius: 6px; background: var(--good); color: #000; margin: 2px 0; }
+.lab-validation { margin-top: 6px; padding: 6px 8px; border-left: 3px solid var(--good); background: #0003; border-radius: 4px; font-size: .9rem; }
+.lab-validation p { display: inline; }
+.exam-sections { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
 @media (max-width: 900px) { .lab { grid-template-columns: 1fr; height: auto; } .lab-editor { height: 70vh; } }
 
 @media (max-width: 600px) {

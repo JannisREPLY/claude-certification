@@ -1,0 +1,76 @@
+{
+  "id": "automation",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Run Terraform in a CI pipeline",
+  "objectives": ["3c", "1b"],
+  "domain": "d3",
+  "scenario": "Your organization releases the `payments` service from a CI job. For every build, the job checks out the repository into a fresh folder, sets `BUILD_VERSION` (for example `1.4.2`) and runs `ci.sh`. The job has no terminal, so nothing can answer a prompt. Several jobs can run at the same time.\n\nThe configuration in `/home/coder/lab` publishes the release manifest `stable/release.json` to the bucket `payments-releases`. Its variable `app_version` has no default. The state is stored in the S3 bucket `payments-tfstate` under the key `payments/terraform.tfstate`. The DynamoDB table `payments-tf-locks` (partition key `LockID`) exists, but the configuration does not use it yet. The configuration is initialized and was applied with `app_version = 1.0.0`. The current `ci.sh` does not work in CI.\n\nThe checks run your `ci.sh` like the CI job does: in a fresh copy of the lab folder without `.terraform`, with `BUILD_VERSION=<version> bash ci.sh < /dev/null`. The `aws` CLI is configured for the account and region `us-east-1`.",
+  "levels": {
+    "guided": {
+      "minutes": 35,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Make `ci.sh` run without prompts and apply a saved plan.\n\n- Pass `BUILD_VERSION` to Terraform as the environment variable `TF_VAR_app_version`, not with `-var`.\n- Every `terraform init`, `plan` and `apply` command uses `-input=false`.\n- Save the plan to `ci.tfplan` and apply exactly this file.\n\nHint: `export TF_VAR_app_version=\"$BUILD_VERSION\"` sets the [variable from the environment](https://developer.hashicorp.com/terraform/cli/config/environment-variables#tf_var_name). A saved plan is applied without a prompt: `terraform apply -input=false ci.tfplan`. See [Running Terraform in automation](https://developer.hashicorp.com/terraform/tutorials/automation/automate-terraform).",
+          "validation": "Run `BUILD_VERSION=1.1.0 bash ci.sh < /dev/null`. It should finish without a prompt, and `aws s3 cp s3://payments-releases/stable/release.json -` should show `\"version\":\"1.1.0\"`."
+        },
+        {
+          "id": "t2",
+          "text": "Apply only when the plan has changes.\n\n- Use `terraform plan -detailed-exitcode`. It exits with 0 (no changes), 1 (error) or 2 (changes).\n- No changes: skip the apply, exit 0.\n- Changes: apply `ci.tfplan`, exit 0.\n- Error: exit 1 without applying.\n\nHint: with `set -e` the script stops at exit code 2. Capture the code instead: `rc=0; terraform plan ... || rc=$?`, then `case $rc in ...`. See [`-detailed-exitcode`](https://developer.hashicorp.com/terraform/cli/commands/plan#detailed-exitcode).",
+          "validation": "Run `BUILD_VERSION=1.2.0 bash ci.sh < /dev/null` twice. The second run should not run `terraform apply`. `BUILD_VERSION=latest bash ci.sh < /dev/null; echo $?` should print `1`."
+        },
+        {
+          "id": "t3",
+          "text": "Enable state locking, so two jobs can't write the state at the same time.\n\n- Add `dynamodb_table = \"payments-tf-locks\"` to the `backend \"s3\"` block and initialize the lab folder again. The state must not move.\n- `ci.sh` must wait up to 2 minutes when another job holds the lock.\n\nHint: a changed backend block needs [`terraform init -reconfigure`](https://developer.hashicorp.com/terraform/cli/commands/init#backend-initialization) (same state location, nothing to migrate). Add `-lock-timeout=2m` to `plan` and `apply`. See the [S3 backend](https://developer.hashicorp.com/terraform/language/backend/s3) docs.",
+          "validation": "While another job holds the lock, `BUILD_VERSION=1.3.0 bash ci.sh < /dev/null` should wait and then finish. `terraform state list` should still show `aws_s3_object.release`."
+        }
+      ]
+    },
+    "exam": {
+      "minutes": 45,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Make `ci.sh` safe to run in the CI job.\n\n- No command may wait for input.\n- Run Terraform in automation mode (`TF_IN_AUTOMATION`).\n- Pass `BUILD_VERSION` to Terraform through `TF_VAR_app_version`, not with `-var`.\n- Save the plan to `ci.tfplan` and apply only this file.",
+          "validation": "Run `BUILD_VERSION=1.1.0 bash ci.sh < /dev/null`. It should finish without a prompt, and `aws s3 cp s3://payments-releases/stable/release.json -` should show `\"version\":\"1.1.0\"`."
+        },
+        {
+          "id": "t2",
+          "text": "Apply only when needed.\n\n- Use `-detailed-exitcode`.\n- No changes: no apply, exit 0. Changes: apply `ci.tfplan`, exit 0. Plan error: exit 1, nothing applied.",
+          "validation": "Run `BUILD_VERSION=1.2.0 bash ci.sh < /dev/null` twice. The second run should not apply. `BUILD_VERSION=latest bash ci.sh < /dev/null; echo $?` should print `1`."
+        },
+        {
+          "id": "t3",
+          "text": "Enable state locking with the DynamoDB table `payments-tf-locks`.\n\n- The state must stay at `s3://payments-tfstate/payments/terraform.tfstate`. Nothing may be recreated.\n- When another job holds the lock, `ci.sh` must wait up to 2 minutes instead of failing.\n- Locking must not be disabled.",
+          "validation": "While another job holds the lock, `BUILD_VERSION=1.3.0 bash ci.sh < /dev/null` should wait and then finish. `terraform state list` should still show `aws_s3_object.release`."
+        }
+      ]
+    },
+    "expert": {
+      "minutes": 55,
+      "intro": "In this level a teammate who works with Terraform 1.7 changed `required_version`. The CI image ships Terraform 1.6.6. The nightly drift job of the platform team already uses the lock table `payments-tf-locks` for this state, and it crashed last night while it held the lock.",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Make `ci.sh` safe to run in the CI job.\n\n- `required_version` must accept Terraform 1.6.6 and later 1.x releases, but not 2.0.\n- No command may wait for input. Run Terraform in automation mode. Pass the version through `TF_VAR_app_version`, not with `-var`.\n- Save the plan to `ci.tfplan` and apply only this file. Do not use `-auto-approve`.\n- Use `-detailed-exitcode`. No changes: no apply, exit 0. Changes: apply, exit 0. Plan error: exit 1, nothing applied.",
+          "validation": "Run `BUILD_VERSION=1.1.0 bash ci.sh < /dev/null` twice. The first run should publish version `1.1.0`, the second should not apply. `BUILD_VERSION=latest bash ci.sh < /dev/null; echo $?` should print `1`."
+        },
+        {
+          "id": "t2",
+          "text": "Move the backend settings out of `main.tf` and enable locking and encryption.\n\n- The block in `main.tf` must be empty: `backend \"s3\" {}`.\n- Put `bucket`, `key`, `region`, `dynamodb_table = \"payments-tf-locks\"` and `encrypt = true` in the file `prod.s3.tfbackend`.\n- `ci.sh` initializes with this file. Initialize the lab folder with it too.\n- The state must stay where it is.",
+          "validation": "Run `terraform state list` in the lab folder. It should show `aws_s3_object.release`, and `.terraform/terraform.tfstate` should list `payments-tf-locks` as `dynamodb_table`."
+        },
+        {
+          "id": "t3",
+          "text": "Release the lock of the crashed nightly job, and make `ci.sh` wait up to 2 minutes for the locks of running jobs.\n\n- Release the lock with Terraform. Do not edit the lock table.\n- Locking must not be disabled.",
+          "validation": "While another job holds the lock, `BUILD_VERSION=1.3.0 bash ci.sh < /dev/null` should wait and then finish."
+        },
+        {
+          "id": "t4",
+          "text": "Gate destructive changes.\n\n- After every plan with changes, `ci.sh` writes the plan as JSON to `ci.tfplan.json`.\n- If the plan deletes or replaces any resource, `ci.sh` exits 3 without applying.\n- To test it: `TF_VAR_channel=beta` moves the manifest to a new key, so `aws_s3_object.release` is replaced.",
+          "validation": "Run `TF_VAR_channel=beta BUILD_VERSION=1.4.0 bash ci.sh < /dev/null; echo $?`. It should print `3`, `stable/release.json` should be unchanged, and `ci.tfplan.json` should show the replacement."
+        }
+      ]
+    }
+  }
+}

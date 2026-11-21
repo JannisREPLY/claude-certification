@@ -18,3 +18,21 @@ services:
       default:
         aliases:
           - tfstate-lab.moto
+          - orders-artifacts.moto
+          - orders-reports.moto
+          - platform-artifacts.moto
+          - nw-bf-tfstate.moto
+          - nw-bf-manifests.moto
+          - nw-bf-legacy-exports.moto
+          - nw-dr-primary-data.moto
+          - nw-dr-backup-123456789012.moto
+          - nw-sto-manifests.moto
+          - nw-sto-invoices.moto
+          - nw-sto-archive.moto
+          - vt-orders-config.moto
+          - vt-orders-config-test.moto
+          - storefront-artifacts.moto
+          - payments-tfstate.moto
+          - payments-releases.moto
+          - acme-reports-east.moto
+          - acme-reports-west.moto

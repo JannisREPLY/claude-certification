@@ -69,18 +69,22 @@ Create `src/certs/<cert-id>/content.json`. It is picked up automatically; with m
 
 Create `lab/labs/<lab-id>/`:
 
-- `lab.json`: `id`, `cert` (certification id), `title`, `objectives`, `domain`, `minutes`, `intro` and `tasks` (`id`, `text`, both Markdown)
-- `files/`: copied into the empty lab folder `/home/coder/lab`
-- `setup.sh`: runs in the lab folder after the AWS account is reset (e.g. `terraform apply`, create resources by hand, cause drift)
-- `checks/<task-id>.sh`: exit code 0 = task passed; the output is shown to the learner. `source "$LIB"` for helpers (`require_init`, `state_attr`, `expect_no_changes`, `plan_json`, …)
+- `lab.json`: `id`, `cert`, `title`, `objectives`, `domain`, `scenario` (Markdown, shared by all levels) and `levels`. Practice labs have the levels `guided`, `exam` and `expert`, each with `minutes`, optional `intro` and its own `tasks` (`id`, `text`, `validation`, all Markdown). `exam` is shown as "like the exam" and is the level that counts towards readiness. Mock exam labs set `"mock": true` and have only `exam`.
+- `files/`: copied into the empty lab folder; `<level>/files/` is copied on top for one level.
+- `setup.sh` (or `<level>/setup.sh`): runs in the lab folder after the AWS account is reset. Env: `LEVEL`, `LAB_DIR`, `LEVEL_DIR`, `LAB_STATE` (folder for facts like IDs).
+- `<level>/checks/<task-id>.sh`: exit code 0 = task passed; the output is shown to the learner. `source "$LIB"` for helpers (`require_init`, `state_attr`, `expect_no_changes`, `expect_clean_plan`, `expect_nothing_destroyed`, `config_json`, …).
 
-Rebuild with `docker compose up -d --build`. The app reads `lab.json` at build time, the grader at runtime.
+Write tasks like the exam: a business scenario, then each task as one imperative sentence with requirement bullets (exact names and addresses), and a `validation` line ("Run `terraform plan`. The output should …"). Use the AWS resources from HashiCorp's exam content list.
 
-Add `lab/solutions/<lab-id>.sh` (not copied into the image) and run `lab/test-labs.sh [lab-id]`: it starts each lab, expects every task to fail, runs the solution and expects every task to pass. S3 buckets that Terraform addresses need a network alias `<bucket>.moto` on the `moto` service in `compose.yaml`.
+Add `lab/solutions/<lab-id>/<level>.sh` (not copied into the image) and run `lab/test-labs.sh [lab-id[:level]]`: it starts each level, expects every task to fail, runs the solution and expects every task to pass. An optional `<level>.wrong-<task>.sh` is a plausible wrong solution after which `<task>` must fail. `lab/test-labs.sh --exam` does the same for the mock exam. `COMPOSE_PROJECT_NAME` selects the stack, so tests can run in a separate stack (`COMPOSE_PROJECT_NAME=labtest docker compose up -d --build lab moto`). S3 buckets that Terraform addresses need fixed names and a network alias `<bucket>.moto` on the `moto` service in `compose.yaml`.
+
+## Mock exam
+
+With mock labs, the mock exam is the full exam: all mock labs plus `exam.items` questions in `exam.minutes`, with `exam.minPerDomain` questions per domain. The grader sets up every mock lab in `/home/coder/exam/<lab-id>` in one emulated AWS account (so mock labs prefix their resource names), and grades them only on submit. Each lab and the question block count equally. Practice labs can't start while an exam runs without ending it. Without the lab stack the mock exam is questions only (`exam.questionMinutes`). The running exam is kept in localStorage, so a reload continues it.
 
 ## How readiness works
 
 - Each question is a spaced-repetition card (boxes 0–5, intervals 1/3/7/14/30 days). A correct answer only moves it up when the card is due; a wrong answer resets it.
 - Domain mastery = average card mastery (box 4 = 100%). Readiness % = domain mastery weighted like the exam; the pass line is the pass mark converted to a percentage (720 on 100–1000 → 69%).
-- Lab tasks count towards their lab's domain: a task passed once counts as mastered.
-- **Exam ready** = readiness ≥ pass line, every domain ≥ 60%, all lessons studied, the latest mock exam passed, and (if the certification has labs) every lab passed in one check.
+- Lab tasks of the exam level count towards their lab's domain: a task passed once counts as mastered.
+- **Exam ready** = readiness ≥ pass line, every domain ≥ 60%, all lessons studied, the latest mock exam passed (the full mock exam if the certification has mock labs), and (if the certification has labs) every lab passed at exam level in one check.

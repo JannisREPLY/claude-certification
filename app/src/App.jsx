@@ -45,7 +45,7 @@ function Shell({ cert, onBack }) {
   }
 
   return (
-    <div className={`app ${tab === 'lab' ? 'wide' : ''}`}>
+    <div className={`app ${tab === 'lab' || (tab === 'exam' && cert.mockLabs.length) ? 'wide' : ''}`}>
       <header className="topbar">
         <div className="brand">
           <span className="logo">🎓</span>

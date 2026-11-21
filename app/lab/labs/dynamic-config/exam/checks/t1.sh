@@ -1,0 +1,5 @@
+source "$LIB"
+[ -d .terraform ] || fail "Run terraform init first."
+grep -A1 'provider "registry.terraform.io/hashicorp/aws"' .terraform.lock.hcl 2> /dev/null | grep -q 'version *= *"5\.' || fail ".terraform.lock.hcl does not select AWS provider 5.x."
+terraform plan -lock=false -input=false -refresh=false -no-color > "$CHECK_TMP/t1.log" 2>&1 || fail "terraform plan fails:"$'\n'"$(tail -n 12 "$CHECK_TMP/t1.log")"
+pass "terraform plan runs with AWS provider 5.x."

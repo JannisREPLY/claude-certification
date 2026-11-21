@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "environment=${environment}" > /etc/orders-worker.conf
+yum install -y ${packages}
+systemctl start orders-worker

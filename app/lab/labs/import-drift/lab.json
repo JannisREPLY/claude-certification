@@ -2,32 +2,84 @@
   "id": "import-drift",
   "cert": "terraform-authoring-ops-advanced",
   "title": "Import resources and reconcile drift",
-  "objectives": [
-    "1e"
-  ],
+  "objectives": ["1e"],
   "domain": "d1",
-  "minutes": 30,
-  "intro": "Your team manages an app VPC and subnet with Terraform. Someone created a legacy VPC and security group by hand, and someone else changed tags in the console.\n\nThe configuration is in `/home/coder/lab` and is already initialized and applied. Open a terminal in the editor via **☰ → Terminal → New Terminal**. The `aws` CLI talks to the emulated AWS account, region `us-east-1`.",
-  "tasks": [
-    {
-      "id": "t1",
-      "text": "Bring the VPC tagged `Name = legacy-vpc` under Terraform management as `aws_vpc.legacy`. Use an `import` block. Afterwards `terraform plan` must show no changes for it."
+  "scenario": "Your organization is moving the `orders` application to Terraform. Before the move, the operations team launched the EC2 instance `legacy-api`, its security group `legacy-api-sg` and the IAM role `legacy-api-role` in the AWS console. The configuration in `/home/coder/lab` already manages the application's S3 buckets and has been applied. Since the last apply, someone has also changed the buckets in the console.\n\nThe configuration is initialized. The `aws` CLI is configured for the account and region `us-east-1`.",
+  "levels": {
+    "guided": {
+      "minutes": 35,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Bring the IAM role `legacy-api-role` under Terraform management.\n\n- The resource address must be `aws_iam_role.legacy_api`.\n- Use an `import` block. The import ID of an IAM role is its name.\n- Write a matching `resource` block yourself, then run `terraform apply`.\n\nHint: the [import block](https://developer.hashicorp.com/terraform/language/import) docs show an example. Copy the trust policy from `aws iam get-role --role-name legacy-api-role` and wrap it in `jsonencode()`.",
+          "validation": "Run `terraform state list`. The output should include `aws_iam_role.legacy_api`, and `terraform plan` should report no changes for it."
+        },
+        {
+          "id": "t2",
+          "text": "Bring the EC2 instance tagged `Name = legacy-api` under management as `aws_instance.legacy_api`.\n\n- Look up the instance ID with `aws ec2 describe-instances`.\n- Add an `import` block, then let Terraform write the resource block: `terraform plan -generate-config-out=generated.tf`.\n- Review `generated.tf`: remove arguments that cause errors or conflicts, then apply.\n- The instance must not be replaced.",
+          "validation": "Run `terraform plan`. It should not show `aws_instance.legacy_api` at all."
+        },
+        {
+          "id": "t3",
+          "text": "Someone changed the `Environment` tag of the bucket `orders-artifacts` to `dev` and added the tag `CostCenter = cc-4711`. Both changes were made outside Terraform.\n\n- The `Environment` tag must be `prod` again.\n- The `CostCenter` tag is approved: keep it in AWS and add it to the configuration.\n\nHint: `terraform plan -refresh-only` shows what changed in AWS.",
+          "validation": "Run `aws s3api get-bucket-tagging --bucket orders-artifacts`. The output should show `Environment = prod` and `CostCenter = cc-4711`."
+        },
+        {
+          "id": "t4",
+          "text": "Finish with a clean workspace.",
+          "validation": "Run `terraform plan`. The output should end with `No changes. Your infrastructure matches the configuration.`"
+        }
+      ]
     },
-    {
-      "id": "t2",
-      "text": "Bring the security group named `legacy-web` under management as `aws_security_group.legacy_web`, without changing it. Its rules must stay as they are."
+    "exam": {
+      "minutes": 45,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Import the EC2 instance tagged `Name = legacy-api` and the IAM role `legacy-api-role` into the configuration.\n\n- Use `import` blocks.\n- The resource addresses must be `aws_instance.legacy_api` and `aws_iam_role.legacy_api`.\n- Neither resource may be modified or replaced.",
+          "validation": "Run `terraform plan`. The plan should not propose any change to `aws_instance.legacy_api` or `aws_iam_role.legacy_api`."
+        },
+        {
+          "id": "t2",
+          "text": "Import the security group `legacy-api-sg` as `aws_security_group.legacy_api`.\n\n- Its existing ingress rule must remain unchanged.\n- `aws_instance.legacy_api` must reference the security group through `aws_security_group.legacy_api.id` instead of a hard-coded ID.",
+          "validation": "Run `aws ec2 describe-security-groups --group-names legacy-api-sg`. The HTTPS ingress rule should still exist, and `terraform plan` should report no changes for the security group."
+        },
+        {
+          "id": "t3",
+          "text": "The tags of the bucket `orders-artifacts` were changed outside Terraform.\n\n- The change to `Environment` was not approved. Restore the value from the configuration.\n- The new tag `CostCenter` was approved. Keep it.",
+          "validation": "Run `aws s3api get-bucket-tagging --bucket orders-artifacts`. The output should show `Environment = prod` and `CostCenter = cc-4711`."
+        },
+        {
+          "id": "t4",
+          "text": "The analytics team takes over the bucket `orders-reports` and will manage it in its own configuration.\n\n- Stop managing the bucket in this configuration.\n- The bucket must not be deleted.\n- Finish with a clean workspace.",
+          "validation": "Run `aws s3api head-bucket --bucket orders-reports`, which should succeed. `terraform state list` should not include `aws_s3_bucket.reports`, and `terraform plan` should report no changes."
+        }
+      ]
     },
-    {
-      "id": "t3",
-      "text": "Someone changed the `Environment` tag of the app VPC to `prod` in the console. That change was not approved: the VPC must be back to `Environment = dev`."
-    },
-    {
-      "id": "t4",
-      "text": "Someone added the tag `Owner = platform` to the app subnet. The team wants to keep it. Make the configuration match, and make sure the tag still exists in AWS."
-    },
-    {
-      "id": "t5",
-      "text": "Finish with a clean workspace: `terraform plan` reports no changes."
+    "expert": {
+      "minutes": 50,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Import the EC2 instance `legacy-api`, its security group `legacy-api-sg`, the IAM role `legacy-api-role` and the instance profile `legacy-api-profile`.\n\n- Addresses: `aws_instance.legacy_api`, `aws_security_group.legacy_api`, `aws_iam_role.legacy_api`, `aws_iam_instance_profile.legacy_api`.\n- The instance must reference the security group and the instance profile, and the instance profile must reference the role. No hard-coded IDs or names in those arguments.\n- Nothing may be modified or replaced.",
+          "validation": "Run `terraform plan`. The plan should report no changes for these four resources."
+        },
+        {
+          "id": "t2",
+          "text": "Three worker instances, `legacy-worker-a`, `legacy-worker-b` and `legacy-worker-c`, were launched by hand.\n\n- Manage them with a single `aws_instance.worker` resource that uses `for_each` with the keys `a`, `b` and `c`.\n- Each worker must keep its instance ID.",
+          "validation": "Run `terraform state list`. The output should include `aws_instance.worker[\"a\"]`, `aws_instance.worker[\"b\"]` and `aws_instance.worker[\"c\"]`."
+        },
+        {
+          "id": "t3",
+          "text": "Reconcile the bucket `orders-artifacts`.\n\n- Restore the unapproved change to `Environment` and keep the approved tag `CostCenter`.\n- Rename the resource to `aws_s3_bucket.build_artifacts` without recreating the bucket.",
+          "validation": "Run `terraform state list`. The output should include `aws_s3_bucket.build_artifacts`, and `aws s3api get-bucket-tagging --bucket orders-artifacts` should show `Environment = prod` and `CostCenter = cc-4711`."
+        },
+        {
+          "id": "t4",
+          "text": "Hand the bucket `orders-reports` over to the analytics team. Stop managing it here without deleting it, and remove its configuration. Finish with a clean workspace.",
+          "validation": "Run `aws s3api head-bucket --bucket orders-reports`, which should succeed, and `terraform plan` should report no changes."
+        }
+      ]
     }
-  ]
+  }
 }

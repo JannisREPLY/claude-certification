@@ -4,14 +4,83 @@
   "title": "Plan, apply and destroy with CLI options",
   "objectives": ["1a", "1b", "1c", "1d"],
   "domain": "d1",
-  "minutes": 30,
-  "intro": "A small network is deployed from `/home/coder/lab` with the default variable values (`environment = \"dev\"`). The configuration is initialized and applied. Open a terminal via **☰ → Terminal → New Terminal**.",
-  "tasks": [
-    { "id": "t1", "text": "Save a plan for production to the file `tfplan` in the lab folder. It must use the values from `prod.tfvars`." },
-    { "id": "t2", "text": "Apply exactly the saved plan `tfplan`, so the VPC and subnet carry `Environment = prod`." },
-    { "id": "t3", "text": "The subnet is broken. Recreate **only** the subnet, without editing any file. The VPC must keep its ID." },
-    { "id": "t4", "text": "The security group `debug` is no longer needed. Destroy only this security group, then remove it from the configuration." },
-    { "id": "t5", "text": "Protect the VPC so that any plan that would destroy it fails." },
-    { "id": "t6", "text": "Finish clean: `terraform plan -var-file=prod.tfvars` reports no changes." }
-  ]
+  "scenario": "Your organization runs the `storefront` web tier from the configuration in `/home/coder/lab`: web instances in a default VPC subnet (AMI from the `aws_ami` data source), the security group `storefront-web`, the artifacts bucket `storefront-artifacts`, a `random_integer` build number, and a debug instance with its own security group `storefront-debug`. The configuration was initialized and applied with the default variable values (`environment = \"dev\"`). The production values are in `prod.tfvars`.\n\nSince the last apply, a teammate has changed the provider requirements in `main.tf`. The tags of `storefront-artifacts` are managed by the FinOps team's tagging tool, so the configuration ignores tag changes on this bucket.\n\nThe `aws` CLI is configured for the account and region `us-east-1`.",
+  "levels": {
+    "guided": {
+      "minutes": 35,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "`terraform plan` fails since the teammate's change. Make the workspace work with the new version constraint of the `random` provider.\n\n- Do not change `main.tf`.\n- `random_integer.build` must not be replaced.\n\nHint: read the error message of `terraform plan`. [`terraform init -upgrade`](https://developer.hashicorp.com/terraform/cli/commands/init#upgrade) updates the provider selections in `.terraform.lock.hcl` within the constraints.",
+          "validation": "Run `terraform version`. The output should list `provider registry.terraform.io/hashicorp/random v3.6.3`."
+        },
+        {
+          "id": "t2",
+          "text": "Deploy production with a saved plan.\n\n- Save the plan with the values from `prod.tfvars` to the file `prod.tfplan` in the lab folder.\n- Apply exactly this plan file.\n\nHint: [`terraform plan -var-file=prod.tfvars -out=prod.tfplan`](https://developer.hashicorp.com/terraform/cli/commands/plan#out-filename), then `terraform apply prod.tfplan`. A saved plan is applied without a confirmation prompt and without `-var-file`.",
+          "validation": "Run `aws ec2 describe-instances --filters 'Name=tag:Name,Values=storefront-web-*'`. Both web instances should carry the tag `Environment = prod`."
+        },
+        {
+          "id": "t3",
+          "text": "The instance `aws_instance.web[1]` is unhealthy. Replace it.\n\n- Do not edit any file.\n- No other resource may be replaced or changed.\n\nHint: [`-replace`](https://developer.hashicorp.com/terraform/cli/commands/plan#replace-address) takes the resource address. Quote it in the shell because of the brackets: `-replace='aws_instance.web[1]'`. Keep using `-var-file=prod.tfvars`, otherwise Terraform also sets the tags back to `dev`.",
+          "validation": "Run `terraform state show 'aws_instance.web[1]'`. The instance should have a new ID, and `aws_instance.web[0]` should keep its ID."
+        },
+        {
+          "id": "t4",
+          "text": "The debugging session is over. Remove `aws_instance.debug` and `aws_security_group.debug`, and finish with a clean workspace.\n\n- Destroy only these two resources with a targeted destroy.\n- Then delete both resource blocks from `main.tf`.\n\nHint: [`terraform destroy -target=...`](https://developer.hashicorp.com/terraform/cli/commands/plan#target-address) accepts the option several times. Pass `-var-file=prod.tfvars` here as well.",
+          "validation": "Run `terraform plan -var-file=prod.tfvars`. The output should end with `No changes. Your infrastructure matches the configuration.`"
+        }
+      ]
+    },
+    "exam": {
+      "minutes": 45,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Make the workspace work again after the teammate's change, then deploy production with a saved plan.\n\n- Do not change the version constraints in `main.tf`.\n- `random_integer.build` must not be replaced.\n- Save the plan with the values from `prod.tfvars` to the file `prod.tfplan` in the lab folder, and apply exactly this plan file.",
+          "validation": "Run `aws ec2 describe-instances --filters 'Name=tag:Name,Values=storefront-web-*'`. Both web instances should carry the tag `Environment = prod`, and `terraform version` should list `hashicorp/random v3.6.3`."
+        },
+        {
+          "id": "t2",
+          "text": "The instance `aws_instance.web[1]` is unhealthy. Replace it.\n\n- Do not edit any file.\n- No other resource may be replaced or changed.",
+          "validation": "Run `terraform state show 'aws_instance.web[1]'`. The instance should have a new ID, and `aws_instance.web[0]` should keep its ID."
+        },
+        {
+          "id": "t3",
+          "text": "The debugging session is over. Destroy `aws_instance.debug` and `aws_security_group.debug`, then remove them from the configuration.\n\n- Destroy only these two resources.\n- No other resource may be replaced or changed.",
+          "validation": "Run `aws ec2 describe-security-groups --filters Name=group-name,Values=storefront-debug`. The output should list no security group, and `terraform state list` should not include the debug resources."
+        },
+        {
+          "id": "t4",
+          "text": "Harden the workspace and finish clean.\n\n- Any plan that would destroy `aws_s3_bucket.artifacts` must fail.\n- The FinOps team added the tag `CostCenter = cc-2201` to `storefront-artifacts`. Make `terraform output artifacts_tags` show the bucket's current tags without changing any infrastructure. Do not add the tag to the configuration.\n- `terraform plan -var-file=prod.tfvars` must report no changes.",
+          "validation": "Run `terraform plan -destroy -var-file=prod.tfvars`. It should fail with `Instance cannot be destroyed` for `aws_s3_bucket.artifacts`, and `terraform output artifacts_tags` should include `CostCenter`."
+        }
+      ]
+    },
+    "expert": {
+      "minutes": 50,
+      "intro": "In this level the web tier has three instances, `aws_instance.web[\"a\"]`, `aws_instance.web[\"b\"]` and `aws_instance.web[\"c\"]`, created with `for_each`.",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Make the workspace work again after the teammate's change, then deploy production with a saved plan.\n\n- Do not change the version constraints in `main.tf`.\n- `random_integer.build` must not be replaced.\n- Save the plan with the values from `prod.tfvars` to the file `prod.tfplan` in the lab folder, and apply exactly this plan file.",
+          "validation": "Run `aws ec2 describe-instances --filters 'Name=tag:Name,Values=storefront-web-*'`. All three web instances should carry the tag `Environment = prod`."
+        },
+        {
+          "id": "t2",
+          "text": "Replace the instance `aws_instance.web[\"b\"]`.\n\n- Do not edit any file.\n- No other resource may be replaced or changed.",
+          "validation": "Run `terraform state show 'aws_instance.web[\"b\"]'`. The instance should have a new ID, and the other two web instances should keep their IDs."
+        },
+        {
+          "id": "t3",
+          "text": "Destroy `aws_instance.debug` and `aws_security_group.debug`, then remove them from the configuration.\n\n- Use a targeted destroy. No other resource may be destroyed, replaced or changed.",
+          "validation": "Run `aws ec2 describe-security-groups --filters Name=group-name,Values=storefront-debug`. The output should list no security group, and `terraform state list` should not include the debug resources."
+        },
+        {
+          "id": "t4",
+          "text": "Harden the workspace and finish clean.\n\n- Any plan that would destroy `aws_s3_bucket.artifacts` or one of the web instances must fail.\n- Make `terraform output artifacts_tags` show the bucket's current tags, including the FinOps tag `CostCenter`, without changing any infrastructure or the bucket's configuration.\n- `terraform plan -var-file=prod.tfvars` must report no changes.",
+          "validation": "Run `terraform plan -destroy -var-file=prod.tfvars`. It should fail with `Instance cannot be destroyed` for the bucket and all three web instances, and `terraform plan -var-file=prod.tfvars` should report no changes."
+        }
+      ]
+    }
+  }
 }

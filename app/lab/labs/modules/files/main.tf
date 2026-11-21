@@ -11,28 +11,28 @@ provider "aws" {
   region = "us-east-1"
 }
 
-variable "subnet_cidrs" {
-  type    = list(string)
-  default = ["10.0.1.0/24", "10.0.2.0/24"]
+data "aws_vpc" "default" {
+  default = true
 }
 
-resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
-
-  tags = {
-    Name = "main"
-  }
+data "aws_subnet" "a" {
+  vpc_id            = data.aws_vpc.default.id
+  availability_zone = "us-east-1a"
+  default_for_az    = true
 }
 
-resource "aws_subnet" "public" {
-  count = length(var.subnet_cidrs)
+module "app" {
+  source = "./modules/app"
 
-  vpc_id     = aws_vpc.main.id
-  cidr_block = var.subnet_cidrs[count.index]
+  name      = "orders"
+  vpc_id    = data.aws_vpc.default.id
+  subnet_id = data.aws_subnet.a.id
+  policies = [
+    { name = "s3-read", actions = ["s3:GetObject", "s3:ListBucket"] },
+    { name = "logs-write", actions = ["logs:CreateLogStream", "logs:PutLogEvents"] },
+  ]
 }
 
-resource "aws_security_group" "web" {
-  name        = "web"
-  description = "Web access"
-  vpc_id      = aws_vpc.main.id
+output "asg_name" {
+  value = module.app.asg_name
 }

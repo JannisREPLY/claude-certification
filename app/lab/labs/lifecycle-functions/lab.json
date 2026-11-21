@@ -1,0 +1,88 @@
+{
+  "id": "lifecycle-functions",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Lifecycle rules and functions for an Auto Scaling group",
+  "objectives": [
+    "2c",
+    "2d"
+  ],
+  "domain": "d2",
+  "scenario": "Your organization runs the `orders` job workers in the Auto Scaling group `orders-workers`. The configuration in `/home/coder/lab` creates the launch template `orders-worker`, the group, and the IAM role and instance profile of the workers. It has been applied.\n\nSince the last apply, the scaling policy scaled the group from 2 to 4 instances outside Terraform. The application team has also delivered the boot script template `worker.sh.tftpl`, which should replace the static `bootstrap.sh`. The workers still have no security group of their own.\n\nThe folder is initialized. The `aws` CLI is configured for the account and region `us-east-1`.",
+  "levels": {
+    "guided": {
+      "minutes": 35,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Stop Terraform from scaling `orders-workers` back to 2 instances.\n\n- Add a `lifecycle` block with `ignore_changes = [desired_capacity]` to `aws_autoscaling_group.worker`.\n- The group must keep its 4 instances and must not be replaced.\n\nHint: run `terraform plan` before and after the change. See [ignore_changes](https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#ignore_changes).",
+          "validation": "Run `terraform plan`. It should not propose a change to `desired_capacity`, and `aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names orders-workers` should show `DesiredCapacity` 4."
+        },
+        {
+          "id": "t2",
+          "text": "Render the user data of the launch template from `worker.sh.tftpl`.\n\n- Set `user_data = base64encode(templatefile(\"${path.module}/worker.sh.tftpl\", { ... }))` and pass `environment` and `packages` from the variables.\n- Make the group use the new launch template version: set `version = aws_launch_template.worker.latest_version` instead of `$Latest`.\n- The launch template must not be replaced. Apply.\n\nHint: see the [templatefile function](https://developer.hashicorp.com/terraform/language/functions/templatefile).",
+          "validation": "Run `aws ec2 describe-launch-template-versions --launch-template-name orders-worker --versions '$Latest'` and decode `UserData` with `base64 -d`. It should contain `environment=prod` and one `yum install` line per package."
+        },
+        {
+          "id": "t3",
+          "text": "Give the workers their own security group.\n\n- Create `random_integer.suffix` with `min = 1000` and `max = 9999`.\n- Create `aws_security_group.worker` named `orders-worker-<suffix>` in the default VPC, with `create_before_destroy = true`.\n- Attach it to the launch template with `vpc_security_group_ids`. Apply.\n\nHint: a security group name must be unique, so `create_before_destroy` only works with a name that changes. See [create_before_destroy](https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#create_before_destroy) and [random_integer](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/integer).",
+          "validation": "Run `terraform plan -replace=aws_security_group.worker`. The plan should create the replacement security group before it destroys the old one."
+        },
+        {
+          "id": "t4",
+          "text": "Allow every port in `var.worker_ports` from every CIDR in `var.trusted_cidrs`.\n\n- Create `aws_vpc_security_group_ingress_rule.worker` (TCP) with `for_each` over all combinations, keyed `\"<port>-<cidr>\"` (for example `worker[\"8080-10.0.0.0/8\"]`).\n- Apply and finish with a clean plan.\n\nHint: `setproduct(var.worker_ports, var.trusted_cidrs)` returns all pairs; turn it into a map with a `for` expression. See [setproduct](https://developer.hashicorp.com/terraform/language/functions/setproduct).",
+          "validation": "Run `terraform state list`. It should list four `aws_vpc_security_group_ingress_rule.worker` instances, and `terraform plan` should report no changes."
+        }
+      ]
+    },
+    "exam": {
+      "minutes": 45,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Reconcile `aws_autoscaling_group.worker` with how it is operated.\n\n- The desired capacity is managed by autoscaling, not Terraform. It must stay at 4.\n- The group must always use the newest version of `aws_launch_template.worker`, and a new version must show up in `terraform plan`.\n- The group must only be created or updated after `aws_iam_role_policy_attachment.worker`. Declare this dependency explicitly.\n- The group must not be replaced.",
+          "validation": "Run `terraform plan`. It should not propose a change to `desired_capacity`, and the group's launch template version in AWS should equal the latest version of `orders-worker`."
+        },
+        {
+          "id": "t2",
+          "text": "Boot the workers with `worker.sh.tftpl` instead of `bootstrap.sh`.\n\n- Render it with `environment` and `packages` from the variables.\n- The launch template must not be replaced. Apply.",
+          "validation": "Run `aws ec2 describe-launch-template-versions --launch-template-name orders-worker --versions '$Latest'`. The decoded `UserData` should contain `environment=prod` and one `yum install -y <package>` line per package."
+        },
+        {
+          "id": "t3",
+          "text": "Create the security group of the workers and attach it to the launch template.\n\n- `aws_security_group.worker`, named `orders-worker-<n>` in the default VPC, where `<n>` comes from `random_integer.suffix` (1000–9999).\n- A replacement of the group must create the new group before the old one is destroyed.\n- `aws_vpc_security_group_ingress_rule.worker`: one TCP rule per combination of `var.worker_ports` and `var.trusted_cidrs`, keyed `\"<port>-<cidr>\"`.",
+          "validation": "Run `terraform plan -replace=aws_security_group.worker`. The new group should be created before the old one is destroyed. The group in AWS should have one ingress rule per port and CIDR."
+        },
+        {
+          "id": "t4",
+          "text": "Add an optional canary instance.\n\n- Declare `var.enable_canary` (`bool`, default `true`). `aws_instance.canary` must exist only when it is `true`; use `count`.\n- AMI from `data.aws_ami.al2`, instance type `var.instance_type`, the first of the sorted default-VPC subnet IDs, and `aws_security_group.worker`.\n- The canary must be replaced whenever the launch template gets a new version.\n- Output `canary_private_ip`: the canary's private IP, or `null` when there is no canary.\n- Apply.",
+          "validation": "Run `terraform plan -var environment=staging`. It should replace `aws_instance.canary[0]`. `terraform plan -var enable_canary=false` should destroy it and set `canary_private_ip` to null."
+        }
+      ]
+    },
+    "expert": {
+      "minutes": 55,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Reconcile `aws_autoscaling_group.worker` with how it is operated.\n\n- Autoscaling owns the desired capacity, which must stay at 4. Raise `max_size` to 8.\n- The group must use the newest launch template version, visible in `terraform plan`.\n- The group must explicitly depend on `aws_iam_role_policy_attachment.worker`.\n- The group must not be replaced.",
+          "validation": "Run `aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names orders-workers`. It should show `DesiredCapacity` 4, `MaxSize` 8 and the latest launch template version."
+        },
+        {
+          "id": "t2",
+          "text": "Boot the workers with the application team's `worker.sh.tftpl`, rendered with `environment` and `packages`.\n\n- The rendered script must install each package on its own `yum install -y <package>` line.\n- `bootstrap.sh` must no longer be used. The launch template must not be replaced.",
+          "validation": "Decode the `UserData` of the latest `orders-worker` launch template version. It should contain `environment=prod` and one `yum install -y` line per package."
+        },
+        {
+          "id": "t3",
+          "text": "Create the workers' security group `aws_security_group.worker` and attach it to the launch template.\n\n- Name `orders-worker-<n>` with `<n>` from `random_integer.suffix` (1000–9999). Description `var.sg_description`. Default VPC.\n- Changing `var.sg_description` replaces the group. When that happens, a new suffix must be generated and the new group must be created before the old one is destroyed.\n- `aws_vpc_security_group_ingress_rule.worker`: one TCP rule per combination of `var.worker_ports` and `var.trusted_cidrs`, keyed `\"<port>-<cidr>\"`, except the keys in `var.excluded_rules`.",
+          "validation": "Run `terraform plan -var 'sg_description=Orders workers v2'`. It should replace `random_integer.suffix` and create the new security group before destroying the old one."
+        },
+        {
+          "id": "t4",
+          "text": "Add an optional canary instance and publish the rule keys.\n\n- `var.enable_canary` (`bool`, default `true`) controls `aws_instance.canary` with `count`. AMI from `data.aws_ami.al2`, `var.instance_type`, the first sorted default-VPC subnet, `aws_security_group.worker`.\n- The canary must be replaced whenever the launch template gets a new version.\n- Outputs: `canary_private_ip` (`null` without a canary) and `worker_rule_keys` (sorted list of the ingress rule keys).\n- Apply and finish with a clean plan.",
+          "validation": "Run `terraform plan -var environment=staging`. It should replace `aws_instance.canary[0]`, and `terraform plan` without variables should report no changes."
+        }
+      ]
+    }
+  }
+}

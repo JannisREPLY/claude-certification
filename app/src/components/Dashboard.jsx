@@ -2,6 +2,7 @@ import { useProgress } from '../lib/store.jsx'
 import { DAILY_GOAL, dayKey, levelFor, currentStreak } from '../lib/game.js'
 import { isDue } from '../lib/srs.js'
 import { WEAK_DOMAIN } from '../lib/readiness.js'
+import { labPassed } from '../lib/labs.js'
 import ReadinessBar from './ReadinessBar.jsx'
 import SyncCard from './SyncCard.jsx'
 
@@ -13,7 +14,7 @@ export default function Dashboard({ cert, r, go }) {
   const unseen = cert.questions.filter((q) => !progress.cards[q.id]).length
   const weakest = [...r.domains].sort((a, b) => a.value - b.value)[0]
   const nextLesson = cert.lessons.find((l) => !progress.lessonsRead[l.id])
-  const nextLab = cert.labs.find((l) => !progress.labs[l.id]?.completed)
+  const nextLab = cert.labs.find((l) => !labPassed(progress, l.id))
   const accuracy = progress.answeredTotal ? Math.round((progress.correctTotal / progress.answeredTotal) * 100) : 0
 
   const exportData = () => {
@@ -48,7 +49,7 @@ export default function Dashboard({ cert, r, go }) {
           {nextLab && <button className="btn" onClick={() => go('lab')}>🧪 Lab: “{nextLab.title}”</button>}
           <button className="btn primary" onClick={() => go('practice', { mode: 'smart' })}>🎯 Smart session · {due} due · {unseen} new</button>
           {weakest && weakest.value < WEAK_DOMAIN && <button className="btn" onClick={() => go('practice', { mode: 'domain', id: weakest.id })}>💪 Drill weakest: {weakest.name}</button>}
-          <button className="btn" onClick={() => go('exam')}>📝 Mock exam ({cert.exam.items} Q · {cert.exam.minutes} min)</button>
+          <button className="btn" onClick={() => go('exam')}>📝 Mock exam ({cert.mockLabs.length ? `${cert.mockLabs.length} labs + ` : ''}{cert.exam.items} Q · {cert.exam.minutes} min)</button>
         </div>
       </section>
 

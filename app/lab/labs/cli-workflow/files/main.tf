@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "3.1.0"
+    }
   }
 }
 
@@ -16,27 +20,95 @@ variable "environment" {
   default = "dev"
 }
 
-resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
+data "aws_ami" "al2" {
+  most_recent = true
+  owners      = ["amazon"]
 
-  tags = {
-    Name        = "main"
-    Environment = var.environment
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*"]
   }
 }
 
-resource "aws_subnet" "app" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.1.0/24"
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_subnet" "web" {
+  vpc_id            = data.aws_vpc.default.id
+  availability_zone = "us-east-1a"
+  default_for_az    = true
+}
+
+resource "random_integer" "build" {
+  min = 1000
+  max = 9999
+}
+
+resource "aws_security_group" "web" {
+  name        = "storefront-web"
+  description = "Storefront web tier"
+  vpc_id      = data.aws_vpc.default.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "web" {
+  count = 2
+
+  ami                    = data.aws_ami.al2.id
+  instance_type          = "t3.micro"
+  subnet_id              = data.aws_subnet.web.id
+  vpc_security_group_ids = [aws_security_group.web.id]
 
   tags = {
-    Name        = "app"
+    Name        = "storefront-web-${count.index}"
     Environment = var.environment
+    Build       = random_integer.build.result
   }
 }
 
 resource "aws_security_group" "debug" {
-  name        = "debug"
-  description = "Temporary debug access"
-  vpc_id      = aws_vpc.main.id
+  name        = "storefront-debug"
+  description = "Temporary SSH access for debugging"
+  vpc_id      = data.aws_vpc.default.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/8"]
+  }
+}
+
+resource "aws_instance" "debug" {
+  ami                    = data.aws_ami.al2.id
+  instance_type          = "t3.micro"
+  subnet_id              = data.aws_subnet.web.id
+  vpc_security_group_ids = [aws_security_group.debug.id]
+
+  tags = {
+    Name = "storefront-debug"
+  }
+}
+
+resource "aws_s3_bucket" "artifacts" {
+  bucket = "storefront-artifacts"
+
+  tags = {
+    Team = "storefront"
+  }
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
+}
+
+output "artifacts_tags" {
+  value = aws_s3_bucket.artifacts.tags
 }

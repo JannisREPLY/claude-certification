@@ -34,3 +34,27 @@ expect_no_changes() {
   actions=$(plan_actions "$1")
   [ "$actions" = "no-op" ] || fail "terraform plan wants to change $1 (actions: $actions)."
 }
+
+expect_clean_plan() {
+  ensure_plan
+  local changes
+  changes=$(plan_json | jq -r '[.resource_changes[]? | select((.change.actions != ["no-op"] and .change.actions != ["read"]) or .change.importing != null) | "\(.address) (\(if .change.importing then "import" else .change.actions | join(",") end))"] | join(", ")')
+  [ -z "$changes" ] || fail "terraform plan is not clean: $changes"
+}
+
+expect_nothing_destroyed() {
+  ensure_plan
+  local gone
+  gone=$(plan_json | jq -r '[.resource_changes[]? | select(.change.actions | index("delete")) | .address] | join(", ")')
+  [ -z "$gone" ] || fail "terraform plan would destroy or replace: $gone"
+}
+
+addresses() { state_json | jq -r '.values.root_module? // {} | .. | objects | select(.address? and .mode? == "managed") | .address'; }
+
+has_address() { grep -qxF "$1" <<< "$(addresses)"; }
+
+config_json() { ensure_plan; plan_json | jq '.configuration'; }
+
+tf_files() { find "${1:-.}" -name '*.tf' -not -path '*/.terraform/*' -print0 | xargs -0 cat; }
+
+tf_has() { grep -qE "$1" <<< "$(tf_files "${2:-.}")"; }

@@ -1,0 +1,84 @@
+{
+  "id": "validation-testing",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Validate inputs, guard resources and test the configuration",
+  "objectives": [
+    "2a",
+    "2f"
+  ],
+  "domain": "d2",
+  "scenario": "Your organization's platform team publishes the configuration of the `orders` reporting server in `/home/coder/lab`. It creates the EC2 instance `orders-report` with its security group, and the S3 bucket `vt-orders-config` with the database connection file `config/db.json`, which contains the database password.\n\nOther teams copy this configuration and keep breaking it with invalid values. The security team found the database password in CI logs. You add input validation, custom conditions and automated tests, and you protect the secret.\n\nThe values are set in `terraform.tfvars`. The folder is initialized. Nothing has been applied yet. The `aws` CLI is configured for the account `123456789012` and region `us-east-1`. The target is Terraform 1.6.",
+  "levels": {
+    "guided": {
+      "minutes": 35,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Reject invalid input values at plan time.\n\n- `environment` may only be `dev`, `stage` or `prod`. Use `contains()` in a `validation` block.\n- `allowed_cidr` must be a valid IPv4 CIDR block. Use `can(cidrhost(var.allowed_cidr, 0))`.\n- Both error messages must explain the expected value.\n\nHint: see [input variable validation](https://developer.hashicorp.com/terraform/language/values/variables#custom-validation-rules). `can()` returns `false` instead of an error when a function fails.",
+          "validation": "Run `terraform plan -var environment=qa` and `terraform plan -var allowed_cidr=10.20.0.300/16`. Both should fail with `Invalid value for variable`."
+        },
+        {
+          "id": "t2",
+          "text": "Keep the database password out of the CLI output, then apply.\n\n- Set `sensitive = true` on `var.db_password`.\n- `terraform plan` will then fail on the output `db_config`. Mark the output `sensitive` too.\n- Apply the configuration.\n\nHint: `terraform output` hides sensitive outputs, but `terraform output -raw db_config` still prints the value, and the password is in plain text in `terraform.tfstate`. See [sensitive values](https://developer.hashicorp.com/terraform/language/values/outputs#sensitive-suppressing-values-in-cli-output).",
+          "validation": "Run `terraform output`. It should show `db_config = <sensitive>`, and `terraform output -raw db_config` should print the JSON document."
+        },
+        {
+          "id": "t3",
+          "text": "Write tests for the validation in `tests/validation.tftest.hcl`.\n\n- A run `valid` with `command = plan` and an `assert` that `aws_instance.report.instance_type` is `t3.micro`.\n- A run `invalid_cidr` with `command = plan` that sets `allowed_cidr = \"10.20.0.300/16\"` in a `variables` block and expects the failure with `expect_failures = [var.allowed_cidr]`.\n\nHint: run the tests with `terraform test`. See [tests](https://developer.hashicorp.com/terraform/language/tests).",
+          "validation": "Run `terraform test`. It should end with `Success! 2 passed, 0 failed.`"
+        }
+      ]
+    },
+    "exam": {
+      "minutes": 45,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Validate the input variables. Invalid values must fail at plan time with a clear error message.\n\n- `environment`: one of `dev`, `stage`, `prod`.\n- `allowed_cidr`: a valid IPv4 CIDR block.\n- `bucket_name`: 3 to 63 characters, only lowercase letters, digits and hyphens, starting and ending with a letter or digit.",
+          "validation": "Run `terraform plan -var environment=qa`, `-var allowed_cidr=10.20.0.0` and `-var bucket_name=Orders_Config`. Each should fail with `Invalid value for variable`."
+        },
+        {
+          "id": "t2",
+          "text": "Add custom conditions.\n\n- `aws_instance.report` may only use an instance type listed in `var.allowed_instance_types`. Fail at plan time otherwise.\n- `data.aws_ami.report` must return an `x86_64` image. Fail otherwise.\n- Add a `check` block `deploy_account` with its own `aws_caller_identity` data source. It must warn when the account ID differs from `var.expected_account_id`.",
+          "validation": "`terraform plan -var instance_type=m5.large` should fail with a precondition error. `terraform plan -var 'ami_name_filter=amzn2-ami-hvm-*-arm64-gp2'` should fail with a postcondition error. `terraform plan -var expected_account_id=000000000000` should succeed with a check warning."
+        },
+        {
+          "id": "t3",
+          "text": "Protect the database password and apply.\n\n- `var.db_password` must never be shown in `terraform plan` or `terraform apply` output.\n- `terraform output` must redact `db_config`, while `terraform output -raw db_config` must still return it for the deployment pipeline.",
+          "validation": "Run `terraform output`. It should show `db_config = <sensitive>`. `terraform plan -var db_password=<new>` should not print the new password."
+        },
+        {
+          "id": "t4",
+          "text": "Write the test file `tests/report.tftest.hcl` with these runs. `terraform test` must pass and must not leave resources behind.\n\n- `defaults`: plan only; assert that the instance type is `t3.micro`.\n- `invalid_environment`: plan only, `environment = \"qa\"`, expects the validation failure of `var.environment`.\n- `disallowed_instance_type`: plan only, `instance_type = \"m5.large\"`, expects the precondition failure of `aws_instance.report`.\n- `apply_config`: applies with `bucket_name = \"vt-orders-config-test\"` and asserts that `config/db.json` contains the username `orders_app`.\n- Do not use mock providers.",
+          "validation": "Run `terraform test`. It should end with `Success! 4 passed, 0 failed.`, and `aws s3api head-bucket --bucket vt-orders-config-test` should fail afterwards."
+        }
+      ]
+    },
+    "expert": {
+      "minutes": 55,
+      "intro": "In this level the security group allows a list of CIDRs, `var.trusted_cidrs`, instead of `allowed_cidr`. The configuration also has a `debug_connection` output that contains the password.",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Validate the input variables at plan time, each with an error message for the specific problem.\n\n- `environment`: one of `dev`, `stage`, `prod`.\n- `bucket_name`: 3 to 63 characters, lowercase letters, digits and hyphens, starting and ending with a letter or digit.\n- `trusted_cidrs`: at least one entry; every entry a valid IPv4 CIDR block; `0.0.0.0/0` is not allowed. Use separate `validation` blocks.",
+          "validation": "Run `terraform plan -var 'trusted_cidrs=[\"10.0.0.0/8\",\"10.1.0.0\"]'`, `-var 'trusted_cidrs=[\"0.0.0.0/0\"]'` and `-var 'trusted_cidrs=[]'`. Each should fail with `Invalid value for variable`."
+        },
+        {
+          "id": "t2",
+          "text": "Add custom conditions.\n\n- `aws_instance.report` may only use an instance type from `var.allowed_instance_types`. Fail at plan time, and include the rejected type in the error message.\n- `data.aws_ami.report` must return an `x86_64` image, and the error message must include the image name.\n- `check` block `deploy_account` with a scoped `aws_caller_identity` data source: warn when the account differs from `var.expected_account_id`.",
+          "validation": "`terraform plan -var instance_type=m5.large` should fail with a precondition error that mentions `m5.large`. `terraform plan -var 'ami_name_filter=amzn2-ami-hvm-*-arm64-gp2'` should fail with a postcondition error that names the image."
+        },
+        {
+          "id": "t3",
+          "text": "Replace the static password with a generated one and protect it. Apply.\n\n- Generate it with `random_password.db`: 24 characters, letters and digits only. Remove `var.db_password` and its value.\n- `config/db.json` must contain the generated password.\n- Keep the outputs `db_config` and `debug_connection`. `terraform output` must redact both, and `terraform output -raw` must return them.\n- The password must not appear in `terraform plan` output.",
+          "validation": "Run `terraform output`. Both outputs should show `<sensitive>`, and `terraform output -raw debug_connection` should contain the password stored in `config/db.json`."
+        },
+        {
+          "id": "t4",
+          "text": "Write the test file `tests/report.tftest.hcl`. `terraform test` must pass without mock providers and must not leave resources behind.\n\n- `defaults`: plan only; assert that the instance type is `t3.micro`.\n- `open_cidr`: plan only, `trusted_cidrs = [\"0.0.0.0/0\"]`, expects the failure of `var.trusted_cidrs`.\n- `arm_ami`: plan only, `ami_name_filter = \"amzn2-ami-hvm-*-arm64-gp2\"`, expects the failure of `data.aws_ami.report`.\n- `apply_config`: applies with `bucket_name = \"vt-orders-config-test\"` and asserts that the password in `config/db.json` is 24 characters long.\n- `stable`: runs after `apply_config` with the same bucket, plan only, and asserts that `output.report_instance_id` equals `run.apply_config.report_instance_id`.",
+          "validation": "Run `terraform test`. It should end with `Success! 5 passed, 0 failed.`, and `aws s3api head-bucket --bucket vt-orders-config-test` should fail afterwards."
+        }
+      ]
+    }
+  }
+}

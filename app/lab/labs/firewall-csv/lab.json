@@ -1,0 +1,36 @@
+{
+  "id": "firewall-csv",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Build an app tier from CSV and JSON files",
+  "objectives": ["2a", "2b", "2c", "2d", "2e"],
+  "domain": "d2",
+  "mock": true,
+  "scenario": "Northwind Logistics is moving its shipment tracking app tier to Terraform. The network team maintains the firewall rules of the tier in `rules.csv`, and the security team maintains the IAM permissions of the tier in `policy.json`. Terraform must read both files, so the teams can change them without editing HCL. `terraform.tfvars` holds the values for production.\n\nThe configuration in the lab folder declares the security group `nw-fw-app` in the default VPC. It is initialized but has never been applied, and `terraform plan` currently fails. The `aws` CLI is configured for the account and region `us-east-1`.",
+  "levels": {
+    "exam": {
+      "minutes": 50,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Fix the provider configuration and create one ingress rule of `aws_security_group.app` per row of `rules.csv`.\n\n- Terraform must use the credentials of the environment, the region `us-east-1` and an AWS provider `5.x`.\n- Read the file with `csvdecode`. Declare the rules as `aws_vpc_security_group_ingress_rule.app` with `for_each`, keyed by the `name` column, so that adding or reordering rows never replaces other rules.\n- Each rule must use the row's `protocol`, `port` (as from and to port), `cidr` and `description`.\n- A `cidr` of `admin` stands for the value of a string variable `admin_cidr`.",
+          "validation": "Run `aws ec2 describe-security-group-rules --filters Name=group-id,Values=<id of nw-fw-app>`. The output should show seven ingress rules, two of them with the CIDR `10.20.0.0/16`."
+        },
+        {
+          "id": "t2",
+          "text": "Validate the inputs of the configuration.\n\n- Declare a string variable `environment` that accepts only `dev`, `staging` and `prod`.\n- `admin_cidr` must accept only a valid CIDR block. Use `can(cidrhost(...))`.\n- Invalid values must stop `terraform plan` with a validation error.\n- Tag the security group with `Environment = <environment>`.",
+          "validation": "Run `terraform plan -var environment=qa`. The output should contain `Invalid value for variable`. `aws ec2 describe-security-groups --group-names nw-fw-app` should show the tag `Environment = prod`."
+        },
+        {
+          "id": "t3",
+          "text": "Launch the app servers defined in the variable `instances` of `terraform.tfvars`.\n\n- Declare `instances` as `map(object({ instance_type = string, availability_zone = string }))`.\n- Create them as `aws_instance.app` with `for_each`, tagged `Name = nw-fw-<key>`, in `aws_security_group.app`.\n- Use the most recent Amazon Linux 2 AMI (owner `amazon`, name `amzn2-ami-hvm-*`) from an `aws_ami` data source, and the default subnet of the default VPC in each instance's availability zone from an `aws_subnet` data source.\n- A `precondition` on `aws_instance.app` must stop the plan when an instance type other than `t3.micro` or `t3.small` is requested.",
+          "validation": "Run `aws ec2 describe-instances --filters Name=tag:Name,Values=nw-fw-web-a,nw-fw-web-b`. The output should show two running instances in `us-east-1a` and `us-east-1b`."
+        },
+        {
+          "id": "t4",
+          "text": "Create the IAM policy of the tier and the outputs the teams need.\n\n- Create `aws_iam_policy.app` named `nw-fw-app-policy` from a `data.aws_iam_policy_document.app` that builds one statement per entry of `policy.json` with a `dynamic \"statement\"` block.\n- Output `tcp_ports`: the distinct TCP ports of `rules.csv` as a list of numbers in ascending order.\n- Output `public_rule_names`: the names of the rules open to `0.0.0.0/0`, sorted alphabetically.\n- Output `instance_private_ips`: a map from each key of `instances` to the private IP of its instance.\n- Finish with a clean workspace.",
+          "validation": "Run `terraform output -json tcp_ports`. The output should be `[22,80,443,8080,9100]`, and `terraform plan` should report no changes."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "dr-region",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Disaster recovery region with provider aliases",
+  "objectives": [
+    "5b",
+    "5d",
+    "3a"
+  ],
+  "domain": "d5",
+  "mock": true,
+  "scenario": "Northwind Logistics runs its order data in `us-east-1`: the S3 bucket `nw-dr-primary-data` and the security group `nw-dr-app-sg` are managed by the configuration in `~/exam/dr-region` and have been applied. Auditors now require a disaster recovery copy in `us-west-2`. A colleague started the module `modules/backup` for it and upgraded the provider constraint in the root module. Since then, `terraform init` fails.\n\nOther teams use the same AWS account. The `aws` CLI is configured for the region `us-east-1`.",
+  "levels": {
+    "exam": {
+      "minutes": 50,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Make the configuration initialize again.\n\n- Keep the root constraint `~> 5.80` for `hashicorp/aws`.\n- `modules/backup` must keep its own `required_providers` entry for `hashicorp/aws`, with a constraint the root version satisfies.\n- The dependency lock file must select an AWS provider version that matches `~> 5.80`.\n- `aws_s3_bucket.primary` and `aws_security_group.app` must not change.",
+          "validation": "Run `terraform init`. It should succeed, and `.terraform.lock.hcl` should list a `hashicorp/aws` version of at least `5.80.0`."
+        },
+        {
+          "id": "t2",
+          "text": "Create the backup bucket in the disaster recovery region.\n\n- Add a second AWS provider configuration with the alias `dr` for `us-west-2` and pass it to `module.backup` as `aws.dr`.\n- `modules/backup` declares the alias with `configuration_aliases` and contains no `provider` block.\n- `module.backup.aws_s3_bucket.backup` is named `nw-dr-backup-<AWS account ID>`. Get the account ID from `aws_caller_identity`; do not hard-code it.\n- `module.backup.aws_s3_object.manifest` stores the key `manifest.json` in that bucket with the JSON content `{\"primary_bucket\": <name of the primary bucket>}` built with `jsonencode`.",
+          "validation": "Run `aws s3api get-bucket-location --bucket nw-dr-backup-<account ID>`. The output should show `us-west-2`, and `aws s3 cp s3://nw-dr-backup-<account ID>/manifest.json -` should print the primary bucket name."
+        },
+        {
+          "id": "t3",
+          "text": "Prepare network access for the application in the disaster recovery region.\n\n- `module.backup.aws_security_group.app` is named `nw-dr-app-sg` and is created in the default VPC of `us-west-2`.\n- It allows TCP on the application port from `0.0.0.0/0` and all outbound traffic, like `aws_security_group.app`. Take the port from the module variable `app_port`; do not hard-code it in the module.",
+          "validation": "Run `aws ec2 describe-security-groups --region us-west-2 --group-names nw-dr-app-sg`. The output should show the security group with an ingress rule for port 443."
+        },
+        {
+          "id": "t4",
+          "text": "Tag every resource of the configuration consistently.\n\n- Both AWS provider configurations set the default tags `Project = northwind-dr` and `ManagedBy = terraform`.\n- No existing resource may be replaced. Finish with a clean plan.",
+          "validation": "Run `aws s3api get-bucket-tagging --bucket nw-dr-primary-data`. The output should show both tags, and `terraform plan` should report no changes."
+        }
+      ]
+    }
+  }
+}

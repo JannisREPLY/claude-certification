@@ -15,17 +15,23 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "random_pet" "suffix" {}
-
-resource "aws_vpc" "primary" {
-  cidr_block = "10.10.0.0/16"
-
-  tags = {
-    Name = "primary-${random_pet.suffix.id}"
-  }
+resource "random_integer" "build" {
+  min = 1000
+  max = 9999
 }
 
-module "logs" {
-  source = "./modules/logs"
-  name   = "app-${random_pet.suffix.id}"
+data "aws_vpc" "default" {
+  default = true
+}
+
+resource "aws_security_group" "web" {
+  name        = "web-${random_integer.build.result}"
+  description = "Web servers"
+  vpc_id      = data.aws_vpc.default.id
+}
+
+module "reports" {
+  source = "./modules/reports"
+
+  name = "acme-reports"
 }

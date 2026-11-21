@@ -4,11 +4,15 @@
  "shortTitle": "TF-AOA",
  "exam": {
   "items": 12,
-  "minutes": 30,
+  "minutes": 240,
+  "questionMinutes": 30,
   "scenariosPerExam": 1,
   "passScore": 70,
   "minScore": 0,
-  "maxScore": 100
+  "maxScore": 100,
+  "minPerDomain": {
+   "d6": 4
+  }
  },
  "levelTitles": [
   "Init Initiate",
@@ -246,7 +250,7 @@
    "id": "overview",
    "title": "Exam overview",
    "kind": "overview",
-   "markdown": "HashiCorp Certified: **Terraform Authoring & Operations Advanced** ([official page](https://developer.hashicorp.com/certifications/terraform-advanced)). This trainer prepares the **AWS** edition.\n\n## Format\n\n| | |\n|---|---|\n| Duration | 4 hours, one 15-minute break |\n| Parts | Lab-based scenarios + multiple-choice questions |\n| Terraform version | **1.6** |\n| Environment | Pre-provisioned Linux machine with terminal and editor; Terraform docs and the cloud console/CLI are available |\n| Grading | Each lab is scored on its own: configuration syntax, state files and the settings of the provisioned resources |\n\nCommunity reports describe about **4 labs** and about **12 multiple-choice questions**. HashiCorp doesn't publish the pass mark or the time per part. The mock exam here uses 12 questions, 30 minutes and 70% as estimates.\n\n## Version 1.6 matters\n\nThe exam tests Terraform 1.6, and the lab runs 1.6.6. Features from later versions don't exist there:\n\n- `removed` blocks and `import` blocks with `for_each` (1.7)\n- provider-defined functions (1.8)\n- ephemeral resources and write-only arguments (1.10+)\n\n## How to use this trainer\n\n1. Read the lessons of a domain, then do its **Lab**. Labs cover domains 1–5; domain 6 (HCP Terraform) needs an HCP account, so it is lessons and questions only.\n2. Drill the multiple-choice questions in **Practice**.\n3. *Exam ready* needs every lab passed plus the usual readiness checks.\n\nIn the real exam you may use the Terraform documentation. Practise looking things up there instead of memorising argument lists.\n\n> Lessons and questions here are AI-drafted from the official objectives and the Terraform docs. Check the linked docs when something looks off.\n"
+   "markdown": "HashiCorp Certified: **Terraform Authoring & Operations Advanced** ([official page](https://developer.hashicorp.com/certifications/terraform-advanced)). This trainer prepares the **AWS** edition.\n\n## Format\n\n| | |\n|---|---|\n| Duration | 4 hours, one 15-minute break |\n| Parts | Lab-based scenarios + multiple-choice questions |\n| Terraform version | **1.6** |\n| Environment | Pre-provisioned Linux machine with terminal and editor; Terraform docs and the cloud console/CLI are available |\n| Grading | Each lab is scored on its own: configuration syntax, state files and the settings of the provisioned resources |\n\nCommunity reports describe about **4 labs** and about **12 multiple-choice questions**. HashiCorp doesn't publish the pass mark or the time per part. Reported labs: splitting one module into several, provider problems (in almost every lab) and aliased providers passed to modules, functions that build a security group and output a filtered list, and imports without touching existing resources. The labs use the AWS resources from HashiCorp's [exam content list](https://developer.hashicorp.com/terraform/tutorials/pro-cert/adv-review): EC2 instances, launch templates, auto scaling groups, security group rules, S3, IAM and the S3 backend.\n\nThe **mock exam** here has 4 labs plus 12 questions in 4 hours, like the real exam. Each lab and the question block count 20% each, and the pass mark is 70%. Both are estimates, because HashiCorp doesn't publish them. Without the local lab stack, the mock exam is questions only (30 minutes).\n\n## Version 1.6 matters\n\nThe exam tests Terraform 1.6, and the lab runs 1.6.6. Features from later versions don't exist there:\n\n- `removed` blocks and `import` blocks with `for_each` (1.7)\n- provider-defined functions (1.8)\n- ephemeral resources and write-only arguments (1.10+)\n\n## How to use this trainer\n\n1. Read the lessons of a domain, then do its **Lab**. Every lab has three levels: *Guided* (smaller tasks with hints), *Exam* (like the exam) and *Expert* (harder than the exam). Labs cover domains 1–5; domain 6 (HCP Terraform) needs an HCP account, so it is lessons and questions only.\n2. Drill the multiple-choice questions in **Practice**.\n3. Take the full mock exam. *Exam ready* needs every lab passed at exam level, a passed full mock exam and the usual readiness checks.\n\nIn the real exam you may use the Terraform documentation. Practise looking things up there instead of memorising argument lists.\n\n> Lessons and questions here are AI-drafted from the official objectives and the Terraform docs. Check the linked docs when something looks off.\n"
   },
   {
    "id": "d1-init-plan",

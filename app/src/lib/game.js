@@ -1,5 +1,6 @@
 import { review } from './srs.js'
 import { domainMastery } from './readiness.js'
+import { labPassed } from './labs.js'
 
 export const DAILY_GOAL = 15
 export const XP = { correct: 10, wrong: 2, comboMax: 10, lesson: 25, exam: 100, examPass: 200, dailyGoal: 50, labTask: 20, lab: 150 }
@@ -76,10 +77,10 @@ export function applyExam(progress, result, now = Date.now()) {
   return { progress: p, gained }
 }
 
-export function applyLab(progress, labId, results, now = Date.now()) {
+export function applyLab(progress, key, results, now = Date.now()) {
   const p = structuredClone(progress)
   touchDay(p, now)
-  const lab = (p.labs[labId] ||= { tasks: {}, completed: null })
+  const lab = (p.labs[key] ||= { tasks: {}, completed: null })
   let gained = 0
   results.filter((r) => r.ok && !lab.tasks[r.id]).forEach((r) => {
     lab.tasks[r.id] = now
@@ -113,7 +114,9 @@ export function badgeDefs(cert) {
     { id: 'ace', icon: '💎', name: 'Ace', desc: 'Score 900+ in a mock exam', test: (p) => p.exams.some((e) => e.score >= 900) },
     ...(cert.labs.length ? [
       { id: 'lab1', icon: '🧪', name: 'Hands On', desc: 'Pass your first lab', test: (p) => Object.values(p.labs).some((l) => l.completed) },
-      { id: 'laball', icon: '🛠️', name: 'Lab Master', desc: 'Pass every lab', test: (p) => cert.labs.every((l) => p.labs[l.id]?.completed) },
+      { id: 'labexam', icon: '🎯', name: 'Exam Ready Hands', desc: 'Pass a lab at exam level', test: (p) => cert.labs.some((l) => labPassed(p, l.id)) },
+      { id: 'labexpert', icon: '🔥', name: 'Expert', desc: 'Pass a lab at expert level', test: (p) => cert.labs.some((l) => labPassed(p, l.id, 'expert')) },
+      { id: 'laball', icon: '🛠️', name: 'Lab Master', desc: 'Pass every lab at exam level', test: (p) => cert.labs.every((l) => labPassed(p, l.id)) },
     ] : []),
     ...domainBadges,
   ]

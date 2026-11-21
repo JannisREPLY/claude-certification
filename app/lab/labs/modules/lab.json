@@ -1,15 +1,86 @@
 {
   "id": "modules",
   "cert": "terraform-authoring-ops-advanced",
-  "title": "Refactor into modules",
+  "title": "Refactor one module into several",
   "objectives": ["4a", "4b", "4c", "4d"],
   "domain": "d4",
-  "minutes": 45,
-  "intro": "`/home/coder/lab` manages a VPC, two subnets and a security group in one flat file; everything is applied. The platform team publishes a security group module as a Git repository at `/home/coder/repos/web-sg` with the tags `v1.0.0` and `v1.1.0` (see its README). **No resource may be destroyed or recreated in this lab.** Open a terminal via **☰ → Terminal → New Terminal**.",
-  "tasks": [
-    { "id": "t1", "text": "Move the VPC and the subnets into a local module in `modules/network`, called as `module.network`. Inside the module, name them `aws_vpc.this` and `aws_subnet.this`. The module takes `cidr_block` and `subnet_cidrs` and outputs `vpc_id` and `subnet_ids`." },
-    { "id": "t2", "text": "Inside the module, create the subnets with `for_each` keyed by CIDR instead of `count`, e.g. `module.network.aws_subnet.this[\"10.0.1.0/24\"]`." },
-    { "id": "t3", "text": "Replace `aws_security_group.web` with the platform module as `module.web_sg`, using the Git source `git::file:///home/coder/repos/web-sg` pinned to the version that lets you keep the existing description." },
-    { "id": "t4", "text": "Finish clean: `terraform plan` reports no changes." }
-  ]
+  "scenario": "Your organization runs the `orders` application from a single local module, `modules/app`. It creates the IAM role, the IAM policies and their attachments, the instance profile, the security group with its HTTPS ingress rule, the launch template and the Auto Scaling group. The platform team wants smaller modules with one purpose each, and it publishes a shared security group module as a Git repository at `/home/coder/repos/security-group` with the tags `v1.0.0`, `v1.1.0` and `v2.0.0` (see its `README.md` and `git log`).\n\nThe configuration in `/home/coder/lab` is initialized and applied. The application is live: **no resource may be destroyed or recreated in this lab.** The `aws` CLI is configured for the account and region `us-east-1`.",
+  "levels": {
+    "guided": {
+      "minutes": 35,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Move the IAM resources out of `modules/app` into a new local module `modules/iam`, called as `module.iam`.\n\n- Move `aws_iam_role.this`, `aws_iam_policy.access`, `aws_iam_role_policy_attachment.access` and `aws_iam_instance_profile.this` (and the two `aws_iam_policy_document` data sources they need). Keep the resource names and `count`.\n- `module.iam` takes the inputs `name` and `policies` and has the output `instance_profile_name`.\n- Add `moved` blocks in the root module, for example `from = module.app.aws_iam_role.this` and `to = module.iam.aws_iam_role.this`. Each `count` instance needs its own block, e.g. `module.app.aws_iam_policy.access[0]`.\n\nHint: [Refactoring with moved blocks](https://developer.hashicorp.com/terraform/language/modules/develop/refactoring). Run `terraform init` after adding a module, then `terraform plan`: it should say \"has moved to\" and propose no destroy.",
+          "validation": "Run `terraform state list`. The output should include `module.iam.aws_iam_role.this` and `module.iam.aws_iam_policy.access[0]`, and `terraform plan` should not destroy anything."
+        },
+        {
+          "id": "t2",
+          "text": "Replace the security group in `modules/app` with the platform module, called as `module.app_sg`.\n\n- Source: `git::file:///home/coder/repos/security-group?ref=<tag>`. Pick the tag that lets you keep the existing description `orders app instances`: compare the tags with `git -C /home/coder/repos/security-group show v1.0.0:main.tf` and the README.\n- Pass the existing HTTPS rule as `ingress = { https = { port = 443, cidr = \"0.0.0.0/0\" } }` and move it to `module.app_sg.aws_vpc_security_group_ingress_rule.this[\"https\"]`.\n- The security group and the rule must keep their IDs.\n\nHint: [Module sources: Generic Git repository](https://developer.hashicorp.com/terraform/language/modules/sources#generic-git-repository) explains `?ref=`.",
+          "validation": "Run `terraform state list`. The output should include `module.app_sg.aws_security_group.this`, and `terraform plan` should not replace it."
+        },
+        {
+          "id": "t3",
+          "text": "Move the launch template and the Auto Scaling group into a new local module `modules/compute`, called as `module.compute`, and delete `modules/app`.\n\n- Addresses: `module.compute.aws_launch_template.this` and `module.compute.aws_autoscaling_group.this`.\n- `module.compute` takes the inputs `name`, `subnet_id`, `security_group_ids` and `instance_profile_name`. Wire them from `module.app_sg.id` and `module.iam.instance_profile_name`, not with hard-coded values.\n- Keep the root output `asg_name`.\n\nHint: [Module composition](https://developer.hashicorp.com/terraform/language/modules/develop/composition) shows how outputs of one module feed another.",
+          "validation": "Run `terraform state list`. It should show no `module.app` address, and the launch template should still use the security group `orders-app`."
+        },
+        {
+          "id": "t4",
+          "text": "Apply the refactoring and finish with a clean workspace.\n\n- No resource may be destroyed or recreated.\n\nHint: `terraform plan` should only show moves before you apply.",
+          "validation": "Run `terraform plan`. The output should end with `No changes. Your infrastructure matches the configuration.`"
+        }
+      ]
+    },
+    "exam": {
+      "minutes": 45,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Split `modules/app` into the local modules `modules/iam` and `modules/compute`.\n\n- `module.iam` manages the IAM role, the policies, the attachments and the instance profile. `module.compute` manages the launch template and the Auto Scaling group.\n- Addresses: `module.iam.aws_iam_role.this`, `module.iam.aws_iam_instance_profile.this`, `module.compute.aws_launch_template.this`, `module.compute.aws_autoscaling_group.this`.\n- `module.iam` has the output `instance_profile_name`. `module.compute` has the input variable `instance_profile_name`, set from that output.\n- Remove `module.app` and the folder `modules/app`. Keep the root output `asg_name`.",
+          "validation": "Run `terraform state list`. The output should list the addresses above and no `module.app` address."
+        },
+        {
+          "id": "t2",
+          "text": "Inside `module.iam`, replace `count` with `for_each` for the policies and their attachments.\n\n- Use the policy's short name as the key: `module.iam.aws_iam_policy.access[\"s3-read\"]`, `module.iam.aws_iam_policy.access[\"logs-write\"]` and the same keys for `module.iam.aws_iam_role_policy_attachment.access`.",
+          "validation": "Run `terraform state list`. The output should include `module.iam.aws_iam_policy.access[\"s3-read\"]` and `module.iam.aws_iam_role_policy_attachment.access[\"logs-write\"]`."
+        },
+        {
+          "id": "t3",
+          "text": "Manage the security group `orders-app` and its HTTPS rule with the platform module as `module.app_sg`.\n\n- Source: the Git repository `/home/coder/repos/security-group`, pinned to the newest tag that keeps the existing security group.\n- The rule must be `module.app_sg.aws_vpc_security_group_ingress_rule.this[\"https\"]`.\n- `module.compute` must get the security group ID from `module.app_sg` through an input variable `security_group_ids`.",
+          "validation": "Run `aws ec2 describe-security-groups --group-names orders-app`. The group should keep its ID and its HTTPS rule, and `terraform state list` should include `module.app_sg.aws_security_group.this`."
+        },
+        {
+          "id": "t4",
+          "text": "Apply the refactoring without downtime.\n\n- No resource may be destroyed or recreated.\n- Finish with a clean workspace.",
+          "validation": "Run `terraform plan`. The output should end with `No changes. Your infrastructure matches the configuration.`, and every resource should still have the ID it had when the lab started."
+        }
+      ]
+    },
+    "expert": {
+      "minutes": 55,
+      "intro": "In this level `modules/app` is called twice with `count`, once per application listed in `local.apps` (`orders` and `billing`). The applications don't have the same policies, and the policies are not listed in the same order.",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Split `modules/app` into the local modules `modules/iam` and `modules/compute`, both called with `for_each` over the application names.\n\n- Addresses: `module.iam[\"orders\"].aws_iam_role.this`, `module.iam[\"orders\"].aws_iam_instance_profile.this`, `module.compute[\"orders\"].aws_launch_template.this`, `module.compute[\"orders\"].aws_autoscaling_group.this`, and the same for `billing`.\n- `module.compute` gets the instance profile name from an output of `module.iam` for the same application.\n- Remove `module.app` and `modules/app`. The root output `asg_names` must become a map from application name to Auto Scaling group name.",
+          "validation": "Run `terraform output asg_names`. The output should map `orders` to `orders-app` and `billing` to `billing-app`, and `terraform state list` should show no `module.app` address."
+        },
+        {
+          "id": "t2",
+          "text": "Inside `module.iam`, use `for_each` keyed by the policy's short name for the policies and their attachments, e.g. `module.iam[\"billing\"].aws_iam_policy.access[\"sqs-send\"]`.",
+          "validation": "Run `aws iam list-attached-role-policies --role-name billing-app`. The role should still have its three policies, and `terraform state list` should show the policies with their short names as keys."
+        },
+        {
+          "id": "t3",
+          "text": "Manage both security groups and their HTTPS rules with the platform module as `module.app_sg[\"orders\"]` and `module.app_sg[\"billing\"]`.\n\n- Pin the Git repository `/home/coder/repos/security-group` to the newest tag that keeps the existing security groups.\n- Rules: `module.app_sg[\"<app>\"].aws_vpc_security_group_ingress_rule.this[\"https\"]`.\n- Each launch template must get its security group from `module.app_sg` of the same application.",
+          "validation": "Run `aws ec2 describe-launch-template-versions --launch-template-name billing-app --versions '$Latest'`. It should reference the original `billing-app` security group."
+        },
+        {
+          "id": "t4",
+          "text": "Apply the refactoring without downtime.\n\n- No resource may be destroyed or recreated, in either application.\n- Don't hard-code IDs, ARNs or names of other resources in module inputs.\n- Finish with a clean workspace.",
+          "validation": "Run `terraform plan`. The output should end with `No changes. Your infrastructure matches the configuration.`, and every resource should still have the ID it had when the lab started."
+        }
+      ]
+    }
+  }
 }

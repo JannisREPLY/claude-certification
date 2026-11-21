@@ -1,0 +1,36 @@
+{
+  "id": "brownfield",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Brownfield: import, drift and state migration",
+  "objectives": ["1e", "1c", "3b"],
+  "domain": "d1",
+  "mock": true,
+  "scenario": "Northwind Logistics runs its dispatch web tier in AWS. During an outage, an engineer launched the EC2 instances `nw-bf-web-1` and `nw-bf-web-2` by hand, together with the security group `nw-bf-web-sg`, the IAM role `nw-bf-web-role` and the instance profile `nw-bf-web-profile`. The configuration in `~/exam/brownfield` manages the security group `nw-bf-tracker-sg` and the S3 buckets `nw-bf-manifests` and `nw-bf-legacy-exports`. It has been applied with local state. Since then, `nw-bf-tracker-sg` was changed in the console.\n\nThe S3 bucket `nw-bf-tfstate` and the DynamoDB table `nw-bf-tf-locks` (partition key `LockID`) exist for remote state. Other teams use the same AWS account. The configuration is initialized, and the `aws` CLI is configured for the region `us-east-1`.",
+  "levels": {
+    "exam": {
+      "minutes": 50,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Bring the hand-built dispatch web tier under Terraform management.\n\n- Use `import` blocks. `-generate-config-out` is allowed.\n- Addresses: `aws_instance.web[\"web-1\"]` and `aws_instance.web[\"web-2\"]` (one resource with `for_each`), `aws_security_group.web`, `aws_iam_role.web` and `aws_iam_instance_profile.web`.\n- The instances must reference the security group and the instance profile, and the instance profile must reference the role. Do not hard-code IDs or names in these arguments.\n- No resource may be modified or replaced.",
+          "validation": "Run `terraform plan`. The plan should not propose any change to the five imported resources."
+        },
+        {
+          "id": "t2",
+          "text": "Reconcile the drift on `nw-bf-tracker-sg`.\n\n- The SSH ingress rule from `0.0.0.0/0` was not approved. Remove it.\n- The tag `Owner = dispatch-oncall` was approved. Keep it and add it to the configuration.\n- The security group must not be replaced.",
+          "validation": "Run `aws ec2 describe-security-groups --group-names nw-bf-tracker-sg`. The output should show only the 8443 ingress rule and the tag `Owner = dispatch-oncall`."
+        },
+        {
+          "id": "t3",
+          "text": "Clean up the state of the storage resources.\n\n- Rename `aws_s3_bucket.manifests` to `aws_s3_bucket.shipping_manifests` without recreating the bucket.\n- The finance team takes over `nw-bf-legacy-exports`. Stop managing it in this configuration and remove its configuration, but do not delete the bucket.",
+          "validation": "Run `terraform state list`. The output should include `aws_s3_bucket.shipping_manifests` and no resource for `nw-bf-legacy-exports`, and `aws s3api head-bucket --bucket nw-bf-legacy-exports` should succeed."
+        },
+        {
+          "id": "t4",
+          "text": "Migrate the state to the S3 backend.\n\n- Bucket `nw-bf-tfstate`, key `brownfield/terraform.tfstate`, region `us-east-1`.\n- Lock the state with the DynamoDB table `nw-bf-tf-locks` and enable encryption.\n- The local state file must no longer hold any resources. Finish with a clean plan.",
+          "validation": "Run `aws s3 ls s3://nw-bf-tfstate/brownfield/`. The output should list `terraform.tfstate`, and `terraform plan` should report no changes."
+        }
+      ]
+    }
+  }
+}

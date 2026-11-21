@@ -1,0 +1,81 @@
+{
+  "id": "provider-auth",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Authenticate providers and understand plugins",
+  "objectives": ["5a", "5c"],
+  "domain": "d5",
+  "scenario": "Your organization's CI pipeline runs Terraform as the IAM user `terraform-ci`. Its access key is stored in the profile `ci` of the shared credentials file `/home/coder/secrets/credentials`; the matching shared config file is `/home/coder/secrets/config`. Terraform must not deploy as `terraform-ci` itself: it assumes the IAM role `terraform-deploy` (`arn:aws:iam::123456789012:role/terraform-deploy`). A colleague started the configuration in `/home/coder/lab`. It creates an auditor IAM role per team through the local module `modules/audit`, but since the colleague's last change, `terraform init` and `terraform plan` fail.\n\nThe configuration was initialized before that change and was never applied. The terminal has default AWS credentials in environment variables, which belong to a different identity (`arn:aws:sts::123456789012:user/moto`); the `aws` CLI is configured for the account `123456789012` and the region `us-east-1`. Never write access keys into the configuration.",
+  "levels": {
+    "guided": {
+      "minutes": 35,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Make the AWS provider authenticate with the profile `ci`.\n\n- Set `profile` and `shared_credentials_files` in the `provider \"aws\"` block of the root module. Don't copy the keys into any file.\n- Add the root output `caller_arn` with the value `data.aws_caller_identity.current.arn`.\n\nHint: [Authentication and Configuration](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication-and-configuration) lists the provider arguments and the order in which credentials are read. An explicit `profile` wins over the environment variables.",
+          "validation": "Run `terraform apply`, then `terraform output caller_arn`. It should no longer show `user/moto`."
+        },
+        {
+          "id": "t2",
+          "text": "Let the provider assume the role `terraform-deploy`.\n\n- Add an `assume_role` block with `role_arn = \"arn:aws:iam::123456789012:role/terraform-deploy\"` and `session_name = \"terraform\"`.\n- Add the root output `issuer_arn` from a data source `aws_iam_session_context` whose `arn` is `data.aws_caller_identity.current.arn`.\n\nHint: [assume_role configuration block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#assume_role-configuration-block) and the [aws_iam_session_context](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_session_context) data source.",
+          "validation": "Run `terraform output`. `caller_arn` should be `arn:aws:sts::123456789012:assumed-role/terraform-deploy/terraform` and `issuer_arn` should be the role ARN."
+        },
+        {
+          "id": "t3",
+          "text": "Fix `modules/audit` so that `terraform plan` works and the module uses the root module's provider.\n\n- A module called with `for_each` must not contain a `provider` block. Remove it.\n- Declare the provider the module needs in a `terraform { required_providers { ... } }` block: source `hashicorp/aws`, version `>= 5.0`.\n- Add the root output `deployers` with the value `{ for team, m in module.audit : team => m.deployer }` and apply.\n\nHint: [Providers within modules](https://developer.hashicorp.com/terraform/language/modules/develop/providers).",
+          "validation": "Run `aws iam get-role --role-name platform-auditor`, which should succeed, and `terraform output deployers`, which should show the assumed role for both teams."
+        },
+        {
+          "id": "t4",
+          "text": "Look at how Terraform installed the provider plugins.\n\n- Save the output of `terraform providers` in `providers.txt` and the output of `terraform version` in `version.txt`, both in the lab folder, after the module is fixed.\n\nHint: Terraform core talks to each provider as a separate plugin process. `terraform init` installs the plugins in `.terraform/providers/` (here as links to a shared plugin cache) and records their versions and checksums in `.terraform.lock.hcl`. See [Plugin architecture](https://developer.hashicorp.com/terraform/plugin/how-terraform-works).",
+          "validation": "Run `cat providers.txt version.txt`. It should show the provider requirements of the root module and `module.audit`, and `provider registry.terraform.io/hashicorp/aws v5.100.0`."
+        }
+      ]
+    },
+    "exam": {
+      "minutes": 40,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Configure the AWS provider to deploy as the role `terraform-deploy`.\n\n- Authenticate with the profile `ci` from the shared files in `/home/coder/secrets`, and assume `arn:aws:iam::123456789012:role/terraform-deploy` with the session name `terraform`.\n- Add the root outputs `caller_arn` (the ARN of the current caller identity) and `issuer_arn` (the ARN of the role behind the current session, from `aws_iam_session_context`).\n- No credentials in the configuration or in variable files.",
+          "validation": "Run `terraform output`. `caller_arn` should be `arn:aws:sts::123456789012:assumed-role/terraform-deploy/terraform` and `issuer_arn` should be `arn:aws:iam::123456789012:role/terraform-deploy`."
+        },
+        {
+          "id": "t2",
+          "text": "Fix `modules/audit` and create the auditor roles.\n\n- `terraform plan` must work, and the module must use the provider configuration of the root module.\n- The module must declare its provider requirement for `hashicorp/aws`.\n- Add the root output `deployers`, a map from team name to the module output `deployer`, and apply.",
+          "validation": "Run `aws iam get-role --role-name data-auditor`, which should succeed, and `terraform output deployers`, which should show the assumed role `terraform-deploy` for both teams."
+        },
+        {
+          "id": "t3",
+          "text": "Document the provider plugins of this working directory.\n\n- Save the current output of `terraform providers` in `providers.txt`.\n- Save in `plugin-path.txt` the path, relative to the lab folder, of the AWS provider plugin executable that Terraform runs for this configuration.",
+          "validation": "Run `cat plugin-path.txt`. It should show a path below `.terraform/providers/` that ends with the AWS provider executable of the locked version."
+        }
+      ]
+    },
+    "expert": {
+      "minutes": 50,
+      "intro": "In this level, a colleague got the deployment working quickly: the root module reads static keys from the variables `aws_access_key` and `aws_secret_key`, and `terraform.tfvars` sets them to the access key of `terraform-ci`. Treat that key as leaked.",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Configure the default AWS provider to deploy as the role `terraform-deploy`.\n\n- Authenticate with the profile `ci` from the shared files in `/home/coder/secrets`, and assume `arn:aws:iam::123456789012:role/terraform-deploy` with the session name `terraform`.\n- No static credentials in any provider configuration.\n- Root outputs `caller_arn` and `issuer_arn` (from `aws_iam_session_context`).",
+          "validation": "Run `terraform output`. `caller_arn` should be `arn:aws:sts::123456789012:assumed-role/terraform-deploy/terraform` and `issuer_arn` should be `arn:aws:iam::123456789012:role/terraform-deploy`."
+        },
+        {
+          "id": "t2",
+          "text": "The auditor roles must be created by the role `terraform-audit`, not by `terraform-deploy`.\n\n- Add a provider configuration `aws.audit` that uses the same profile and assumes `arn:aws:iam::123456789012:role/terraform-audit` with the session name `terraform-audit`.\n- Fix `modules/audit` so that `terraform plan` works; the module declares its provider requirement and gets `aws.audit` as its default `aws` provider.\n- Root output `deployers`: a map from team name to the module output `deployer`.",
+          "validation": "Run `terraform output deployers`. Both teams should show `arn:aws:sts::123456789012:assumed-role/terraform-audit/terraform-audit`, and `aws iam get-role --role-name platform-auditor` should succeed."
+        },
+        {
+          "id": "t3",
+          "text": "Document the provider plugins of this working directory.\n\n- `providers.txt`: the current output of `terraform providers`.\n- `version.txt`: the current output of `terraform version`.\n- `plugin-path.txt`: the path, relative to the lab folder, of the AWS provider plugin executable that Terraform runs for this configuration.",
+          "validation": "Run `cat plugin-path.txt`. It should show a path below `.terraform/providers/` that ends with the AWS provider executable of the locked version."
+        },
+        {
+          "id": "t4",
+          "text": "Clean up after the leak.\n\n- Delete the leaked access key of `terraform-ci` in IAM and create a new one. The profile `ci` must use the new key.\n- The leaked key must not appear in any file of the lab folder, and the configuration must not declare credential variables anymore.\n- Finish with a clean workspace.",
+          "validation": "Run `aws iam list-access-keys --user-name terraform-ci`. It should list only the new key, and `terraform plan` should report no changes."
+        }
+      ]
+    }
+  }
+}

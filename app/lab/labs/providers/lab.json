@@ -1,15 +1,85 @@
 {
   "id": "providers",
   "cert": "terraform-authoring-ops-advanced",
-  "title": "Configure, upgrade and troubleshoot providers",
+  "title": "Configure, split and upgrade providers",
   "objectives": ["3a", "5b", "5d"],
   "domain": "d5",
-  "minutes": 40,
-  "intro": "`/home/coder/lab` was applied last week. Since then a colleague changed the `logs` module, and now `terraform init` fails. **No existing resource may be recreated in this lab.** Open a terminal via **☰ → Terminal → New Terminal**.",
-  "tasks": [
-    { "id": "t1", "text": "Find out why `terraform init` fails and fix it in the `logs` module. Don't change the root module's AWS version constraint." },
-    { "id": "t2", "text": "Add a second AWS provider configuration with the alias `west` for `us-west-2`. Create `aws_vpc.dr` (`10.20.0.0/16`, tag `Name = dr`) in that region." },
-    { "id": "t3", "text": "Upgrade the `random` provider to the newest `3.6.x` release: allow `3.6.x` in the constraint and update the dependency lock file." },
-    { "id": "t4", "text": "Every VPC in both regions must carry the tag `ManagedBy = terraform` without repeating it on each resource. Finish with `terraform plan` reporting no changes." }
-  ]
+  "scenario": "Your organization keeps its reporting platform in `/home/coder/lab`: the security group `web-<build number>` (the number comes from `random_integer.build`) and the `reports` module with the S3 bucket `acme-reports-east`. The configuration was applied last week. Since then a colleague changed `modules/reports`, and now `terraform init` fails. The business also wants a copy of the reports in `us-west-2` for disaster recovery.\n\nThe configuration was initialized and applied before the colleague's change. **No existing resource may be destroyed or recreated in this lab.** The `aws` CLI is configured for the account and region `us-east-1`; use `--region us-west-2` for the other region.",
+  "levels": {
+    "guided": {
+      "minutes": 35,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Find out why `terraform init` fails and fix it in `modules/reports`.\n\n- Don't change the AWS version constraint of the root module.\n\nHint: the error names the conflicting constraints. `terraform providers` lists the constraints of every module, and `.terraform.lock.hcl` shows the selected version. Read [Version constraints](https://developer.hashicorp.com/terraform/language/expressions/version-constraints).",
+          "validation": "Run `terraform init`. It should finish with `Terraform has been successfully initialized!`"
+        },
+        {
+          "id": "t2",
+          "text": "Create the disaster recovery bucket in `us-west-2`.\n\n- Add a second `aws` provider configuration with the alias `west` and the region `us-west-2`.\n- Create `aws_s3_bucket.replica` with the name `acme-reports-west` in the root module and select the provider with `provider = aws.west`.\n\nHint: [Multiple provider configurations](https://developer.hashicorp.com/terraform/language/providers/configuration#alias-multiple-provider-configurations).",
+          "validation": "Run `aws s3api get-bucket-location --bucket acme-reports-west`. The `LocationConstraint` should be `us-west-2`."
+        },
+        {
+          "id": "t3",
+          "text": "Upgrade the `random` provider from `3.1.0` to the newest `3.6.x` release.\n\n- Change the constraint to `~> 3.6.0` and update the dependency lock file.\n- `random_integer.build` must keep its value.\n\nHint: `terraform init` keeps the locked version until you run `terraform init -upgrade`. See [Dependency lock file](https://developer.hashicorp.com/terraform/language/files/dependency-lock).",
+          "validation": "Run `terraform version`. It should list `provider registry.terraform.io/hashicorp/random v3.6.3`."
+        },
+        {
+          "id": "t4",
+          "text": "Tag every AWS resource with `ManagedBy = terraform`.\n\n- Set the tag once per provider configuration with `default_tags`, not on each resource.\n- Finish with a clean workspace.\n\nHint: [default_tags](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#default_tags-configuration-block) in the AWS provider docs.",
+          "validation": "Run `aws s3api get-bucket-tagging --bucket acme-reports-west`. It should show `ManagedBy = terraform`, and `terraform plan` should report no changes."
+        }
+      ]
+    },
+    "exam": {
+      "minutes": 45,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Make `terraform init` succeed again.\n\n- Fix the cause in `modules/reports`.\n- Don't change the AWS version constraint of the root module, and keep the AWS provider version recorded in `.terraform.lock.hcl`.",
+          "validation": "Run `terraform init`. It should finish with `Terraform has been successfully initialized!`"
+        },
+        {
+          "id": "t2",
+          "text": "Let `module.reports` create the bucket `acme-reports-west` in `us-west-2` as `module.reports.aws_s3_bucket.replica`.\n\n- Add an `aws` provider configuration with the alias `west` in the root module and pass it to the module with the `providers` meta-argument.\n- The module must declare the configuration it expects with `configuration_aliases` and must not contain `provider` blocks.\n- Add the output `replica_bucket` to the module.",
+          "validation": "Run `aws s3api get-bucket-location --bucket acme-reports-west`. The `LocationConstraint` should be `us-west-2`."
+        },
+        {
+          "id": "t3",
+          "text": "Upgrade the `random` provider to the newest `3.6.x` release.\n\n- The root constraint must allow only `3.6.x` patch releases.\n- Record the new version in `.terraform.lock.hcl`.\n- `random_integer.build` must not be recreated.",
+          "validation": "Run `terraform version`. It should list `provider registry.terraform.io/hashicorp/random v3.6.3`."
+        },
+        {
+          "id": "t4",
+          "text": "Tag every AWS resource in both regions with `ManagedBy = terraform`.\n\n- Don't repeat the tag on each resource.\n- No existing resource may be recreated. Finish with a clean workspace.",
+          "validation": "Run `aws s3api get-bucket-tagging --bucket acme-reports-east`. It should show `ManagedBy = terraform`, and `terraform plan` should report no changes."
+        }
+      ]
+    },
+    "expert": {
+      "minutes": 55,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Make `terraform init` succeed again.\n\n- Fix every version conflict. Don't change the AWS version constraint of the root module.\n- In `modules/reports`, declare only minimum versions (`>=`) for its providers.\n- In the root module, allow only `3.6.x` patch releases of `random`.",
+          "validation": "Run `terraform init`. It should finish with `Terraform has been successfully initialized!`"
+        },
+        {
+          "id": "t2",
+          "text": "Extend the platform to `us-west-2`.\n\n- Add an `aws` provider configuration with the alias `west`. Pass it to `module.reports` with the `providers` meta-argument; the module declares it with `configuration_aliases` and contains no `provider` blocks.\n- `module.reports` creates `module.reports.aws_s3_bucket.replica` named `acme-reports-west` and outputs `replica_bucket`.\n- Create the security group `aws_security_group.web_west` named `web-west-<build number>` (from the same `random_integer.build`, description `Web servers`) in the default VPC of `us-west-2`, looked up by the data source `data.aws_vpc.default_west`.",
+          "validation": "Run `aws ec2 describe-security-groups --region us-west-2`. The output should list `web-west-<build number>`, and `aws s3api get-bucket-location --bucket acme-reports-west` should show `us-west-2`."
+        },
+        {
+          "id": "t3",
+          "text": "Record the provider upgrade in `.terraform.lock.hcl`.\n\n- `random` must be locked to the newest `3.6.x` release, and `aws` must stay at the version that was locked before.\n- `random_integer.build` must not be recreated.",
+          "validation": "Run `terraform version`. It should list `random v3.6.3` and the same `aws` version as before."
+        },
+        {
+          "id": "t4",
+          "text": "Tag every AWS resource in both regions with `ManagedBy = terraform` and `Project = reports`.\n\n- Set the tags once per provider configuration. Neither key may appear on a resource.\n- Every resource must carry these values in AWS.\n- No existing resource may be recreated. Finish with a clean workspace.",
+          "validation": "Run `aws s3api get-bucket-tagging --bucket acme-reports-east`. It should show `ManagedBy = terraform` and `Project = reports`, and `terraform plan` should report no changes."
+        }
+      ]
+    }
+  }
 }

@@ -29,7 +29,7 @@ RUN code-server --extensions-dir /opt/code-server-ext --install-extension hashic
 COPY --chown=coder:coder settings.json /home/coder/.local/share/code-server/User/settings.json
 COPY grader.py entrypoint.sh /opt/grader/
 COPY labs /opt/labs
-RUN mkdir -p /home/coder/lab
+RUN mkdir -p /home/coder/lab /home/coder/exam
 
 EXPOSE 8080 7000
 ENTRYPOINT ["/opt/grader/entrypoint.sh"]

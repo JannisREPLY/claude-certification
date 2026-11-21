@@ -11,20 +11,19 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_vpc" "app" {
-  cidr_block = "10.0.0.0/16"
+resource "aws_s3_bucket" "artifacts" {
+  bucket = "orders-artifacts"
 
   tags = {
-    Name        = "app-vpc"
-    Environment = "dev"
+    Team        = "orders"
+    Environment = "prod"
   }
 }
 
-resource "aws_subnet" "app" {
-  vpc_id     = aws_vpc.app.id
-  cidr_block = "10.0.1.0/24"
+resource "aws_s3_bucket" "reports" {
+  bucket = "orders-reports"
 
   tags = {
-    Name = "app-subnet"
+    Team = "orders"
   }
 }

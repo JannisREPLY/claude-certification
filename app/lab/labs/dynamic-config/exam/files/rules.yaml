@@ -1,0 +1,21 @@
+security_group:
+  name: orders-web
+  description: Orders web tier
+
+rules:
+  - name: https
+    port: 443
+    protocol: tcp
+    cidrs: ["0.0.0.0/0", "::/0"]
+  - name: app
+    port: 8443
+    protocol: tcp
+    cidrs: ["0.0.0.0/0", "::/0", "10.0.0.0/8"]
+  - name: ssh
+    port: 22
+    protocol: tcp
+    cidrs: ["10.0.0.0/8", "192.168.0.0/16"]
+  - name: syslog
+    port: 514
+    protocol: udp
+    cidrs: ["0.0.0.0/0"]

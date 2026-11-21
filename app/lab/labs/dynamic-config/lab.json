@@ -1,16 +1,85 @@
 {
   "id": "dynamic-config",
   "cert": "terraform-authoring-ops-advanced",
-  "title": "Dynamic configuration",
-  "objectives": ["2a", "2b", "2c", "2d", "2e"],
+  "title": "Build a security group and instances from data files",
+  "objectives": [
+    "2b",
+    "2c",
+    "2d",
+    "2e"
+  ],
   "domain": "d2",
-  "minutes": 45,
-  "intro": "The networking team owns a VPC tagged `Name = shared-vpc`. You add subnets and a security group to it from `/home/coder/lab`. The variables are declared in `variables.tf` and set in `terraform.tfvars`; don't change those values. The folder is initialized; nothing is applied yet. Open a terminal via **☰ → Terminal → New Terminal**.",
-  "tasks": [
-    { "id": "t1", "text": "`environment` may only be `dev`, `stage` or `prod`. Any other value must fail at plan time with an error message that lists the allowed values." },
-    { "id": "t2", "text": "Look up the `shared-vpc` VPC with a data source. Its ID must not appear anywhere in your configuration." },
-    { "id": "t3", "text": "Create one subnet per entry of `var.subnets` as `aws_subnet.this`, keyed by the map key, in the shared VPC. Tag each `Name = \"<environment>-<key>\"` (e.g. `dev-web`) and set `map_public_ip_on_launch` from `public`." },
-    { "id": "t4", "text": "Create `aws_security_group.web` named `<environment>-web` in the shared VPC with one TCP ingress rule from `0.0.0.0/0` per port in `var.ingress_ports`. Use a `dynamic` block." },
-    { "id": "t5", "text": "Add the outputs `subnet_ids` (a map of subnet key to subnet ID) and `public_subnet_ids` (a list with the IDs of the public subnets only). Apply everything." }
-  ]
+  "scenario": "The security team of your organization keeps the firewall rules of the `orders` web tier in `rules.yaml`. They review and change that file, not Terraform code. The platform team wants a configuration in `/home/coder/lab` that builds the security group `orders-web` and the web tier instances from that file and from `terraform.tfvars`, and publishes a few lists other teams consume.\n\nThe instances run in the default VPC of the account. Hard-coded AMI, VPC or subnet IDs are not allowed: they differ between accounts.\n\nThe folder is initialized. Nothing has been applied yet. The `aws` CLI is configured for the account and region `us-east-1`.",
+  "levels": {
+    "guided": {
+      "minutes": 35,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Create the security group described in `rules.yaml`, with one ingress rule per entry of `rules`.\n\n- Read the file with `yamldecode(file(\"${path.module}/rules.yaml\"))` into a local value.\n- `aws_security_group.web` takes its name and description from `security_group` in the file and lives in the default VPC. Look the VPC up with `data \"aws_vpc\" \"default\" { default = true }`.\n- `aws_vpc_security_group_ingress_rule.this` uses `for_each` over the rules, keyed by the rule `name` (for example `aws_vpc_security_group_ingress_rule.this[\"ssh\"]`). Map `port`, `protocol` and `cidr` to `from_port`/`to_port`, `ip_protocol` and `cidr_ipv4`.\n- Do not change `rules.yaml`.\n\nHint: a [`for` expression](https://developer.hashicorp.com/terraform/language/expressions/for) like `{ for r in local.rules : r.name => r }` turns the list into a map for [`for_each`](https://developer.hashicorp.com/terraform/language/meta-arguments/for_each). See the [ingress rule resource](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_security_group_ingress_rule).",
+          "validation": "Run `aws ec2 describe-security-group-rules --filters Name=group-id,Values=<sg-id>`. The group `orders-web` should have exactly the four ingress rules from `rules.yaml`, and `terraform state list` should show them keyed by name."
+        },
+        {
+          "id": "t2",
+          "text": "Create one EC2 instance per entry of `var.instances` (declared in `variables.tf`, set in `terraform.tfvars`).\n\n- Use `aws_instance.app` with `for_each = var.instances`.\n- The AMI comes from an `aws_ami` data source: owner `amazon`, the most recent image whose name matches `amzn2-ami-hvm-*-x86_64-gp2`.\n- The subnet comes from an `aws_subnets` data source filtered on the default VPC (`vpc-id`). Use `sort(data.aws_subnets.default.ids)[each.value.subnet_index]`.\n- Attach `aws_security_group.web`. Tag each instance with `Name = <map key>` plus its own `tags`. Use `merge()`.\n- Apply the configuration.\n\nHint: the `optional()` attributes in `variables.tf` already supply defaults (`t3.micro`, subnet index `0`). See [optional object attributes](https://developer.hashicorp.com/terraform/language/expressions/type-constraints#optional-object-type-attributes).",
+          "validation": "Run `aws ec2 describe-instances --filters Name=tag:Name,Values=web-1,web-2,batch`. The three instances should run with the expected instance type, subnet and tags."
+        },
+        {
+          "id": "t3",
+          "text": "Add two outputs and apply.\n\n- `public_tcp_ports`: the distinct, sorted list of ports of the TCP rules that are open to `0.0.0.0/0`.\n- `private_ips`: a map of instance name (the `var.instances` key) to its private IP address.\n\nHint: filter with `[for r in local.rules : r.port if r.protocol == \"tcp\" && r.cidr == \"0.0.0.0/0\"]`, then wrap the result in `sort(distinct(...))`. See [collection functions](https://developer.hashicorp.com/terraform/language/functions/distinct).",
+          "validation": "Run `terraform output -json`. `public_tcp_ports` should list 443 and 8443, and `private_ips` should map `web-1`, `web-2` and `batch` to their private IPs."
+        }
+      ]
+    },
+    "exam": {
+      "minutes": 45,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "`terraform plan` fails in the lab folder. Fix the configuration.\n\n- The platform standard is AWS provider 5.x, the version recorded in `.terraform.lock.hcl`.\n- Do not downgrade the provider.",
+          "validation": "Run `terraform plan`. It should run without errors, and `.terraform.lock.hcl` should still select AWS provider 5.x."
+        },
+        {
+          "id": "t2",
+          "text": "Build the security group from `rules.yaml`.\n\n- `aws_security_group.web` takes its name and description from the file and lives in the default VPC, found with a data source.\n- Create one `aws_vpc_security_group_ingress_rule.this` per rule and CIDR, keyed `\"<name>-<cidr>\"` (for example `this[\"ssh-10.0.0.0/8\"]`).\n- IPv6 CIDRs (containing `:`) go to `cidr_ipv6`, all others to `cidr_ipv4`.\n- The group must have no other ingress rules. Do not change `rules.yaml`.",
+          "validation": "Run `aws ec2 describe-security-group-rules --filters Name=group-id,Values=<sg-id>`. `orders-web` should have one ingress rule per rule and CIDR in `rules.yaml`."
+        },
+        {
+          "id": "t3",
+          "text": "Create the instances in `terraform.tfvars` as `aws_instance.app` with `for_each`.\n\n- Declare `var.instances` as a `map(object({...}))` with optional attributes: `instance_type` (default `t3.micro`), `subnet_index` (default `0`), `role` (default `worker`) and `tags` (default `{}`). Do not change `terraform.tfvars`.\n- AMI: most recent Amazon image matching `amzn2-ami-hvm-*-x86_64-gp2`, from a data source.\n- Subnet: element `subnet_index` of the sorted subnet IDs of the default VPC, from an `aws_subnets` data source.\n- Attach `aws_security_group.web`. Tags: `Name = <key>`, `Role = <role>`, plus the instance's own `tags`.\n- No hard-coded AMI, VPC or subnet IDs.",
+          "validation": "Run `aws ec2 describe-instances --filters Name=tag:Name,Values=web-1,web-2,batch`. Each instance should have the expected type, subnet, security group and tags."
+        },
+        {
+          "id": "t4",
+          "text": "Publish these outputs and apply.\n\n- `public_tcp_ports`: distinct ports of the TCP rules open to `0.0.0.0/0` or `::/0`, in ascending order.\n- `private_ips`: map of instance name to private IP.\n- `web_instance_ids`: list of the IDs of the instances with `role = web`, ordered by instance name.",
+          "validation": "Run `terraform output -json`. `public_tcp_ports` should be `[443, 8443]`, and the other two outputs should match the instances."
+        }
+      ]
+    },
+    "expert": {
+      "minutes": 55,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "The configuration does not work with the Terraform and provider versions installed in this environment. Fix it.\n\n- Terraform must accept any 1.6.x CLI release.\n- The AWS provider must stay on the 5.x version in `.terraform.lock.hcl`.",
+          "validation": "Run `terraform version` and `terraform plan`. The plan should run without errors, using AWS provider 5.x."
+        },
+        {
+          "id": "t2",
+          "text": "Build the security group `orders-web` from both `rules.yaml` and the partner team's `partner-rules.csv`.\n\n- `aws_security_group.web` takes its name and description from `rules.yaml` and lives in the default VPC.\n- One `aws_vpc_security_group_ingress_rule.this` per rule and CIDR from both files, keyed `\"<name>-<cidr>\"`. A rule that appears in both files is created once.\n- In `rules.yaml`, `protocol` defaults to `tcp`, `to_port` defaults to `port`, and rules with `enabled: false` are skipped.\n- IPv6 CIDRs go to `cidr_ipv6`. Do not change the data files.",
+          "validation": "Run `aws ec2 describe-security-group-rules --filters Name=group-id,Values=<sg-id>`. `orders-web` should have exactly one ingress rule per enabled rule and CIDR from both files."
+        },
+        {
+          "id": "t3",
+          "text": "Create the instances in `terraform.tfvars` as `aws_instance.app`.\n\n- Declare `var.instances` with optional attributes `instance_type` (`t3.micro`), `subnet_index` (`0`), `role` (`worker`), `enabled` (`true`) and `tags` (`{}`). Do not change `terraform.tfvars`.\n- Disabled instances must not be created. Keys are the map keys.\n- AMI from a data source (most recent Amazon `amzn2-ami-hvm-*-x86_64-gp2`). Subnet: index `subnet_index` of the sorted default-VPC subnet IDs; indexes beyond the end wrap around.\n- Attach `aws_security_group.web`. Tags: `Name = <key>`, `Role = <role>`, plus the instance's own `tags`. No hard-coded IDs.",
+          "validation": "Run `aws ec2 describe-instances --filters Name=tag:Name,Values=web-1,web-2,batch,old`. Only `web-1`, `web-2` and `batch` should exist, each in the expected subnet."
+        },
+        {
+          "id": "t4",
+          "text": "Publish these outputs and apply.\n\n- `public_tcp_ports`: distinct ports (`from_port`) of the TCP rules open to `0.0.0.0/0` or `::/0`, as numbers in ascending numeric order.\n- `admin_cidrs`: sorted, distinct CIDRs of all rules whose port range includes 22.\n- `private_ips`: map of instance name to private IP.\n- `instances_by_role`: map of role to the sorted list of instance names with that role.",
+          "validation": "Run `terraform output -json`. `public_tcp_ports` should be `[80, 443, 8080]`, and the other outputs should match the rules and instances."
+        }
+      ]
+    }
+  }
 }

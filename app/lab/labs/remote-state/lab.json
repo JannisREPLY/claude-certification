@@ -1,14 +1,82 @@
 {
   "id": "remote-state",
   "cert": "terraform-authoring-ops-advanced",
-  "title": "Remote state and sharing data",
+  "title": "Remote state, locking and workspaces",
   "objectives": ["3b", "3d"],
   "domain": "d3",
-  "minutes": 40,
-  "intro": "Two configurations live in `/home/coder/lab`: `network/` (applied, local state) and `app/` (empty). The S3 bucket `tfstate-lab` and the DynamoDB table `tf-locks` (partition key `LockID`) already exist. Open a terminal via **☰ → Terminal → New Terminal**.",
-  "tasks": [
-    { "id": "t1", "text": "Move the state of `network/` to the S3 bucket `tfstate-lab` under the key `network/terraform.tfstate`, with state locking in `tf-locks` and encryption enabled. Nothing may be recreated, and the local state must no longer be used." },
-    { "id": "t2", "text": "Give `app/` the same backend with the key `app/terraform.tfstate`. Read the VPC ID from the network state with `terraform_remote_state` and create `aws_security_group.app` named `app-<current workspace>` in that VPC. Apply in the `default` workspace." },
-    { "id": "t3", "text": "Create the workspace `staging` for `app/` and apply there as well, so `app-staging` exists next to `app-default`." }
-  ]
+  "scenario": "Your organization splits its infrastructure into two Terraform configurations. The platform team owns `platform/`, which manages the IAM role `app-runtime-role`, the instance profile `app-runtime-profile` and the S3 bucket `platform-artifacts`. It has been applied with local state, so nobody else can use it safely. The application team owns `app/`, which only contains a provider configuration so far, and needs one EC2 instance per environment that uses the platform's instance profile.\n\nThe S3 bucket `tfstate-lab` and the DynamoDB table `tf-locks` (partition key `LockID`) exist for remote state. Both configurations are in `/home/coder/lab`. The `aws` CLI is configured for the account and region `us-east-1`.",
+  "levels": {
+    "guided": {
+      "minutes": 35,
+      "intro": "`platform/` already declares the outputs `instance_profile_name` and `artifacts_bucket`.",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Move the state of `platform/` to the S3 backend.\n\n- Bucket `tfstate-lab`, key `platform/terraform.tfstate`, region `us-east-1`.\n- State locking with the DynamoDB table `tf-locks` and encryption enabled.\n- Nothing may be recreated.\n\nHint: add a `backend \"s3\"` block ([S3 backend](https://developer.hashicorp.com/terraform/language/settings/backends/s3)) and run `terraform init -migrate-state`. Answer `yes` to copy the existing state, then delete the old local `terraform.tfstate`.",
+          "validation": "Run `aws s3 ls s3://tfstate-lab/platform/`. The output should list `terraform.tfstate`, and `terraform plan` in `platform/` should report no changes."
+        },
+        {
+          "id": "t2",
+          "text": "Create the application instance in `app/` with the platform's instance profile.\n\n- Use the S3 backend with the key `app/terraform.tfstate` (same bucket, table and encryption as `platform/`).\n- Read the platform outputs with a `terraform_remote_state` data source named `platform`.\n- Create `aws_instance.app` (`t3.micro`, latest `amzn2-ami-hvm-*` AMI owned by `amazon`) with `iam_instance_profile` set from the remote state and the tag `Name = app-<workspace>` built from `terraform.workspace`.\n- Apply in the `default` workspace.\n\nHint: see the [terraform_remote_state](https://developer.hashicorp.com/terraform/language/state/remote-state-data) data source. Outputs are read as `data.terraform_remote_state.platform.outputs.<name>`.",
+          "validation": "Run `aws ec2 describe-instances --filters Name=tag:Name,Values=app-default`. The output should show one running instance with the instance profile `app-runtime-profile`."
+        },
+        {
+          "id": "t3",
+          "text": "Create the workspace `staging` for `app/` and apply there.\n\n- `app-staging` must exist next to `app-default`.\n- Each workspace keeps its own state.\n\nHint: `terraform workspace new staging`. The S3 backend stores other workspaces under `env:/<workspace>/<key>` ([workspaces](https://developer.hashicorp.com/terraform/language/state/workspaces)).",
+          "validation": "Run `aws s3 ls s3://tfstate-lab/env:/staging/app/`. The output should list `terraform.tfstate`, and an instance tagged `Name = app-staging` should be running."
+        }
+      ]
+    },
+    "exam": {
+      "minutes": 45,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Migrate the state of `platform/` to the S3 backend.\n\n- Bucket `tfstate-lab`, key `platform/terraform.tfstate`, region `us-east-1`.\n- Lock the state with the DynamoDB table `tf-locks` and enable encryption.\n- No resource may be recreated, and the local state must no longer hold any resources.",
+          "validation": "Run `terraform plan` in `platform/`. The plan should report no changes, and `aws s3 ls s3://tfstate-lab/platform/` should list `terraform.tfstate`."
+        },
+        {
+          "id": "t2",
+          "text": "Expose the data the application team needs from `platform/`.\n\n- Add the outputs `instance_profile_name` (name of `aws_iam_instance_profile.app`) and `artifacts_bucket` (name of `aws_s3_bucket.artifacts`).\n- The outputs must be readable from the remote state. No resource may change.",
+          "validation": "Run `terraform output` in `platform/`. The output should show `instance_profile_name = \"app-runtime-profile\"` and `artifacts_bucket = \"platform-artifacts\"`."
+        },
+        {
+          "id": "t3",
+          "text": "Create the application instance in `app/`.\n\n- Use the S3 backend with the key `app/terraform.tfstate`, the same bucket and lock table, and encryption.\n- Read the platform outputs with `data.terraform_remote_state.platform`. Do not hard-code the instance profile or bucket name.\n- `aws_instance.app`: latest `amzn2-ami-hvm-*` AMI owned by `amazon`, `iam_instance_profile` from the remote state, tags `Name = app-<workspace>` and `ArtifactsBucket = <artifacts_bucket output>`.\n- Apply in the `default` workspace.",
+          "validation": "Run `aws ec2 describe-instances --filters Name=tag:Name,Values=app-default`. The output should show a running instance with the instance profile `app-runtime-profile` and the tag `ArtifactsBucket = platform-artifacts`."
+        },
+        {
+          "id": "t4",
+          "text": "Deploy the application to the environments `staging` and `prod` with workspaces.\n\n- Use the workspaces `staging` and `prod` of `app/`, each with its own state.\n- `aws_instance.app` is `t3.small` in `prod` and `t3.micro` in every other workspace.\n- `app-default` must keep running.",
+          "validation": "Run `aws ec2 describe-instances --filters Name=tag:Name,Values=app-prod`. The output should show a running `t3.small` instance, and `terraform plan` in every workspace should report no changes."
+        }
+      ]
+    },
+    "expert": {
+      "minutes": 55,
+      "intro": "`platform/` stores its state with the `local` backend in `platform/state/platform.tfstate`. A third, empty configuration `reports/` belongs to the reporting team.",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Migrate the state of `platform/` to the S3 backend with a partial backend configuration.\n\n- Put `bucket = tfstate-lab`, `region = us-east-1`, `dynamodb_table = tf-locks` and `encrypt = true` into the file `backend.hcl` in the lab folder (next to `platform/` and `app/`) and pass it with `-backend-config`.\n- The `backend \"s3\"` block in `platform/` may only set `key = platform/terraform.tfstate`.\n- No resource may be recreated, and no local state file may hold resources anymore.",
+          "validation": "Run `terraform plan` in `platform/`. The plan should report no changes, and `aws s3 ls s3://tfstate-lab/platform/` should list `terraform.tfstate`."
+        },
+        {
+          "id": "t2",
+          "text": "Connect `app/` to the platform state.\n\n- Add the outputs `instance_profile_name` and `artifacts_bucket` to `platform/` without changing any resource.\n- `app/` uses the S3 backend with `backend.hcl`; its `backend` block only sets `key = app/terraform.tfstate` and `workspace_key_prefix = envs`.\n- Read the outputs with `data.terraform_remote_state.platform`; do not hard-code the profile or bucket name.\n- `app/` must work with the installed Terraform 1.6.6.",
+          "validation": "Run `terraform init -backend-config=../backend.hcl` in `app/`. It should succeed, and `terraform console` should print `app-runtime-profile` for `data.terraform_remote_state.platform.outputs.instance_profile_name`."
+        },
+        {
+          "id": "t3",
+          "text": "Deploy one instance per environment with the workspaces `staging` and `prod`.\n\n- `aws_instance.app`: latest `amzn2-ami-hvm-*` AMI owned by `amazon`, `iam_instance_profile` from the remote state, tags `Name = app-<workspace>`, `Workspace = <workspace>` and `ArtifactsBucket = <artifacts_bucket output>`.\n- `t3.small` in `prod`, `t3.micro` in `staging`.\n- The `default` workspace must not manage any resource.\n- The workspace states must be stored under `envs/<workspace>/app/terraform.tfstate`.",
+          "validation": "Run `aws s3 ls s3://tfstate-lab/envs/ --recursive`. The output should list the states of `staging` and `prod`, and instances tagged `app-staging` (`t3.micro`) and `app-prod` (`t3.small`) should be running."
+        },
+        {
+          "id": "t4",
+          "text": "The reporting team needs an inventory of the production instance, but must not get access to the application state.\n\n- In `reports/`, create `aws_s3_object.inventory` in the bucket `platform-artifacts` with the key `inventory/prod.json`.\n- Content: `jsonencode` of an object with `instance_id`, `instance_type` and `role_arn` (ARN of the role in the instance's instance profile).\n- Look the values up with data sources by the tag `Name = app-prod`. Do not use `terraform_remote_state`, and do not hard-code IDs or ARNs.",
+          "validation": "Run `aws s3 cp s3://platform-artifacts/inventory/prod.json -`. The output should show the ID and type of `app-prod` and the ARN of `app-runtime-role`."
+        }
+      ]
+    }
+  }
 }

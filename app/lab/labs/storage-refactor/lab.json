@@ -1,0 +1,36 @@
+{
+  "id": "storage-refactor",
+  "cert": "terraform-authoring-ops-advanced",
+  "title": "Refactor a monolithic storage module",
+  "objectives": ["4a", "4b", "4c", "4d", "1e"],
+  "domain": "d4",
+  "mock": true,
+  "scenario": "Northwind Logistics keeps shipping manifests, invoices and archived documents in S3. The storage team manages the buckets `nw-sto-manifests`, `nw-sto-invoices` and `nw-sto-archive`, a `README.txt` object in each bucket, the IAM policy `nw-sto-read` and the IAM role `nw-sto-reader` with a single module, `modules/platform`. The buckets also hold application data that is not managed by Terraform.\n\nThe team wants smaller modules with a clear interface, and the platform team asks every team to tag its resources with the shared tagging module from the Git repository `/home/coder/git/nw-sto-tagging.git`.\n\nThe configuration in the lab folder is initialized and applied. The `aws` CLI is configured for the account and region `us-east-1`.",
+  "levels": {
+    "exam": {
+      "minutes": 50,
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Split `module.platform` into a storage module and an access module.\n\n- `module.storage` (source `./modules/storage`) must manage the buckets and the `README.txt` objects.\n- `module.access` (source `./modules/access`) must manage the policy document, `aws_iam_policy.read`, `aws_iam_role.reader` and `aws_iam_role_policy_attachment.reader`.\n- `module.storage` must export the bucket ARNs as the output `bucket_arns`. `module.access` must receive them through an input variable `bucket_arns` that references `module.storage.bucket_arns`.\n- The root output `reader_role_arn` must keep its value.\n- Remove `module.platform` and the folder `modules/platform`.",
+          "validation": "Run `terraform state list`. The output should list the IAM resources under `module.access` and no address under `module.platform`."
+        },
+        {
+          "id": "t2",
+          "text": "Replace `count` with `for_each` in `module.storage`.\n\n- The buckets must be addressed by their names, e.g. `module.storage.aws_s3_bucket.this[\"nw-sto-manifests\"]`.\n- The `README.txt` objects must use the same keys, e.g. `module.storage.aws_s3_object.readme[\"nw-sto-manifests\"]`.\n- Do not use `count` for these resources.",
+          "validation": "Run `terraform state list`. The output should include `module.storage.aws_s3_bucket.this[\"nw-sto-archive\"]` and `module.storage.aws_s3_object.readme[\"nw-sto-archive\"]`."
+        },
+        {
+          "id": "t3",
+          "text": "Tag the storage team's resources with the shared tagging module.\n\n- Call the module as `module.labels` from `/home/coder/git/nw-sto-tagging.git` with the input `team = \"storage\"`.\n- Pin the module to the release `v1.2.0`. Do not use any other release.\n- The tags of the three buckets, the policy `nw-sto-read` and the role `nw-sto-reader` must be exactly the `tags` output of `module.labels`. Pass them to both modules through an input variable `tags`.",
+          "validation": "Run `aws s3api get-bucket-tagging --bucket nw-sto-invoices`. The output should include `ManagedBy = terraform` and `DataClass = internal`."
+        },
+        {
+          "id": "t4",
+          "text": "Complete the refactoring without disruption.\n\n- No bucket, object, policy, role or attachment may be destroyed or recreated. Use `moved` blocks.\n- The application data in the buckets must remain.\n- Finish with a clean workspace.",
+          "validation": "Run `terraform plan`. The output should end with `No changes. Your infrastructure matches the configuration.`, and `aws s3 ls s3://nw-sto-manifests/data/` should still list `2026-11-01.csv`."
+        }
+      ]
+    }
+  }
+}
